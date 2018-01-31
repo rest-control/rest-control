@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
       "psr-4": {
-        "RestControll\\Tests": "tests//"
+        "RestControl\\Tests": "tests//"
       }
     }
 }
