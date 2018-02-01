@@ -1,0 +1,30 @@
+<?php
+
+/*
+ * This file is part of the Rest-Control package.
+ *
+ * (c) Kamil Szela <kamil.szela@cothe.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace RestControl\Tests;
+
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+$loader = null;
+
+foreach($autoloadPaths as $path) {
+    if(file_exists($path)) {
+        $loader = require_once $path;
+        break;
+    }
+}
+
+if(!$loader) {
+    throw new \Exception('Can\'t find autoload.php. Please install dependencies via composer.');
+}

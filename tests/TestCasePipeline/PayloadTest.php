@@ -11,10 +11,10 @@
 
 namespace RestControl\Tests\TestCasePipeline;
 
-use Api\ApiClient\ApiClientInterface;
-use Api\Loader\TestCaseDelegate;
-use Api\TestCasePipeline\Payload;
-use Api\TestCasePipeline\TestObject;
+use RestControl\ApiClient\ApiClientInterface;
+use RestControl\Loader\TestCaseDelegate;
+use RestControl\TestCasePipeline\Payload;
+use RestControl\TestCasePipeline\TestObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\InvalidArgumentException;
 

@@ -11,7 +11,7 @@
 
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
-use Api\TestCase\ResponseFilters\HeadersFilter;
+use RestControl\TestCase\ResponseFilters\HeadersFilter;
 use PHPUnit\Framework\TestCase;
 
 class HeadesrFilterTest extends TestCase

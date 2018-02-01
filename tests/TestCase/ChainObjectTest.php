@@ -11,7 +11,7 @@
 
 namespace RestControl\Tests\TestCase;
 
-use Api\TestCase\ChainObject;
+use RestControl\TestCase\ChainObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\InvalidArgumentException;
 

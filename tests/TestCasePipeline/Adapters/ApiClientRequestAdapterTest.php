@@ -11,9 +11,9 @@
 
 namespace RestControl\Tests\TestCasePipeline\Adapters;
 
-use Api\ApiClient\ApiClientRequest;
-use Api\TestCase\Request;
-use Api\TestCasePipeline\Adapters\ApiClientRequestAdapter;
+use RestControl\ApiClient\ApiClientRequest;
+use RestControl\TestCase\Request;
+use RestControl\TestCasePipeline\Adapters\ApiClientRequestAdapter;
 use PHPUnit\Framework\TestCase;
 
 class ApiClientRequestAdapterTest extends TestCase

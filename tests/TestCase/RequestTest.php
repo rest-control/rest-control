@@ -11,9 +11,9 @@
 
 namespace RestControl\Tests\TestCase;
 
-use Api\TestCase\ChainObject;
-use Api\TestCase\Request;
-use Api\TestCase\Response;
+use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\Request;
+use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase

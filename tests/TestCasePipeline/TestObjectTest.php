@@ -11,9 +11,9 @@
 
 namespace RestControl\Tests\TestCasePipeline;
 
-use Api\Loader\TestCaseDelegate;
-use Api\TestCase\Request;
-use Api\TestCasePipeline\TestObject;
+use RestControl\Loader\TestCaseDelegate;
+use RestControl\TestCase\Request;
+use RestControl\TestCasePipeline\TestObject;
 use PHPUnit\Framework\TestCase;
 
 class TestObjectTest extends TestCase

@@ -11,9 +11,9 @@
 
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
-use Api\ApiClient\ApiClientResponse;
-use Api\TestCase\ResponseFilters\FilterException;
-use Api\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ResponseFilters\FilterException;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use PHPUnit\Framework\TestCase;
 
 class JsonPathFilterTest extends TestCase

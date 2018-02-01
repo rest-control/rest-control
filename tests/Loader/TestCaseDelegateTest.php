@@ -11,7 +11,7 @@
 
 namespace RestControl\Tests\Loader;
 
-use Api\Loader\TestCaseDelegate;
+use RestControl\Loader\TestCaseDelegate;
 use PHPUnit\Framework\TestCase;
 
 class TestCaseDelegateTest extends TestCase
