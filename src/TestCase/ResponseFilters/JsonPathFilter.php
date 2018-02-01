@@ -16,6 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class JsonPathFilter
+ *
  * @package RestControl\TestCase\ResponseFilters
  */
 class JsonPathFilter implements FilterInterface
@@ -62,13 +63,12 @@ class JsonPathFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     * @param array $params <pre>
-     *    [
-     *      string, //json path
-     *      string, //expression
-     *      mixed, //expected value
-     *    ]
-     * </pre>
+     * @param array             $params
+     *
+     * Schema of $params:
+     *  - $params[0] string, json path
+     *  - $params[1] string, expression
+     *  - $params[2] mixed, expected value
      *
      * @throws FilterException
      */

@@ -15,6 +15,7 @@ use RestControl\ApiClient\ApiClientResponse;
 
 /**
  * Class HeadersFilter
+ *
  * @package RestControl\TestCase\ResponseFilters
  */
 class HeadersFilter implements FilterInterface
@@ -45,14 +46,6 @@ class HeadersFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     *
-     * @param array $params <pre>
-     *    [
-     *      [
-     *          'headerName' => 'expression'
-     *      ]
-     *    ]
-     * </pre>
      *
      * @throws FilterException
      */

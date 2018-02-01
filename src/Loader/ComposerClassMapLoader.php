@@ -20,6 +20,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class ClassMapLoader
+ *
  * @package RestControl\Loader
  */
 class ComposerClassMapLoader implements LoaderInterface

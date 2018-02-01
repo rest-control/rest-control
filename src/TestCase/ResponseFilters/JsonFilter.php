@@ -15,6 +15,7 @@ use RestControl\ApiClient\ApiClientResponse;
 
 /**
  * Class JsonFilter
+ *
  * @package RestControl\TestCase\ResponseFilters
  */
 class JsonFilter implements FilterInterface
@@ -43,13 +44,11 @@ class JsonFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
+     * @param array             $params
      *
-     * @param array $params <pre>
-     *    [
-     *      boolean, //determines is filter should check content type
-     *      boolean, //determines is filter should allow empty body
-     *    ]
-     * </pre>
+     * Schema of $params:
+     *  - $params[0] boolean, determines is filter should check content type
+     *  - $params[1] boolean, determines is filter should allow empty body
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {

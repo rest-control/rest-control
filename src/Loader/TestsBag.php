@@ -15,6 +15,7 @@ use League\Container\Container;
 
 /**
  * Class TestsBag
+ *
  * @package RestControl\Loader
  */
 class TestsBag

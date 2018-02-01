@@ -16,6 +16,7 @@ use RestControl\TestCase\Request;
 
 /**
  * Class ApiClientRequestAdapter
+ *
  * @package RestControl\TestCasePipeline\Adapters
  */
 class ApiClientRequestAdapter
@@ -37,7 +38,7 @@ class ApiClientRequestAdapter
     }
 
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param ApiClientRequest $apiRequest
      */
     protected function transformMethod(Request $request, ApiClientRequest $apiRequest)
@@ -55,7 +56,7 @@ class ApiClientRequestAdapter
     }
 
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param ApiClientRequest $apiRequest
      */
     protected function transformBody(Request $request, ApiClientRequest $apiRequest)
@@ -85,7 +86,7 @@ class ApiClientRequestAdapter
     }
 
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param ApiClientRequest $apiRequest
      */
     protected function transformForm(Request $request, ApiClientRequest $apiRequest)

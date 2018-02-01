@@ -13,6 +13,7 @@ namespace RestControl\ApiClient;
 
 /**
  * Class RequestSchema
+ *
  * @package RestControl\Utils
  */
 class ApiClientRequest
@@ -82,7 +83,7 @@ class ApiClientRequest
 
     /**
      * @param string $url
-     * @param array $urlParameters
+     * @param array  $urlParameters
      *
      * @return $this
      */

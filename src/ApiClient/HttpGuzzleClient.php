@@ -16,6 +16,7 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * Class HttpGuzzleClient
+ *
  * @package RestControl\ApiClient
  */
 class HttpGuzzleClient implements ApiClientInterface

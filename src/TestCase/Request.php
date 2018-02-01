@@ -13,6 +13,7 @@ namespace RestControl\TestCase;
 
 /**
  * Class Request
+ *
  * @package RestControl\TestCase
  */
 class Request extends AbstractChain

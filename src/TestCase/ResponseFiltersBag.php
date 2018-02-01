@@ -18,6 +18,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class ResponseFiltersBag
+ *
  * @package RestControl\TestCase
  */
 class ResponseFiltersBag

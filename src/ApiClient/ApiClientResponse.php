@@ -13,6 +13,7 @@ namespace RestControl\ApiClient;
 
 /**
  * Class ApiClientResponse
+ *
  * @package RestControl\ApiClient
  */
 class ApiClientResponse

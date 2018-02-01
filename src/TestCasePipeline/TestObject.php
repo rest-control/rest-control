@@ -17,6 +17,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class TestObject
+ *
  * @package RestControl\TestCasePipeline
  */
 class TestObject

@@ -19,6 +19,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class RunTestObjectsStage
+ *
  * @package RestControl\TestCasePipeline
  */
 class RunTestObjectsStage
@@ -85,7 +86,7 @@ class RunTestObjectsStage
     }
 
     /**
-     * @param Payload $payload
+     * @param Payload    $payload
      * @param TestObject $testObject
      */
     protected function runTestsObject(Payload $payload, TestObject $testObject)

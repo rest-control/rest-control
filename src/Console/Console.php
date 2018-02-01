@@ -16,6 +16,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class Console
+ *
  * @package RestControl\Console
  */
 class Console
@@ -46,12 +47,15 @@ class Console
 
     /**
      * Run console application.
+     *
      * @todo
+     *
      * @return int
      */
     public function run()
     {
         echo 'Hello world !' . "\n";
+
         return 0;
     }
 

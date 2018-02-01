@@ -13,6 +13,7 @@ namespace RestControl\TestCase;
 
 /**
  * Class Response
+ *
  * @package RestControl\TestCase
  */
 class Response extends AbstractChain
@@ -83,7 +84,10 @@ class Response extends AbstractChain
     }
 
     /**
-     * @param array $conditions <pre>
+     * @param array $conditions
+     *
+     * Sample schema of $conditions:
+     * <pre>
      *   [
      *      [
      *          'sampe.path',

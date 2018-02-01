@@ -37,7 +37,7 @@ interface FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     * @param array $params
+     * @param array             $params
      */
     public function call(ApiClientResponse $apiResponse, array $params = []);
 }

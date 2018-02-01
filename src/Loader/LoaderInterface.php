@@ -13,6 +13,7 @@ namespace RestControl\Loader;
 
 /**
  * Interface LoaderInterface
+ *
  * @package RestControl\Loader
  */
 interface LoaderInterface

@@ -15,6 +15,7 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class AbstractChain
+ *
  * @package RestControl\TestCase
  */
 abstract class AbstractChain

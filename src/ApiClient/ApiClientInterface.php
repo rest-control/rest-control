@@ -13,6 +13,7 @@ namespace RestControl\ApiClient;
 
 /**
  * Interface ApiClientInterface
+ *
  * @package RestControl\ApiClient
  */
 interface ApiClientInterface
