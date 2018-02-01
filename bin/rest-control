@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+$vendorAutoloadFiles = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+$loader = null;
+
+foreach($vendorAutoloadFiles as $autoloadFile) {
+    if(file_exists($autoloadFile)) {
+        $loader = require_once $autoloadFile;
+        break;
+    }
+}
+
+if(!$loader) {
+    throw new \Exception('Cannot find autoload.php. Please install dependencies via composer.');
+}
+
+$configFilePath = getcwd() . DIRECTORY_SEPARATOR . 'configuration.php';
+
+try{
+    $console = new \RestControl\Console\Console($loader, $configFilePath);
+    exit($console->run());
+} catch (\Exception $e) {
+    echo $e->getMessage() . "\n";
+    exit(1);
+}
