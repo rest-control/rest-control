@@ -96,7 +96,7 @@ class TestCasePipeline
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
        $this->container->get(EventDispatcherInterface::class)
-                       ->ad($subscriber);
+                       ->addSubscriber($subscriber);
 
        return $this;
     }
