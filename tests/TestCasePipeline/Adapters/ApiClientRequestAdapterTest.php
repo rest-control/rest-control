@@ -81,4 +81,31 @@ class ApiClientRequestAdapterTest extends TestCase
 
         $this->assertSame('Sample body test', $apiRequest->getBody());
     }
+
+    public function testArrayBody()
+    {
+        $request = new Request();
+        $request->body([
+            'sample' => 'body',
+        ]);
+
+        $adapter = new ApiClientRequestAdapter();
+        $apiRequest = $adapter->transform($request);
+
+        $this->assertSame([
+            'sample' => 'body',
+        ], $apiRequest->getBody());
+    }
+
+    public function testDoubleBody()
+    {
+        $request = new Request();
+        $request->body('Sample body')
+                ->body('Another body');
+
+        $adapter = new ApiClientRequestAdapter();
+        $apiRequest = $adapter->transform($request);
+
+        $this->assertSame('Another body', $apiRequest->getBody());
+    }
 }

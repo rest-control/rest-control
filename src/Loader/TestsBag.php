@@ -12,6 +12,7 @@
 namespace RestControl\Loader;
 
 use League\Container\Container;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class TestsBag
@@ -21,7 +22,7 @@ use League\Container\Container;
 class TestsBag
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -38,10 +39,10 @@ class TestsBag
     /**
      * TestsBag constructor.
      *
-     * @param Container $container
-     * @param array     $loaders
+     * @param ContainerInterface $container
+     * @param array              $loaders
      */
-    public function __construct(Container $container, array $loaders = [])
+    public function __construct(ContainerInterface $container, array $loaders = [])
     {
         $this->container = $container;
 

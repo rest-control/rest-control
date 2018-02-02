@@ -66,7 +66,6 @@ class ResponseFiltersBag
             }
 
             try{
-
                 if(!$filter->validateParams($chainObject->getParams())) {
                     throw new FilterException(
                         $filter,
@@ -109,6 +108,14 @@ class ResponseFiltersBag
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filters;
     }
 
     /**

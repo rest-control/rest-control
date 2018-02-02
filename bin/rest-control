@@ -22,7 +22,7 @@ if(!$loader) {
 $configFilePath = getcwd() . DIRECTORY_SEPARATOR . 'configuration.php';
 
 try{
-    $console = new \RestControl\Console\Console($loader, $configFilePath);
+    $console = new \RestControl\Console\Console($loader);
     exit($console->run());
 } catch (\Exception $e) {
     echo $e->getMessage() . "\n";

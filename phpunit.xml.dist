@@ -3,6 +3,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
         bootstrap="./tests/TestsBootstrap.php">
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
     <testsuites>
         <testsuite name="Api tests">
             <directory suffix="Test.php">./tests</directory>
