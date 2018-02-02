@@ -12,7 +12,11 @@
 namespace RestControl\Console;
 
 use Composer\Autoload\ClassLoader;
-use Psr\Log\InvalidArgumentException;
+use League\Container\Container;
+use League\Container\ContainerInterface;
+use League\Container\ReflectionContainer;
+use RestControl\Console\Commands\RunTestsCommand;
+use Symfony\Component\Console\Application;
 
 /**
  * Class Console
@@ -22,62 +26,80 @@ use Psr\Log\InvalidArgumentException;
 class Console
 {
     /**
-     * @var array
+     * @var null|Application
      */
-    protected $configuration = [];
+    protected $app;
 
     /**
-     * @var ClassLoader
+     * @var ContainerInterface
      */
-    protected $classLoader;
+    protected $container;
+
+    /**
+     * @var array
+     */
+    protected $commands = [
+        RunTestsCommand::class,
+    ];
 
     /**
      * Console constructor.
      *
      * @param ClassLoader $classLoader
-     * @param string      $configurationPath
      */
     public function __construct(
-        ClassLoader $classLoader,
-        $configurationPath
+        ClassLoader $classLoader
     ){
-        $this->classLoader = $classLoader;
-        $this->loadConfiguration($configurationPath);
+        $this->prepareContainer($classLoader);
     }
 
     /**
      * Run console application.
      *
-     * @todo
-     *
      * @return int
      */
     public function run()
     {
-        echo 'Hello world !' . "\n";
+        $this->bootstrap()->run();
 
         return 0;
     }
 
     /**
-     * @param $configurationPath
+     * @return Application
      */
-    protected function loadConfiguration($configurationPath)
+    protected function bootstrap()
     {
-        if(!is_string($configurationPath)) {
-            throw new InvalidArgumentException('Configuration path must be a string.');
+        if($this->app) {
+            return $this->app;
         }
 
-        if(!file_exists($configurationPath) || !is_readable($configurationPath)) {
-            throw new InvalidArgumentException('Configuration file[' . $configurationPath . '] does not have read permission or does not exists.');
+        $this->app = new Application();
+
+        foreach($this->commands as $command) {
+            $this->addCommand($command);
         }
 
-        $config = require $configurationPath;
+        return $this->app;
+    }
 
-        if(!is_array($config)) {
-            throw new InvalidArgumentException('Configuration file wrong format.');
-        }
+    /**
+     * @param ClassLoader $classLoader
+     */
+    protected function prepareContainer(ClassLoader $classLoader)
+    {
+        $this->container = new Container();
+        $this->container->delegate(new ReflectionContainer());
+        $this->container->share(ClassLoader::class, $classLoader);
+    }
 
-        $this->configuration = $config;
+    /**
+     * @param string $class
+     */
+    protected function addCommand($class)
+    {
+        $this->app->add(
+            $this->container->get($class)
+        );
     }
 }

@@ -9,18 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace RestControl\TestCasePipeline;
+namespace RestControl\TestCasePipeline\Stages;
 
 use RestControl\ApiClient\ApiClientRequest;
 use RestControl\TestCase\ChainTrait;
 use RestControl\TestCase\ResponseFiltersBag;
 use RestControl\TestCasePipeline\Adapters\ApiClientRequestAdapter;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
+use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
+use RestControl\TestCasePipeline\Payload;
+use RestControl\TestCasePipeline\TestObject;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RunTestObjectsStage
  *
- * @package RestControl\TestCasePipeline
+ * @package RestControl\TestCasePipeline\Stages
  */
 class RunTestObjectsStage
 {
@@ -37,31 +42,23 @@ class RunTestObjectsStage
     protected $responseFiltersBag;
 
     /**
-     * @var null|TestCasePipelineListener
+     * @var EventDispatcherInterface
      */
-    protected $pipelineListener;
+    protected $eventDispatcher;
 
     /**
      * RunTestObjectsStage constructor.
      *
      * @param ResponseFiltersBag       $responseFiltersBag
-     * @param TestCasePipelineListener $listener
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ResponseFiltersBag $responseFiltersBag,
-        TestCasePipelineListener $listener = null
+        EventDispatcherInterface $eventDispatcher
     ){
         $this->apiClientRequestAdapter = new ApiClientRequestAdapter();
         $this->responseFiltersBag      = $responseFiltersBag;
-        $this->pipelineListener        = $listener;
-    }
-
-    /**
-     * @param TestCasePipelineListener $listener
-     */
-    public function setPipelineListener(TestCasePipelineListener $listener)
-    {
-        $this->pipelineListener = $listener;
+        $this->eventDispatcher         = $eventDispatcher;
     }
 
     /**
@@ -75,11 +72,17 @@ class RunTestObjectsStage
             /** @var TestObject $testsObject */
             $testsObject->setQueueIndex($i);
 
+            $this->eventDispatcher->dispatch(
+                BeforeTestCaseEvent::NAME,
+                new BeforeTestCaseEvent($testsObject)
+            );
+
             $this->runTestsObject($payload, $testsObject);
 
-            if($this->pipelineListener) {
-                $this->pipelineListener->afterTestCaseResult($testsObject);
-            }
+            $this->eventDispatcher->dispatch(
+                AfterTestCaseEvent::NAME,
+                new AfterTestCaseEvent($testsObject)
+            );
         }
 
         return $payload;
