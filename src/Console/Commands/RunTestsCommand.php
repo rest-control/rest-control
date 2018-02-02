@@ -13,6 +13,7 @@ namespace RestControl\Console\Commands;
 
 use Composer\Autoload\ClassLoader;
 use Psr\Log\InvalidArgumentException;
+use RestControl\Console\Utils\ConsoleTestCasePipelineListener;
 use RestControl\TestCasePipeline\TestCasePipeline;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 use Symfony\Component\Console\Command\Command;
@@ -72,9 +73,23 @@ class RunTestsCommand extends Command
             $this->configuration
         );
 
+        $this->addConsolePipelineListener($output, $pipeline);
+        
         $pipeline->process();
 
         return 0;
+    }
+
+    /**
+     * @param OutputInterface  $output
+     * @param TestCasePipeline $pipeline
+     */
+    protected function addConsolePipelineListener(
+        OutputInterface $output,
+        TestCasePipeline $pipeline
+    ){
+        $listener = new ConsoleTestCasePipelineListener($output);
+        $pipeline->addSubscriber($listener);
     }
 
     /**
