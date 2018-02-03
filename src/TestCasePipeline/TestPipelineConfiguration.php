@@ -37,6 +37,13 @@ class TestPipelineConfiguration
 
     /**
      * @return array
+        <pre>
+            [
+                'path'          => string, //path to TestCases
+                'classSuffix'   => string, //suffix for TestCase classes
+                'methodPrefix'  => string, //prefix for TestCase methods
+            ]
+        </pre>
      */
     public function getTestsNamespaces()
     {

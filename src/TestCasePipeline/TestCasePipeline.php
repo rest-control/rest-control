@@ -16,7 +16,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use League\Pipeline\Pipeline;
 use Psr\Container\ContainerInterface;
-use RestControl\Loader\ComposerClassMapLoader;
+use RestControl\Loader\PsrClassLoader;
 use RestControl\Loader\TestsBag;
 use RestControl\TestCase\ResponseFiltersBag;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
@@ -111,8 +111,7 @@ class TestCasePipeline
         $testsBag = $this->container->get(TestsBag::class);
 
         $testsBag->addLoader(
-            new ComposerClassMapLoader(
-                $loader,
+            new PsrClassLoader(
                 $configuration->getTestsNamespaces()
             )
         );
