@@ -15,6 +15,7 @@ use Composer\Autoload\ClassLoader;
 use League\Container\Container;
 use League\Container\ContainerInterface;
 use League\Container\ReflectionContainer;
+use RestControl\Console\Commands\CreateTestCaseCommand;
 use RestControl\Console\Commands\RunTestsCommand;
 use Symfony\Component\Console\Application;
 
@@ -40,6 +41,7 @@ class Console
      */
     protected $commands = [
         RunTestsCommand::class,
+        CreateTestCaseCommand::class,
     ];
 
     /**

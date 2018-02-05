@@ -1,0 +1,10 @@
+<?php
+
+namespace ``namespace``;
+
+use RestControl\TestCase\AbstractTestCase as BaseTestCase;
+
+class ``className`` extends BaseTestCase
+{
+``methods``
+}

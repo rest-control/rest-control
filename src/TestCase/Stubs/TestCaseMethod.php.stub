@@ -1,0 +1,12 @@
+    /**
+     * @test(
+     *     title="``title``",
+     *     description="``description``",
+     *     tags="``tags``"
+     * )
+     */
+    public function ``methodName``()
+    {
+        //todo
+        return $this->send();
+    }
