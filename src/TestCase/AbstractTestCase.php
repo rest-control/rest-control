@@ -11,6 +11,8 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\ExpressionLanguage\Expression;
+
 /**
  * Class AbstractTestCase
  *
@@ -24,5 +26,46 @@ abstract class AbstractTestCase
     public function send()
     {
         return new Request();
+    }
+
+    /**
+     * @param mixed $value
+     * @param bool  $exactlyTheSame
+     *
+     * @return Expression
+     */
+    public function equalsTo($value, $exactlyTheSame = false)
+    {
+        return new Expression('equalsTo', [$value, $exactlyTheSame]);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return Expression
+     */
+    public function containsString($string)
+    {
+        return new Expression('containsString', [$string]);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return Expression
+     */
+    public function startsWith($string)
+    {
+        return new Expression('startsWith', [$string]);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return Expression
+     */
+    public function endsWith($string)
+    {
+        return new Expression('endsWith', [$string]);
     }
 }
