@@ -12,6 +12,7 @@
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,8 @@ class JsonPathFilterTest extends TestCase
 
         $this->assertFalse($filter->validateParams([]));
         $this->assertFalse($filter->validateParams([111, 112]));
-        $this->assertTrue($filter->validateParams(['sample', '==', 123]));
+        $this->assertTrue($filter->validateParams(['sample', new Expression('equalsTo', [11])]));
+        $this->assertTrue($filter->validateParams(['sample', function($value) { return true; }]));
     }
 
     public function testInvalidResponseBody()
@@ -66,13 +68,12 @@ class JsonPathFilterTest extends TestCase
         try{
             $filter->call($apiClientResponse, [
                 'test.sample',
-                '===',
-                986785
+                new Expression('equalsTo', [986785])
             ]);
         } catch(FilterException $e){
             $this->assertSame($e->getFilter(), $filter);
             $this->assertSame($e->getErrorType(), JsonPathFilter::ERROR_INVALID_VALUE);
-            $this->assertSame($e->getExpected(), '$value === 986785');
+            $this->assertInstanceOf(Expression::class, $e->getExpected());
             $this->assertSame($e->getGiven(), 1234);
         }
     }

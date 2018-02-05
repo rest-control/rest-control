@@ -12,6 +12,7 @@
 namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -21,6 +22,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class JsonPathFilter implements FilterInterface
 {
+    use FilterTrait;
+
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
 
@@ -54,11 +57,15 @@ class JsonPathFilter implements FilterInterface
      */
     public function validateParams(array $params = [])
     {
-        if(count($params) !== 3) {
+        if(count($params) !== 2) {
             return false;
         }
 
-        return is_string($params[0]) && is_string($params[1]);
+        if(!is_string($params[0])) {
+            return false;
+        }
+
+        return is_callable($params[1]) || $params[1] instanceof Expression;
     }
 
     /**
@@ -67,8 +74,7 @@ class JsonPathFilter implements FilterInterface
      *
      * Schema of $params:
      *  - $params[0] string, json path
-     *  - $params[1] string, expression
-     *  - $params[2] mixed, expected value
+     *  - $params[1] callback|\RestControl\TestCase\ExpressionLanguage\ExpressionValidatorInterface, expression
      *
      * @throws FilterException
      */
@@ -101,48 +107,27 @@ class JsonPathFilter implements FilterInterface
 
         $this->check(
             self::getAccessor()->getValue($body, $path),
-            $params[1],
-            $params[2]
+            $params[1]
         );
     }
 
     /**
      * @param $value
      * @param $expression
-     * @param $expected
      *
      * @throws FilterException
      */
-    protected function check($value, $expression, $expected)
+    protected function check($value, $expression)
     {
-        $ok = false;
-
-        switch($expression) {
-            case '==':
-            case '=':
-                $ok = ($value == $expected);
-                break;
-            case '===':
-                $ok = ($value === $expected);
-                break;
-            case '!=':
-                $ok = ($value != $expected);
-                break;
-            case '>':
-                $ok = ($value > $expected);
-                break;
-            case '<':
-                $ok = ($value < $expected);
-                break;
+        if($this->checkExpression($value, $expression)) {
+            return;
         }
 
-        if(!$ok) {
-            throw new FilterException(
-                $this,
-                self::ERROR_INVALID_VALUE,
-                $value,
-                '$value ' . $expression . ' ' . $expected
-            );
-        }
+        throw new FilterException(
+            $this,
+            self::ERROR_INVALID_VALUE,
+            $value,
+            $expression
+        );
     }
 }
