@@ -15,6 +15,7 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
 
 /**
  * Class ResponseFiltersBag
@@ -37,8 +38,9 @@ class ResponseFiltersBag
     {
         $this->addFilters([
             new \RestControl\TestCase\ResponseFilters\JsonFilter(),
-            new \RestControl\TestCase\ResponseFilters\HeadersFilter(),
+            new \RestControl\TestCase\ResponseFilters\HeaderFilter(),
             new \RestControl\TestCase\ResponseFilters\JsonPathFilter(),
+            new HeaderFilter(),
         ]);
 
         $this->addFilters($filters);

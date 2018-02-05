@@ -11,6 +11,8 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\ExpressionLanguage\Expression;
+
 /**
  * Class Response
  *
@@ -72,13 +74,12 @@ class Response extends AbstractChain
     }
 
     /**
-     * @param string $path
-     * @param string $expression
-     * @param mixed  $expectedValue
+     * @param string              $path
+     * @param callable|Expression $expression
      *
      * @return $this
      */
-    public function jsonPath($path, $expression, $expectedValue)
+    public function jsonPath($path, $expression)
     {
         return $this->_add(self::CO_JSON_PATH, func_get_args());
     }
@@ -91,13 +92,13 @@ class Response extends AbstractChain
      *   [
      *      [
      *          'sampe.path',
-     *          '=',
-     *          123,
+     *          new Expression('equalsTo', [10]),
      *      ],
      *      [
      *          'another[0].path',
-     *          '!=',
-     *          934,
+     *          function($value) {
+     *             return $value !== 200;
+     *          }
      *      ]
      *   ]
      * </pre>
@@ -108,6 +109,31 @@ class Response extends AbstractChain
     {
         foreach($conditions as $condition) {
             $this->_add(self::CO_JSON_PATH, $condition);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string              $name
+     * @param callable|Expression $expression
+     *
+     * @return $this
+     */
+    public function header($name, $expression)
+    {
+        return $this->_add(self::CO_HEADER, func_get_args());
+    }
+
+    /**
+     * @param array $headersConditions
+     *
+     * @return $this
+     */
+    public function headers(array $headersConditions)
+    {
+        foreach($headersConditions as $condition) {
+            $this->_add(self::CO_HEADER, $condition);
         }
 
         return $this;

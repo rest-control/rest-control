@@ -16,7 +16,7 @@ use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
-use RestControl\TestCase\ResponseFilters\HeadersFilter;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\ResponseFiltersBag;
@@ -29,10 +29,11 @@ class ResponseFiltersBagTest extends TestCase
 
         $filters = $bag->getFilters();
 
-        $this->assertCount(3, $filters);
+        $this->assertCount(4, $filters);
         $this->assertInstanceOf(JsonFilter::class, $filters[0]);
-        $this->assertInstanceOf(HeadersFilter::class, $filters[1]);
+        $this->assertInstanceOf(HeaderFilter::class, $filters[1]);
         $this->assertInstanceOf(JsonPathFilter::class, $filters[2]);
+        $this->assertInstanceOf(HeaderFilter::class, $filters[3]);
     }
 
     public function testGetFilter()
