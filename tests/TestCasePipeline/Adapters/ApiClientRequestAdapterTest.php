@@ -54,10 +54,10 @@ class ApiClientRequestAdapterTest extends TestCase
 
     }
 
-    public function testForm()
+    public function testFormParams()
     {
         $request = new Request();
-        $request->form([
+        $request->formParams([
             'name' => 'foo',
             'password' => 'bar',
         ]);

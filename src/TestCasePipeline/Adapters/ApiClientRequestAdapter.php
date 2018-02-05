@@ -31,7 +31,7 @@ class ApiClientRequestAdapter
         $apiRequest = new ApiClientRequest();
 
         $this->transformMethod($request, $apiRequest);
-        $this->transformForm($request, $apiRequest);
+        $this->transformFormParams($request, $apiRequest);
         $this->transformBody($request, $apiRequest);
 
         return $apiRequest;
@@ -89,9 +89,9 @@ class ApiClientRequestAdapter
      * @param Request          $request
      * @param ApiClientRequest $apiRequest
      */
-    protected function transformForm(Request $request, ApiClientRequest $apiRequest)
+    protected function transformFormParams(Request $request, ApiClientRequest $apiRequest)
     {
-        $formDataObjects = $request->_getChainObjects(Request::CO_FORM);
+        $formDataObjects = $request->_getChainObjects(Request::CO_FORM_PARAMS);
         $formData = [];
 
         foreach($formDataObjects as $row){

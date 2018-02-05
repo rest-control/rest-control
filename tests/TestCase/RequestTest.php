@@ -110,19 +110,19 @@ class RequestTest extends TestCase
         $this->assertSame('Sample body', $obj->getParam(0));
     }
 
-    public function testForm()
+    public function testFormParams()
     {
         $request = new Request();
-        $request->form([
+        $request->formParams([
             'id' => 23,
             'sample' => 'asdfasdf',
         ]);
 
         $this->assertSame(1, $request->_getChainLength());
 
-        $obj = $request->_getChainObject(Request::CO_FORM);
+        $obj = $request->_getChainObject(Request::CO_FORM_PARAMS);
         $this->assertInstanceOf(ChainObject::class, $obj);
-        $this->assertSame(Request::CO_FORM, $obj->getObjectName());
+        $this->assertSame(Request::CO_FORM_PARAMS, $obj->getObjectName());
 
         $this->assertSame([
             'id' => 23,

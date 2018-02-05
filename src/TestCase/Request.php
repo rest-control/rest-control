@@ -25,7 +25,7 @@ class Request extends AbstractChain
     const CO_EXPECTED_RESPONSE = 'expectedResponse';
     const CO_METHOD = 'method';
     const CO_BODY = 'body';
-    const CO_FORM = 'form';
+    const CO_FORM_PARAMS = 'form_params';
 
     /**
      * @var null|Response
@@ -102,9 +102,9 @@ class Request extends AbstractChain
      *
      * @return $this
      */
-    public function form(array $formParams = [])
+    public function formParams(array $formParams = [])
     {
-        return $this->_add(self::CO_FORM, func_get_args());
+        return $this->_add(self::CO_FORM_PARAMS, func_get_args());
     }
 
     /**
