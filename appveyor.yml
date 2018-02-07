@@ -1,10 +1,9 @@
 build: false
-platform:
-    - x86
-clone_folder: c:\rest-control
+shallow_clone: true
+platform: 'x86'
 
 init:
-    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php71;%PATH%
     - SET COMPOSER_NO_INTERACTION=1
     - SET PHP=1
     - SET ANSICON=121x90 (121x90)
