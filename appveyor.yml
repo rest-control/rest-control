@@ -10,6 +10,10 @@ init:
 
 install:
     - ps: Set-Service wuauserv -StartupType Manual
+    - IF %PHP%==1 cinst -y OpenSSL.Light
+    - SET PATH=C:\Program Files\OpenSSL;%PATH%
+    - cinst -y curl
+    - SET PATH=C:\Program Files\curl;%PATH%
     - IF EXIST c:\tools\php71 (SET PHP=0)
     - IF %PHP%==1 cinst -y php --version 7.1.3
     - IF %PHP%==1 cd c:\tools\php71
