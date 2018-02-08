@@ -18,7 +18,11 @@ install:
     - IF %PHP%==1 cinst -y php --version 7.1.3
     - IF %PHP%==1 cd c:\tools\php71
     - IF %PHP%==1 copy php.ini-production php.ini
+    - IF %PHP%==1 echo extension_dir=ext >> php.ini
+    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
+    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_curl.dll >> php.ini
     - SET PATH=C:\tools\php71;%PATH%
     - cd %APPVEYOR_BUILD_FOLDER%
     - appveyor DownloadFile https://getcomposer.org/composer.phar
