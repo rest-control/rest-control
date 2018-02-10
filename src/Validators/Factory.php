@@ -37,6 +37,7 @@ class Factory
         'uuid'     => UUIDValidatorAdapter::class,
         'string'   => StringValidatorAdapter::class,
         'int'      => IntValidatorAdapter::class,
+        'numeric'  => NumericValidatorAdapter::class,
     ];
 
     protected static $cache = [];
