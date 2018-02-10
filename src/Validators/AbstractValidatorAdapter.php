@@ -12,7 +12,6 @@
 namespace RestControl\Validators;
 
 use Zend\Validator\ValidatorInterface;
-use Zend\Validator\AbstractValidator as ZendValidator;
 
 /**
  * Class AbstractValidator
