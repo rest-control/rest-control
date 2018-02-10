@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCase\ResponseFilters;
 
+use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
@@ -30,6 +31,7 @@ class HasItemFilter implements FilterInterface
     const ERROR_INVALID_RESPONSE_REQUIRED_VALUES = 3;
     const ERROR_INVALID_RESPONSE_STRUCTURE = 4;
     const ERROR_INVALID_RESPONSE_VALUE_TYPE = 5;
+    const ERROR_INVALID_VALIDATOR = 6;
 
     const OPTIONAL_RESPONSE_VALUE_VALIDATOR = 'optional';
     const NOT_EMPTY_RESPONSE_VALUE_VALIDATOR = 'notEmpty';
@@ -148,8 +150,21 @@ class HasItemFilter implements FilterInterface
 
         foreach($validators as $validatorName => $validatorConfig) {
 
-            if(Factory::isValid($validatorName, $value, $validatorConfig)) {
-               continue;
+            try{
+                if(Factory::isValid($validatorName, $value, $validatorConfig)) {
+                    continue;
+                }
+            } catch (InvalidArgumentException $e) {
+                throw new FilterException(
+                    $this,
+                    self::ERROR_INVALID_VALIDATOR,
+                    'Valid validator name.',
+                    [
+                        'validatorName'   => $validatorName,
+                        'value'           => $value,
+                        'validatorConfig' => $validatorConfig,
+                    ]
+                );
             }
 
             throw new FilterException(
