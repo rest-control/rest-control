@@ -30,7 +30,7 @@ install:
     - SET PATH=C:\tools\php71;%PATH%
     - cd %APPVEYOR_BUILD_FOLDER%
     - appveyor DownloadFile https://getcomposer.org/composer.phar
-    - php composer.phar install all --prefer-dist -n --no-ansi
+    - php composer.phar install --prefer-dist -n --no-ansi
     - php phpunit install
 test_script:
     - cd %APPVEYOR_BUILD_FOLDER%
