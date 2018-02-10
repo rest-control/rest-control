@@ -23,7 +23,9 @@ class NumericValidatorAdapterTest extends TestCase
         $this->assertFalse($validator->isValid('asdd'));
         $this->assertTrue($validator->isValid('1234'));
         $this->assertTrue($validator->isValid('1234.123'));
+        $this->assertTrue($validator->isValid('-1234.123'));
         $this->assertTrue($validator->isValid(1234));
         $this->assertTrue($validator->isValid(1234.123));
+        $this->assertTrue($validator->isValid(-1234.123));
     }
 }
