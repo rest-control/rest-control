@@ -35,6 +35,7 @@ class Factory
         'length'   => LengthValidatorAdapter::class,
         'notEmpty' => NotEmptyValidatorAdapter::class,
         'uuid'     => UUIDValidatorAdapter::class,
+        'string'   => StringValidatorAdapter::class,
     ];
 
     protected static $cache = [];
