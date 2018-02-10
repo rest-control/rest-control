@@ -79,7 +79,7 @@ trait DirTrait
         }
 
         $path = str_replace(
-            str_replace('\\', '/', $namespaceToRemove),
+            str_replace('\\', DIRECTORY_SEPARATOR , $namespaceToRemove),
             '',
             $path
         );
