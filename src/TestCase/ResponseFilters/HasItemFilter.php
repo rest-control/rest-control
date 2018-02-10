@@ -73,7 +73,7 @@ class HasItemFilter implements FilterInterface
             return false;
         }
 
-        return !isset($params[1]) || is_string($params[1]);
+        return !isset($params[1]) || is_bool($params[1]);
     }
 
     /**
@@ -84,15 +84,16 @@ class HasItemFilter implements FilterInterface
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
-        $body = $this->prepareBody($apiResponse);
-        $item = $params[0];
+        $body                 = $this->prepareBody($apiResponse);
+        $item                 = $params[0];
+        $strictRequiredValues = $params[1] ?? false;
 
         $flatStructure  = $this->processItemStructure($item->getStructure());
         $requiredValues = $item->getRequiredValues();
 
         $this->validFlatStructure($body, $flatStructure);
 
-        if($requiredValues !== null && !Arr::containsIn($requiredValues, $body, false)) {
+        if($requiredValues !== null && !Arr::containsIn($requiredValues, $body, $strictRequiredValues)) {
             throw new FilterException(
                 $this,
                 self::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,

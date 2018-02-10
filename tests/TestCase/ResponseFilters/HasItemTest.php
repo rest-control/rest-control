@@ -39,7 +39,7 @@ class HasItemTest extends TestCase
 
         $this->assertTrue($filter->validateParams([
             $item,
-            'sample.jsonPath',
+            true,
         ]));
 
         $this->assertFalse($filter->validateParams([
