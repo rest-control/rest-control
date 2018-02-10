@@ -41,21 +41,37 @@ class DirTraitTest extends TestCase
     public function testVirtualDirToDir()
     {
         $this->assertSame(
-            'Test/Sample/Namespace/CamelCase',
+            implode(DIRECTORY_SEPARATOR, [
+                'Test',
+                'Sample',
+                'Namespace',
+                'CamelCase',
+            ]),
             $this->virtualDirToDir('test.sample.Namespace.camelCase')
         );
         $this->assertSame(
-            'Sample/Namespace/CamelCase',
+            implode(DIRECTORY_SEPARATOR, [
+                'Sample',
+                'Namespace',
+                'CamelCase',
+            ]),
             $this->virtualDirToDir('test.sample.Namespace.camelCase', 'Test')
         );
 
         $this->assertSame(
-            'Sample/Namespace/CamelCase',
+            implode(DIRECTORY_SEPARATOR, [
+                'Sample',
+                'Namespace',
+                'CamelCase',
+            ]),
             $this->virtualDirToDir('test.sample.Namespace.camelCase', 'Test\\')
         );
 
         $this->assertSame(
-            'Namespace/CamelCase',
+            implode(DIRECTORY_SEPARATOR, [
+                'Namespace',
+                'CamelCase',
+            ]),
             $this->virtualDirToDir('test.sample.Namespace.camelCase', 'Test\Sample\\')
         );
     }
