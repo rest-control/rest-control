@@ -29,7 +29,6 @@ class ResponseFiltersBagTest extends TestCase
 
         $filters = $bag->getFilters();
 
-        $this->assertCount(4, $filters);
         $this->assertInstanceOf(JsonFilter::class, $filters[0]);
         $this->assertInstanceOf(HeaderFilter::class, $filters[1]);
         $this->assertInstanceOf(JsonPathFilter::class, $filters[2]);
