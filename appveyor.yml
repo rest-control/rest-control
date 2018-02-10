@@ -2,10 +2,6 @@ build: false
 shallow_clone: true
 platform: 'x86'
 
-cache:
-    - composer.phar
-    - .phpunit -> phpunit
-
 init:
     - SET PATH=C:\Program Files\OpenSSL;c:\tools\php71;%PATH%
     - SET COMPOSER_NO_INTERACTION=1
@@ -31,8 +27,7 @@ install:
     - cd %APPVEYOR_BUILD_FOLDER%
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - php composer.phar install --prefer-dist -n --no-ansi
-    - php phpunit install
+    - appveyor DownloadFile https://phar.phpunit.de/phpunit-6.phar
 test_script:
     - cd %APPVEYOR_BUILD_FOLDER%
-    - php phpunit
-    - exit %X%
+    - php phpunit-6.phar
