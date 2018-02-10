@@ -38,6 +38,7 @@ class Factory
         'string'   => StringValidatorAdapter::class,
         'int'      => IntValidatorAdapter::class,
         'numeric'  => NumericValidatorAdapter::class,
+        'float'    => FloatValidatorAdapter::class,
     ];
 
     protected static $cache = [];
