@@ -15,7 +15,10 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 
 /**
  * Class ResponseFiltersBag
@@ -37,10 +40,11 @@ class ResponseFiltersBag
     public function __construct(array $filters = [])
     {
         $this->addFilters([
-            new \RestControl\TestCase\ResponseFilters\JsonFilter(),
-            new \RestControl\TestCase\ResponseFilters\HeaderFilter(),
-            new \RestControl\TestCase\ResponseFilters\JsonPathFilter(),
+            new JsonFilter(),
             new HeaderFilter(),
+            new JsonPathFilter(),
+            new HeaderFilter(),
+            new HasItemFilter(),
         ]);
 
         $this->addFilters($filters);
