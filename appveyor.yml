@@ -28,4 +28,5 @@ install:
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - php composer.phar install --prefer-dist -n --no-ansi
 test_script:
+    - cd %APPVEYOR_BUILD_FOLDER%
     - php vendor\bin\phpunit
