@@ -1,5 +1,5 @@
 tests:
-  Sample\\:
+  Sample\:
     path: {{FILE_DIR}}/sample
     classSuffix: Test.php
     methodPrefix: test
