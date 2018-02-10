@@ -1,0 +1,10 @@
+tests:
+  Sample\\:
+    path: {{FILE_DIR}}/sample
+    classSuffix: Test.php
+    methodPrefix: test
+
+#responseFilters:
+#  - \Sample\Filter\Response\Class::class
+
+apiClient: \RestControl\ApiClient\HttpGuzzleClient::class

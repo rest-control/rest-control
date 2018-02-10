@@ -21,7 +21,8 @@
         "symfony/finder": "^4.0",
         "psr/log": "^1.0",
         "zendframework/zend-validator": "^2.10",
-        "zendframework/zend-uri": "^2.5"
+        "zendframework/zend-uri": "^2.5",
+        "symfony/yaml": "^4.0"
     },
     "bin": ["bin/rest-control"],
     "require-dev": {

@@ -13,6 +13,7 @@ namespace RestControl\Console\Commands;
 
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Trait HelpersTrait
@@ -28,7 +29,7 @@ trait HelpersTrait
      */
     protected function resolveConfiguration()
     {
-        $configurationPath = getcwd() . DIRECTORY_SEPARATOR . 'configuration.php';
+        $configurationPath = getcwd() . DIRECTORY_SEPARATOR . 'rest-control.yml';
 
         if(!is_string($configurationPath)) {
             throw new InvalidArgumentException('Configuration path must be a string.');
@@ -42,7 +43,8 @@ trait HelpersTrait
             throw new InvalidArgumentException('Configuration file['.$configurationPath.'] does not have read permission.');
         }
 
-        $config = require $configurationPath;
+        $configuration = $this->loadConfiguration($configurationPath);
+        $config = Yaml::parse($configuration);
 
         if(!is_array($config)) {
             throw new InvalidArgumentException('Configuration file wrong format.');
@@ -51,4 +53,23 @@ trait HelpersTrait
         return new TestPipelineConfiguration($config);
     }
 
+    /**
+     * @param string $path
+     *
+     * @return bool|mixed|string
+     */
+    protected function loadConfiguration($path)
+    {
+        $variables = [
+            'FILE_DIR' => dirname($path),
+        ];
+
+        $file = file_get_contents($path);
+
+        foreach($variables as $name => $value) {
+            $file = str_replace('{{' . $name . '}}', $value, $file);
+        }
+
+        return $file;
+    }
 }
