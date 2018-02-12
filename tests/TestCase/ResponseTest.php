@@ -23,9 +23,9 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $this->assertInstanceOf(Request::class, $response->expectedRequest());
-        $this->assertSame(1, $response->_getChainLength());
+        $this->assertSame(0, $response->_getChainLength());
         $this->assertInstanceOf(Request::class, $response->expectedRequest());
-        $this->assertSame(1, $response->_getChainLength());
+        $this->assertSame(0, $response->_getChainLength());
     }
 
     public function testJson()

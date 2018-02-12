@@ -24,7 +24,6 @@ class Response extends AbstractChain
     const CO_JSON = 'json';
     const CO_JSON_PATH = 'jsonPath';
     const CO_HEADER = 'header';
-    const CO_EXPECTED_REQUEST = 'expectedRequest';
     const CO_HAS_ITEM = 'hasItem';
 
     /**
@@ -43,7 +42,6 @@ class Response extends AbstractChain
             return;
         }
 
-        $this->_add(self::CO_EXPECTED_REQUEST, [$expectedRequest]);
         $this->expectedRequest = $expectedRequest;
     }
 
@@ -57,8 +55,6 @@ class Response extends AbstractChain
         }
 
         $expectedRequest = new Request($this);
-
-        $this->_add(self::CO_EXPECTED_REQUEST, [$expectedRequest]);
         $this->expectedRequest = $expectedRequest;
 
         return $expectedRequest;
