@@ -14,6 +14,7 @@ namespace RestControl\TestCase\ResponseFilters;
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\StatsCollector\EndContextException;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Validators\Factory;
@@ -25,7 +26,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @package RestControl\TestCase\ResponseFilters
  */
-class HasItemFilter implements FilterInterface
+class HasItemFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;
 
@@ -82,8 +83,6 @@ class HasItemFilter implements FilterInterface
     /**
      * @param ApiClientResponse $apiResponse
      * @param array             $params
-     *
-     * @throws FilterException
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
@@ -114,14 +113,20 @@ class HasItemFilter implements FilterInterface
             }
         );
 
-        if(!$result) {
-            throw new FilterException(
-                $this,
-                self::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
-                $body,
-                $item->getRequiredValues()
-            );
+        $this->getStatsCollector()
+             ->addAssertionsCount();
+
+        if($result) {
+           return;
         }
+
+        $this->getStatsCollector()
+             ->filterError(
+                 $this,
+                 self::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
+                 $body,
+                 $item->getRequiredValues()
+             );
     }
 
     /**
@@ -140,25 +145,29 @@ class HasItemFilter implements FilterInterface
      * @param mixed  $body
      * @param string $path
      * @param array  $validators
-     *
-     * @throws FilterException
      */
     protected function checkBody($body, $path, array $validators)
     {
-        $accessor = self::getAccessor();
+        $accessor       = self::getAccessor();
+        $statsCollector = $this->getStatsCollector();
+
+        $statsCollector->addAssertionsCount();
 
         try{
             $value    = $accessor->getValue($body, $path);
         }catch (UnexpectedTypeException $e) {
-            throw new FilterException(
+
+            $statsCollector->filterError(
                 $this,
                 self::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                null,
+                $body,
                 [
                     'path'       => $path,
                     'validators' => $validators,
                 ]
             );
+
+            return;
         }
 
         if(isset($validators[self::OPTIONAL_RESPONSE_VALUE_VALIDATOR])) {
@@ -172,28 +181,35 @@ class HasItemFilter implements FilterInterface
 
         foreach($validators as $validatorName => $validatorConfig) {
 
+            $statsCollector->addAssertionsCount();
+
             try{
                 if(Factory::isValid($validatorName, $value, $validatorConfig)) {
                     continue;
                 }
             } catch (InvalidArgumentException $e) {
-                throw new FilterException(
+
+                $statsCollector->filterError(
                     $this,
                     self::ERROR_INVALID_VALIDATOR,
-                    'Valid validator name.',
                     [
+                        'path'            => $path,
+                        'info'            => 'Invalid validator name',
                         'validatorName'   => $validatorName,
                         'value'           => $value,
                         'validatorConfig' => $validatorConfig,
                     ]
                 );
+
+                continue;
             }
 
-            throw new FilterException(
+            $statsCollector->filterError(
                 $this,
                 self::ERROR_INVALID_RESPONSE_VALUE_TYPE,
                 $value,
                 [
+                    'path'      => $path,
                     'validator' => $validatorName,
                     'config'    => $validatorConfig,
                 ]
@@ -237,7 +253,7 @@ class HasItemFilter implements FilterInterface
      *
      * @return array
      *
-     * @throws FilterException
+     * @throws EndContextException
      */
     protected function processItemStructure(array $structure, $prefix = '')
     {
@@ -246,12 +262,14 @@ class HasItemFilter implements FilterInterface
         foreach($structure as $key => $value) {
 
             if(is_object($value)) {
-                throw new FilterException(
-                    $this,
-                    self::ERROR_INVALID_RESPONSE_ITEM_VALUE,
-                    $value,
-                    'array|object|json'
-                );
+                throw $this->getStatsCollector()
+                           ->filterError(
+                               $this,
+                               self::ERROR_INVALID_RESPONSE_ITEM_VALUE,
+                               $value,
+                               'array|object|json'
+                           )
+                           ->endContext();
             }
 
             if(!is_array($value)) {
@@ -274,11 +292,14 @@ class HasItemFilter implements FilterInterface
      *
      * @return array|object
      *
-     * @throws FilterException
+     * @throws EndContextException
      */
     protected function prepareBody(ApiClientResponse $apiClientResponse)
     {
         $body = $apiClientResponse->getBody();
+
+        $this->getStatsCollector()
+             ->addAssertionsCount();
 
         if(is_array($body) || is_object($body)) {
             return $body;
@@ -290,12 +311,13 @@ class HasItemFilter implements FilterInterface
             return $jsonBody;
         }
 
-        throw new FilterException(
-            $this,
-            self::ERROR_INVALID_BODY,
-            $apiClientResponse->getBody(),
-            'array|object|json'
-        );
+        throw $this->getStatsCollector()
+                   ->filterError(
+                       $this,
+                       self::ERROR_INVALID_BODY,
+                       $apiClientResponse->getBody(),
+                       'array|object|json'
+                   )
+                   ->endContext();
     }
-
 }

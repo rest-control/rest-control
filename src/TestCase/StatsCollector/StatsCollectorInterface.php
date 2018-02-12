@@ -33,7 +33,7 @@ interface StatsCollectorInterface
         FilterInterface $filter,
         $errorCode,
         $givenValue,
-        $expectedValue
+        $expectedValue = null
     );
 
     /**

@@ -14,8 +14,8 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 use PHPUnit\Framework\TestCase;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
+use RestControl\TestCase\StatsCollector\EndContextException;
 use RestControl\Utils\AbstractResponseItem;
 
 class HasItemTest extends TestCase
@@ -66,8 +66,19 @@ class HasItemTest extends TestCase
 
         try{
             $filter->call($apiClientResponse, [$item]);
-        } catch(FilterException $e) {
-            $this->assertSame(HasItemFilter::ERROR_INVALID_BODY, $e->getErrorType());
+        } catch(EndContextException $e) {
+            $statsCollector = $filter->getStatsCollector();
+
+            $this->assertTrue($statsCollector->hasErrors());
+            $this->assertSame(1, $statsCollector->getAssertionsCount());
+            $this->assertSame([
+                [
+                    'filter'        => $filter,
+                    'errorCode'     => HasItemFilter::ERROR_INVALID_BODY,
+                    'givenValue'    => '12312331',
+                    'expectedValue' => 'array|object|json',
+                ],
+            ], $statsCollector->getFilterErrors());
         }
     }
 
@@ -82,9 +93,12 @@ class HasItemTest extends TestCase
             '{"id": "46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
         );
 
-        $this->assertNull(
-            $filter->call($apiClientResponse, [$item])
-        );
+        $filter->call($apiClientResponse, [$item]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertFalse($statsCollector->hasErrors());
+        $this->assertSame(7, $statsCollector->getAssertionsCount());
     }
 
     public function testInvalidValueForValidation()
@@ -98,19 +112,24 @@ class HasItemTest extends TestCase
             '{"id": "invalidUuid"}'
         );
 
-        try{
-            $filter->call($apiClientResponse, [$item]);
-        } catch (FilterException $e) {
-            $this->assertSame(
-                HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                $e->getErrorType()
-            );
+        $filter->call($apiClientResponse, [$item]);
 
-            $this->assertSame(
-                'invalidUuid',
-                $e->getGiven()
-            );
-        }
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(7, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
+                'givenValue'    => 'invalidUuid',
+                'expectedValue' => [
+                    'path'      => '[id]',
+                    'validator' => 'uuid',
+                    'config'    => [],
+                ],
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 
     public function testInvalidStructure()
@@ -124,25 +143,40 @@ class HasItemTest extends TestCase
             '{"name": "shouldBeArrayHere"}'
         );
 
-        try{
-            $filter->call($apiClientResponse, [$item]);
-        } catch (FilterException $e) {
+        $filter->call($apiClientResponse, [$item]);
 
-            $this->assertSame(
-                HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                $e->getErrorType()
-            );
+        $statsCollector = $filter->getStatsCollector();
 
-            $this->assertSame(
-                [
-                    'path' => '[name][firstName]',
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(6, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
+                'givenValue'    => [
+                    'name' => 'shouldBeArrayHere',
+                ],
+                'expectedValue' => [
+                    'path'       => '[name][firstName]',
                     'validators' => [
                         'optional' => [],
-                    ],
+                    ]
                 ],
-                $e->getExpected()
-            );
-        }
+            ],
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
+                'givenValue'    => [
+                    'name' => 'shouldBeArrayHere',
+                ],
+                'expectedValue' => [
+                    'path'       => '[name][lastName]',
+                    'validators' => [
+                        'optional' => [],
+                    ]
+                ],
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 
     public function testRequiredInvalidValues()
@@ -158,15 +192,24 @@ class HasItemTest extends TestCase
             '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
         );
 
-        try{
-            $filter->call($apiClientResponse, [$item]);
-        } catch (FilterException $e) {
+        $filter->call($apiClientResponse, [$item]);
 
-            $this->assertSame(
-                HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
-                $e->getErrorType()
-            );
-        }
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(8, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
+                'givenValue'    => [
+                    'id' => '46fcc8c3-53d6-447c-9a7a-58d035e6b18d',
+                ],
+                'expectedValue' => [
+                    'id' => '3e07d927-d2fa-4e73-8033-c09b0645eb8a',
+                ],
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 
     public function testRequiredValuesWithExpression()
@@ -182,14 +225,20 @@ class HasItemTest extends TestCase
             '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
         );
 
-        $this->assertNull($filter->call($apiClientResponse, [$item]));
+        $filter->call($apiClientResponse, [$item]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertFalse($statsCollector->hasErrors());
+        $this->assertSame(8, $statsCollector->getAssertionsCount());
     }
 
     public function testRequiredInvalidValuesWithExpression()
     {
+        $expression = new Expression('endsWith', ['zxczxasdaddd']);
         $filter = new HasItemFilter();
         $item   = new SampleResponseItem([
-            'id' => new Expression('endsWith', ['zxczxasdaddd']),
+            'id' => $expression,
         ]);
 
         $apiClientResponse = new ApiClientResponse(
@@ -198,14 +247,23 @@ class HasItemTest extends TestCase
             '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
         );
 
-        try{
-            $filter->call($apiClientResponse, [$item]);
-        } catch(FilterException $e) {
+        $filter->call($apiClientResponse, [$item]);
 
-            $this->assertSame(
-                HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
-                $e->getErrorType()
-            );
-        }
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(8, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
+                'givenValue'    => [
+                    'id' => '46fcc8c3-53d6-447c-9a7a-58d035e6b18d',
+                ],
+                'expectedValue' => [
+                    'id' => $expression
+                ],
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 }
