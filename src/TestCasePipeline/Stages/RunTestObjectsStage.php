@@ -105,16 +105,12 @@ class RunTestObjectsStage
 
             $testObject->setRequestTime($elapsedRequestTime);
 
-            $errors = $this->responseFiltersBag->filterResponse(
+            $statsCollector = $this->responseFiltersBag->filterResponse(
                 $apiClientResponse,
                 $this->__getResponseChain($testObject->getRequestChain())
             );
 
-            if(!empty($errors)) {
-                foreach($errors as $error){
-                    $testObject->addException($error);
-                }
-            }
+            $testObject->setStatsCollector($statsCollector);
 
         } catch (\Exception $e) {
             $testObject->addException($e);

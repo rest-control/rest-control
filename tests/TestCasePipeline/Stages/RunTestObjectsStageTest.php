@@ -15,9 +15,8 @@ use PHPUnit\Framework\TestCase;
 use RestControl\ApiClient\ApiClientInterface;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\Loader\TestCaseDelegate;
-use RestControl\TestCase\ResponseFilters\FilterException;
-use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\ResponseFiltersBag;
+use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
 use RestControl\TestCasePipeline\Payload;
@@ -86,17 +85,14 @@ class RunTestObjectsStageTest extends TestCase
                             [AfterTestCaseEvent::NAME]
                         );
 
+        $statsCollector = new StatsCollector();
+
         $responseFiltersBag = $this->getMockBuilder(ResponseFiltersBag::class)
                                    ->disableOriginalConstructor()
                                    ->getMock();
         $responseFiltersBag->expects($this->once())
                            ->method('filterResponse')
-                           ->willReturn([
-                               new FilterException(
-                                   new JsonPathFilter(),
-                                   'sample error'
-                               )
-                           ]);
+                           ->willReturn($statsCollector);
 
         $stage = new RunTestObjectsStage(
             $responseFiltersBag,

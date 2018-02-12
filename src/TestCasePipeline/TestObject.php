@@ -14,6 +14,7 @@ namespace RestControl\TestCasePipeline;
 use RestControl\Loader\TestCaseDelegate;
 use RestControl\TestCase\Request;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Class TestObject
@@ -47,6 +48,16 @@ class TestObject
      */
     protected $queueIndex = 0;
 
+    /**
+     * @var StatsCollectorInterface|null
+     */
+    protected $statsCollector = null;
+
+    /**
+     * TestObject constructor.
+     *
+     * @param TestCaseDelegate $delegate
+     */
     public function __construct(TestCaseDelegate $delegate)
     {
         $this->delegate = $delegate;
@@ -78,6 +89,22 @@ class TestObject
         }
 
         $this->queueIndex = $i;
+    }
+
+    /**
+     * @param StatsCollectorInterface $statsCollector
+     */
+    public function setStatsCollector(StatsCollectorInterface $statsCollector)
+    {
+        $this->statsCollector = $statsCollector;
+    }
+
+    /**
+     * @return null|StatsCollectorInterface
+     */
+    public function getStatsCollector()
+    {
+        return $this->statsCollector;
     }
 
     /**
