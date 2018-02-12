@@ -183,7 +183,7 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
         foreach($exceptions as $exception) {
 
             $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
-            $this->output->writeln("<bg=" . self::MAIN_PADDING_COLOR ."> </> <fg=red>(" . $exceptionNumber . ") " . get_class($exception) . "</>");
+            $this->output->writeln("<bg=" . self::MAIN_PADDING_COLOR ."> </> <fg=red>(" . $exceptionNumber . ") Response filter exception</>");
 
             $exceptionNumber++;
 
@@ -208,7 +208,7 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
         $statsCollector = $testObject->getStatsCollector();
 
         $exceptionNumber = count($testObject->getExceptions()) + count($statsCollector->getFilterErrors()) + 1;
-        $exceptions      = $testObject->getStatsCollector()->getFilterErrors();
+        $exceptions      = $testObject->getStatsCollector()->getErrors();
 
         foreach($exceptions as $exception) {
 
