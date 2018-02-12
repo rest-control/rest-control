@@ -13,6 +13,7 @@ namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\StatsCollector\EndContextException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -20,10 +21,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @package RestControl\TestCase\ResponseFilters
  */
-class JsonPathFilter implements FilterInterface
+class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
-    use FilterTrait;
-
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
 
@@ -76,7 +75,7 @@ class JsonPathFilter implements FilterInterface
      *  - $params[0] string, json path
      *  - $params[1] callback|\RestControl\TestCase\ExpressionLanguage\ExpressionValidatorInterface, expression
      *
-     * @throws FilterException
+     * @throws EndContextException
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
@@ -88,46 +87,65 @@ class JsonPathFilter implements FilterInterface
             $body = json_decode($body, true);
         }
 
+        $this->getStatsCollector()
+             ->addAssertionsCount();
+
         if(!$body) {
-            throw new FilterException(
-                $this,
-                self::ERROR_WRONG_BODY_FORMAT,
-                $apiResponse->getBody(),
-                'array|object|json_string'
-            );
+            throw $this->getStatsCollector()
+                       ->filterError(
+                           $this,
+                           self::ERROR_WRONG_BODY_FORMAT,
+                           $apiResponse->getBody(),
+                           'array|object|json'
+                       )->endContext();
         }
 
-
-        $pathParts = explode('.', $params[0]);
-        $path = '';
-
-        foreach($pathParts as $part) {
-            $path .= '[' . $part . ']';
-        }
-
-        $this->check(
-            self::getAccessor()->getValue($body, $path),
-            $params[1]
-        );
+        $this->check($params[0], $body, $params[1]);
     }
 
     /**
-     * @param $value
-     * @param $expression
-     *
-     * @throws FilterException
+     * @param string       $path
+     * @param array|object $body
+     * @param mixed        $expression
      */
-    protected function check($value, $expression)
+    protected function check($path, $body, $expression)
     {
+        $transformerPath = $this->transformPath($path);
+        $value           = self::getAccessor()->getValue(
+            $body,
+            $transformerPath
+        );
+
+        $this->getStatsCollector()
+             ->addAssertionsCount();
+
         if($this->checkExpression($value, $expression)) {
             return;
         }
 
-        throw new FilterException(
-            $this,
-            self::ERROR_INVALID_VALUE,
-            $value,
-            $expression
-        );
+        $this->getStatsCollector()
+             ->filterError(
+                 $this,
+                 self::ERROR_INVALID_VALUE,
+                 $value,
+                 $expression
+             );
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function transformPath($path)
+    {
+        $pathParts       = explode('.', $path);
+        $transformedPath = '';
+
+        foreach($pathParts as $part) {
+            $transformedPath .= '[' . $part . ']';
+        }
+
+        return $transformedPath;
     }
 }

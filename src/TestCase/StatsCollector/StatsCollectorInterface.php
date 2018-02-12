@@ -26,6 +26,8 @@ interface StatsCollectorInterface
      * @param $errorCode
      * @param $givenValue
      * @param $expectedValue
+     *
+     * @return $this
      */
     public function filterError(
         FilterInterface $filter,

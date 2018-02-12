@@ -21,6 +21,8 @@ use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
  */
 abstract class AbstractFilter
 {
+    use FilterTrait;
+
     /**
      * @var StatsCollectorInterface|null
      */
