@@ -69,4 +69,31 @@ class StatsCollectorTest extends TestCase
 
         $this->assertSame(0, $statsCollector->getAssertionsCount());
     }
+
+    public function testErrors()
+    {
+
+        $statsCollector = new StatsCollector();
+        $statsCollector->error('Sample error !', [
+            'my' => 'text',
+        ]);
+        $statsCollector->error('Sample error !2', [
+            'my2' => 'text2',
+        ]);
+
+        $this->assertSame([
+            [
+                'message' => 'Sample error !',
+                'context' => [
+                    'my' => 'text',
+                ],
+            ],
+            [
+                'message' => 'Sample error !2',
+                'context' => [
+                    'my2' => 'text2',
+                ],
+            ]
+        ], $statsCollector->getErrors());
+    }
 }

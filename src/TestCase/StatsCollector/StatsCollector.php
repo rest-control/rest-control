@@ -26,6 +26,11 @@ class StatsCollector implements StatsCollectorInterface
     protected $filterErrors = [];
 
     /**
+     * @var array
+     */
+    protected $errors = [];
+
+    /**
      * @var int
      */
     protected $assertions = 0;
@@ -55,11 +60,23 @@ class StatsCollector implements StatsCollectorInterface
     }
 
     /**
+     * @param string $message
+     * @param array  $context
+     */
+    public function error($message, array $context = [])
+    {
+        $this->errors []= [
+            'message' => $message,
+            'context' => $context,
+        ];
+    }
+
+    /**
      * @return bool
      */
     public function hasErrors()
     {
-        return count($this->filterErrors) > 0;
+        return count($this->filterErrors) || count($this->errors);
     }
 
     /**
@@ -78,6 +95,13 @@ class StatsCollector implements StatsCollectorInterface
         return $this->filterErrors;
     }
 
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 
     /**
      * @param int $inc

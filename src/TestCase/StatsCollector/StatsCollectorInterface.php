@@ -37,6 +37,12 @@ interface StatsCollectorInterface
     );
 
     /**
+     * @param string $message
+     * @param array  $context
+     */
+    public function error($message, array $context = []);
+
+    /**
      * @return EndContextException
      */
     public function endContext();
@@ -67,4 +73,9 @@ interface StatsCollectorInterface
      * @return array
      */
     public function getFilterErrors();
+
+    /**
+     * @return array
+     */
+    public function getErrors();
 }
