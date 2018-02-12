@@ -4,12 +4,36 @@ About RestControl
 ---
 RestControl is modern and powerful framework for testing REST services. RestControl provides set of tools for describing HTTP requests and responses in expressive and elegant way.
 
+
 [![Latest Stable Version](https://poser.pugx.org/rest-control/rest-control/v/stable)](https://packagist.org/packages/rest-control/rest-control)
 [![Latest Unstable Version](https://poser.pugx.org/rest-control/rest-control/v/unstable)](https://packagist.org/packages/rest-control/rest-control)
 [![License](https://poser.pugx.org/rest-control/rest-control/license)](https://packagist.org/packages/rest-control/rest-control)
 [![Build status](https://ci.appveyor.com/api/projects/status/otm3svuo0nol0big?svg=true)](https://ci.appveyor.com/project/kamszel/rest-control)
 [![Build Status](https://travis-ci.org/rest-control/rest-control.svg?branch=master)](https://travis-ci.org/rest-control/rest-control)
 
+Examples
+---
+
+Here's an simple example of how to make a GET request and validate json response:
+
+```php
+    /**
+     * @test(
+     *     title="Example test",
+     *     description="Example test description",
+     *     tags="find user"
+     * )
+     */
+    public function exampleFindUser()
+    {
+        return $this->send()
+                    ->get('https://jsonplaceholder.typicode.com/users/1')
+                    ->expectedResponse()
+                    ->json()
+                    ->jsonPath('address.street', $this->endsWith('Light'));
+    }
+
+```
 Quick Start
 ---
 The best way for quick start is RestControl standalone application. You can find it here [https://github.com/rest-control/standalone-testing-application](https://github.com/rest-control/standalone-testing-application).
