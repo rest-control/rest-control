@@ -11,6 +11,7 @@
 
 namespace RestControl\Console\Utils;
 
+use RestControl\TestCase\ResponseFilters\FilterInterface;
 use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
 use Symfony\Component\Console\Helper\FormatterHelper;
@@ -98,7 +99,9 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
 
         $this->printResponseTime($testCase);
         $this->printTestStatus($testCase);
-        $this->printExceptions($testCase);
+        $this->printTestObjectExceptions($testCase);
+        $this->printStatsCollectorFilterExceptions($testCase);
+        $this->printStatsCollectorExceptions($testCase);
 
         $this->output->writeln('');
 
@@ -123,7 +126,13 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
 
         if($testObject->hasErrors()) {
-            $exceptionsCount = count($testObject->getExceptions());
+
+            $statsCollector = $testObject->getStatsCollector();
+
+            $exceptionsCount  = count($testObject->getExceptions());
+            $exceptionsCount += count($statsCollector->getErrors());
+            $exceptionsCount += count($statsCollector->getFilterErrors());
+
             $this->output->writeln("<bg=" . self::MAIN_PADDING_COLOR ."> </> <bg=red;fg=white;options=bold> \u{1F5F8} ERRORS (" . $exceptionsCount . ") </>");
 
             return;
@@ -135,7 +144,7 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
     /**
      * @param TestObject $testObject
      */
-    protected function printExceptions(TestObject $testObject)
+    protected function printTestObjectExceptions(TestObject $testObject)
     {
         if(!$testObject->hasErrors()) {
             return;
@@ -152,32 +161,86 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
                 continue;
             }
 
-            if($exception instanceof FilterException) {
-                $this->displayFilterExceptionInfo($exception);
-            } else {
-                $this->output->writeln('Exception message: ' . $exception->getMessage());
-                $this->_drawLineCallback($exception->getTraceAsString(), function($line) {
-                    return "<bg=" . self::MAIN_PADDING_COLOR ."> </>    <bg=magenta> </> " . $line;
-                });
-            }
+            $this->output->writeln('Exception message: ' . $exception->getMessage());
+            $this->_drawLineCallback($exception->getTraceAsString(), function($line) {
+                return "<bg=" . self::MAIN_PADDING_COLOR ."> </>    <bg=magenta> </> " . $line;
+            });
         }
     }
 
     /**
-     * @param FilterException $exception
+     * @param TestObject $testObject
      */
-    protected function displayFilterExceptionInfo(FilterException $exception)
+    protected function printStatsCollectorFilterExceptions(TestObject $testObject)
+    {
+        if(!$testObject->hasErrors()) {
+            return;
+        }
+
+        $exceptionNumber = count($testObject->getExceptions()) + 1;
+        $exceptions      = $testObject->getStatsCollector()->getFilterErrors();
+
+        foreach($exceptions as $exception) {
+
+            $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
+            $this->output->writeln("<bg=" . self::MAIN_PADDING_COLOR ."> </> <fg=red>(" . $exceptionNumber . ") " . get_class($exception) . "</>");
+
+            $exceptionNumber++;
+
+            $this->displayFilterExceptionInfo(
+                $exception['filter'],
+                $exception['errorCode'],
+                $exception['givenValue'],
+                $exception['expectedValue']
+            );
+        }
+    }
+
+    /**
+     * @param TestObject $testObject
+     */
+    protected function printStatsCollectorExceptions(TestObject $testObject)
+    {
+        if(!$testObject->hasErrors()) {
+            return;
+        }
+
+        $statsCollector = $testObject->getStatsCollector();
+
+        $exceptionNumber = count($testObject->getExceptions()) + count($statsCollector->getFilterErrors()) + 1;
+        $exceptions      = $testObject->getStatsCollector()->getFilterErrors();
+
+        foreach($exceptions as $exception) {
+
+            $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
+            $this->output->writeln("<bg=" . self::MAIN_PADDING_COLOR ."> </> <fg=red>(" . $exceptionNumber . ") " . $exception['message'] . "</>");
+
+            $this->_drawLineCallback(print_r($exception['context'], true), function($line) {
+                return "<bg=" . self::MAIN_PADDING_COLOR ."> </>    <bg=cyan> </> " . $line;
+            });
+
+            $exceptionNumber++;
+        }
+    }
+
+    /**
+     * @param FilterInterface $filter
+     * @param mixed           $errorCode
+     * @param mixed           $givenValue
+     * @param mixed           $expectedValue
+     */
+    protected function displayFilterExceptionInfo(FilterInterface $filter, $errorCode, $givenValue = null, $expectedValue = null)
     {
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
-        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Filter class: ' . get_class($exception->getFilter()));
-        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Filter name: ' . $exception->getFilter()->getName());
-        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Error code: ' . $exception->getCode());
+        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Filter class: ' . get_class($filter));
+        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Filter name: ' . $filter->getName());
+        $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Error code: ' . $errorCode);
 
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Expected value: ');
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
 
-        $this->_drawLineCallback(print_r($exception->getExpected(), true), function($line) {
+        $this->_drawLineCallback(print_r($expectedValue, true), function($line) {
             return "<bg=" . self::MAIN_PADDING_COLOR ."> </>    <bg=cyan> </> " . $line;
         });
 
@@ -185,7 +248,7 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </>   Given value: ');
         $this->output->writeln('<bg=' . self::MAIN_PADDING_COLOR .'> </> ');
 
-        $this->_drawLineCallback(print_r($exception->getGiven(), true), function($line) {
+        $this->_drawLineCallback(print_r($givenValue, true), function($line) {
             return "<bg=" . self::MAIN_PADDING_COLOR ."> </>    <bg=magenta> </> " . $line;
         });
     }
