@@ -13,6 +13,7 @@ namespace RestControl\TestCase\ResponseFilters;
 
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Validators\Factory;
@@ -26,6 +27,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class HasItemFilter implements FilterInterface
 {
+    use FilterTrait;
+
     const ERROR_INVALID_BODY = 1;
     const ERROR_INVALID_RESPONSE_ITEM_VALUE = 2;
     const ERROR_INVALID_RESPONSE_REQUIRED_VALUES = 3;
@@ -93,7 +96,25 @@ class HasItemFilter implements FilterInterface
 
         $this->validFlatStructure($body, $flatStructure);
 
-        if($requiredValues !== null && !Arr::containsIn($requiredValues, $body, $strictRequiredValues)) {
+        if($requiredValues === null) {
+            return;
+        }
+
+        $result = Arr::containsIn(
+            $requiredValues,
+            $body,
+            $strictRequiredValues,
+            function($leftValue, $rightValue) {
+
+                if($leftValue instanceof Expression) {
+                    return $this->checkExpression($rightValue, $leftValue);
+                }
+
+                return $leftValue === $rightValue;
+            }
+        );
+
+        if(!$result) {
             throw new FilterException(
                 $this,
                 self::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,

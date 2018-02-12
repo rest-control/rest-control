@@ -12,6 +12,7 @@
 namespace RestControl\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\Utils\Arr;
 
 class ArrTest extends TestCase
@@ -94,5 +95,13 @@ class ArrTest extends TestCase
                 ],
             ]
         ));
+
+        $this->assertTrue(Arr::containsIn([
+            'sample'    => 'value',
+        ], [
+            'sample' => new Expression('sample', ['lue']),
+        ], false, function($leftValue, $rightValue) {
+            return $rightValue instanceof Expression;
+        }));
     }
 }

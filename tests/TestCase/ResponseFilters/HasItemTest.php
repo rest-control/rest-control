@@ -13,6 +13,7 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use PHPUnit\Framework\TestCase;
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\Utils\AbstractResponseItem;
@@ -160,6 +161,46 @@ class HasItemTest extends TestCase
         try{
             $filter->call($apiClientResponse, [$item]);
         } catch (FilterException $e) {
+
+            $this->assertSame(
+                HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
+                $e->getErrorType()
+            );
+        }
+    }
+
+    public function testRequiredValuesWithExpression()
+    {
+        $filter = new HasItemFilter();
+        $item   = new SampleResponseItem([
+            'id' => new Expression('endsWith', ['58d035e6b18d']),
+        ]);
+
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+        );
+
+        $this->assertNull($filter->call($apiClientResponse, [$item]));
+    }
+
+    public function testRequiredInvalidValuesWithExpression()
+    {
+        $filter = new HasItemFilter();
+        $item   = new SampleResponseItem([
+            'id' => new Expression('endsWith', ['zxczxasdaddd']),
+        ]);
+
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+        );
+
+        try{
+            $filter->call($apiClientResponse, [$item]);
+        } catch(FilterException $e) {
 
             $this->assertSame(
                 HasItemFilter::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,

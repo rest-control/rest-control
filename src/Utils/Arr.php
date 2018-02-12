@@ -19,13 +19,14 @@ namespace RestControl\Utils;
 class Arr
 {
     /**
-     * @param array $arr1
-     * @param array $arr2
-     * @param bool  $exactlyTheSame
+     * @param array               $arr1
+     * @param array               $arr2
+     * @param bool                $exactlyTheSame
+     * @param array|callable|null $compareCallback
      *
      * @return bool
      */
-    public static function containsIn($arr1, $arr2, $exactlyTheSame = true)
+    public static function containsIn($arr1, $arr2, $exactlyTheSame = true, $compareCallback = null)
     {
         if($exactlyTheSame && count(array_keys($arr1))
             !== count(array_keys($arr2))) {
@@ -44,7 +45,7 @@ class Arr
                     return false;
                 }
 
-                $recRes = self::containsIn($value, $arr2[$key], $exactlyTheSame);
+                $recRes = self::containsIn($value, $arr2[$key], $exactlyTheSame, $compareCallback);
 
                 if(!$recRes) {
                     return false;
@@ -53,8 +54,14 @@ class Arr
                 continue;
             }
 
-            if($value !== $arr2[$key]) {
+            if(null === $compareCallback && $value !== $arr2[$key]) {
                 return false;
+            } else if(null !== $compareCallback){
+                $result = call_user_func_array($compareCallback, [$value, $arr2[$key]]);
+
+                if(!$result) {
+                    return false;
+                }
             }
         }
 
