@@ -18,7 +18,7 @@ use RestControl\ApiClient\ApiClientResponse;
  *
  * @package RestControl\TestCase\ResponseFilters
  */
-class JsonFilter implements FilterInterface
+class JsonFilter extends AbstractFilter implements FilterInterface
 {
     const ERROR_WRONG_CONTENT_TYPE = 1;
 
@@ -79,11 +79,13 @@ class JsonFilter implements FilterInterface
             }
         }
 
+        $this->getStatsCollector()->addAssertionsCount();
+
         if($checked) {
             return;
         }
 
-        throw new FilterException(
+        $this->getStatsCollector()->filterError(
             $this,
             self::ERROR_WRONG_CONTENT_TYPE,
             $apiResponse->getContentType(),
@@ -93,11 +95,11 @@ class JsonFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     *
-     * @throws FilterException
      */
     protected function checkBody(ApiClientResponse $apiResponse, $allowEmptyBody)
     {
+        $this->getStatsCollector()->addAssertionsCount();
+
         $body = $apiResponse->getBody();
 
         if($allowEmptyBody && !$body) {
@@ -110,10 +112,11 @@ class JsonFilter implements FilterInterface
            return;
         }
 
-        throw new FilterException(
+        $this->getStatsCollector()->filterError(
             $this,
             self::ERROR_INVALID_BODY,
-            $apiResponse->getBody()
+            $apiResponse->getBody(),
+            'array|json'
         );
     }
 }
