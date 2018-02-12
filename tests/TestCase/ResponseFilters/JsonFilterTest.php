@@ -12,7 +12,6 @@
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use PHPUnit\Framework\TestCase;
 

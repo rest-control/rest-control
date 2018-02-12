@@ -19,7 +19,7 @@ use RestControl\TestCase\ExpressionLanguage\Expression;
  *
  * @package RestControl\TestCase\ResponseFilters
  */
-class HeaderFilter implements FilterInterface
+class HeaderFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;
 
@@ -53,8 +53,6 @@ class HeaderFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     *
-     * @throws FilterException
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
@@ -75,15 +73,19 @@ class HeaderFilter implements FilterInterface
             }
         }
 
+        $this->getStatsCollector()
+             ->addAssertionsCount();
+
         if($expectedValue) {
            return;
         }
 
-        throw new FilterException(
-            $this,
-            self::ERROR_INVALID_VALUE,
-            $header,
-            $params[1]
-        );
+        $this->getStatsCollector()
+             ->filterError(
+                 $this,
+                 self::ERROR_INVALID_VALUE,
+                 $header,
+                 $params[1]
+             );
     }
 }

@@ -13,7 +13,6 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use PHPUnit\Framework\TestCase;
 use RestControl\TestCase\StatsCollector\EndContextException;
