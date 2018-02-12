@@ -14,6 +14,8 @@ namespace RestControl\Tests\TestCase;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
@@ -64,11 +66,10 @@ class ResponseFiltersBagTest extends TestCase
         $bag->addFilters([new \stdClass()]);
     }
 
-    /**
-     * @group a
-     */
-    public function testFilterResponseFilterException()
+    public function testFilterResponseFilterInternalException()
     {
+        $exception = new \Exception('Sample exception');
+
         $filter = $this->getMockBuilder(FilterInterface::class)
             ->setMethods(['getName', 'validateParams'])
             ->getMockForAbstractClass();
@@ -77,7 +78,7 @@ class ResponseFiltersBagTest extends TestCase
             ->willReturn('sample');
         $filter->expects($this->once())
             ->method('validateParams')
-            ->willThrowException(new FilterException($filter, 'sample type', 'given', 'expected'));
+            ->willThrowException($exception);
 
         $responseChain = new TestResponseChain();
         $responseChain->sampleFilter('sample');
@@ -90,65 +91,12 @@ class ResponseFiltersBagTest extends TestCase
             $filter,
         ]);
 
-        $errors = $bag->filterResponse(
+        $statsCollector = $bag->filterResponse(
             $apiClientResponse,
             $responseChain
         );
 
-        $this->assertCount(1, $errors);
-
-        /** @var FilterException $error */
-        $error = $errors[0];
-
-        $this->assertInstanceOf(\Exception::class, $error);
-        $this->assertSame($filter, $error->getFilter());
-        $this->assertSame('sample type', $error->getErrorType());
-        $this->assertSame('given', $error->getGiven());
-        $this->assertSame('expected', $error->getExpected());
-    }
-
-    public function testFilterResponseInternalException()
-    {
-        $filter = $this->getMockBuilder(FilterInterface::class)
-                       ->setMethods(['getName', 'validateParams'])
-                       ->getMockForAbstractClass();
-        $filter->expects($this->any())
-               ->method('getName')
-               ->willReturn('sample');
-        $filter->expects($this->once())
-               ->method('validateParams')
-               ->willThrowException(new \Exception('test exception'));
-
-        $responseChain = new TestResponseChain();
-        $responseChain->sampleFilter('sample');
-
-        $apiClientResponse = $this->getMockBuilder(ApiClientResponse::class)
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
-
-        $bag = new ResponseFiltersBag([
-            $filter,
-        ]);
-
-        $errors = $bag->filterResponse(
-            $apiClientResponse,
-            $responseChain
-        );
-
-        $this->assertCount(1, $errors);
-
-        /** @var FilterException $error */
-        $error = $errors[0];
-
-        $this->assertInstanceOf(\Exception::class, $error);
-        $this->assertSame($filter, $error->getFilter());
-        $this->assertSame(FilterInterface::ERROR_INTERNAL_EXCEPTION, $error->getErrorType());
-
-        /** @var \Exception $given */
-        $given = $error->getGiven();
-        $this->assertInstanceOf(\Exception::class, $given);
-        $this->assertSame('test exception', $given->getMessage());
-
+        $this->assertTrue($statsCollector->hasErrors());
     }
 
     public function testFilterResponseInvalidParams()
@@ -182,62 +130,34 @@ class ResponseFiltersBagTest extends TestCase
             $filter,
         ]);
 
-        $errors = $bag->filterResponse(
+        $statsCollector = $bag->filterResponse(
             $apiClientResponse,
             $responseChain
         );
+
+        $this->assertTrue($statsCollector->hasErrors());
+
+        $filterErrors = $statsCollector->getFilterErrors();
+
+        $this->assertCount(1, $filterErrors);
+        $this->assertArrayHasKey('errorCode', $filterErrors[0]);
+        $this->assertArrayHasKey('givenValue', $filterErrors[0]);
+        $this->assertArrayHasKey('expectedValue', $filterErrors[0]);
+
+        $this->assertSame(FilterInterface::ERROR_INVALID_PARAMS, $filterErrors[0]['errorCode']);
+        $this->assertSame([
+            'sample'  => 'param',
+            'sample2' => 'param2',
+        ], $filterErrors[0]['givenValue']);
+        $this->assertSame(null, $filterErrors[0]['expectedValue']);
+
+        $errors = $statsCollector->getErrors();
 
         $this->assertCount(1, $errors);
-
-        $error = $errors[0];
-
-        $this->assertInstanceOf(FilterException::class, $error);
-        $this->assertSame($filter, $error->getFilter());
-        $this->assertSame(FilterInterface::ERROR_INVALID_PARAMS, $error->getErrorType());
-        $this->assertSame([
-            'sample' => 'param',
-            'sample2' => 'param2',
-        ], $error->getGiven());
-    }
-
-    public function testFilterResponseValidParams()
-    {
-        $filter = $this->getMockBuilder(FilterInterface::class)
-            ->setMethods(['getName', 'validateParams', 'call'])
-            ->getMockForAbstractClass();
-        $filter->expects($this->any())
-            ->method('getName')
-            ->willReturn('sample');
-        $filter->expects($this->once())
-            ->method('validateParams')
-            ->with([
-                'sample' => 'param',
-                'sample2' => 'param2',
-            ])
-            ->willReturn(true);
-        $filter->expects($this->once())
-               ->method('call');
-
-        $responseChain = new TestResponseChain();
-        $responseChain->sampleFilter('testNotExistingFilter');
-        $responseChain->sampleFilter('sample', [
-            'sample' => 'param',
-            'sample2' => 'param2',
-        ]);
-
-        $apiClientResponse = $this->getMockBuilder(ApiClientResponse::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $bag = new ResponseFiltersBag([
-            $filter,
-        ]);
-
-        $errors = $bag->filterResponse(
-            $apiClientResponse,
-            $responseChain
-        );
-
-        $this->assertEmpty($errors);
+        $this->assertArrayHasKey('message', $errors[0]);
+        $this->assertSame( 'Response filter does not exists.', $errors[0]['message']);
+        $this->assertArrayHasKey('context', $errors[0]);
+        $this->assertArrayHasKey('chainObject', $errors[0]['context']);
+        $this->assertInstanceOf(ChainObject::class, $errors[0]['context']['chainObject']);
     }
 }

@@ -19,6 +19,8 @@ use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\StatsCollector\StatsCollector;
+use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Class ResponseFiltersBag
@@ -54,49 +56,64 @@ class ResponseFiltersBag
      * @param ApiClientResponse $apiClientResponse
      * @param Response          $response
      *
-     * @return array
+     * @return StatsCollectorInterface
      */
     public function filterResponse(
         ApiClientResponse $apiClientResponse,
         Response $response
     ){
-        $chain = $response->_getChain();
-        $errors = [];
+        $chain          = $response->_getChain();
+        $statsCollector = new StatsCollector();
 
         foreach($chain as $chainObject) {
             /** @var ChainObject $chainObject */
             $filter = $this->getFilter($chainObject->getObjectName());
 
             if(!$filter) {
+
+                $statsCollector->error(
+                    'Response filter does not exists.',
+                    [
+                        'chainObject' => $chainObject,
+                    ]
+                );
+
                 continue;
             }
 
             try{
+
                 if(!$filter->validateParams($chainObject->getParams())) {
-                    throw new FilterException(
+
+                    $statsCollector->filterError(
                         $filter,
                         FilterInterface::ERROR_INVALID_PARAMS,
                         $chainObject->getParams()
                     );
+
+                    continue;
                 }
+
+                $filter->setStatsCollection($statsCollector);
 
                 $filter->call(
                     $apiClientResponse,
                     $chainObject->getParams()
                 );
 
-            } catch (FilterException $e) {
-                $errors []= $e;
             } catch (\Exception $e) {
-                $errors []= new FilterException(
+
+                $statsCollector->filterError(
                     $filter,
                     FilterInterface::ERROR_INTERNAL_EXCEPTION,
                     $e
                 );
             }
+
+            $filter->setStatsCollection(null);
         }
 
-        return $errors;
+        return $statsCollector;
     }
 
     /**
