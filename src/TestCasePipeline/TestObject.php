@@ -151,7 +151,8 @@ class TestObject
      */
     public function hasErrors()
     {
-        return !empty($this->exceptions);
+        return !empty($this->exceptions)
+            || ($this->statsCollector && $this->statsCollector->hasErrors());
     }
 
     /**
