@@ -63,8 +63,6 @@ class JsonFilter extends AbstractFilter implements FilterInterface
 
     /**
      * @param ApiClientResponse $apiResponse
-     *
-     * @throws FilterException
      */
     protected function checkContentType(ApiClientResponse $apiResponse)
     {
