@@ -13,7 +13,9 @@ namespace RestControl\Console\Utils;
 
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
+use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
+use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -61,8 +63,10 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AfterTestCaseEvent::NAME => 'afterTestCaseResult',
-            BeforeTestCaseEvent::NAME => 'beforeTestCaseResult',
+            AfterTestCaseEvent::NAME          => 'afterTestCaseResult',
+            BeforeTestCaseEvent::NAME         => 'beforeTestCaseResult',
+            BeforeTestCasePipelineEvent::NAME => 'beforeTestCasePipeline',
+            AfterTestCasePipelineEvent::NAME  => 'afterTestCasePipeline',
         ];
     }
 
@@ -73,6 +77,44 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
     {
         $testCase = $event->getTestObject();
         $this->printHeader($testCase);
+    }
+
+    /**
+     * @param BeforeTestCasePipelineEvent $event
+     */
+    public function beforeTestCasePipeline(BeforeTestCasePipelineEvent $event)
+    {
+        $this->output->writeln('');
+        $this->output->writeln('<options=bold># RestControl 0.2.0-alpha powered by Kamil Szela[kamil.szela@cothe.pl]</>');
+        $this->output->writeln('--------------------------------------------------------------');
+        $this->output->writeln('');
+    }
+
+    /**
+     * @param AfterTestCasePipelineEvent $event
+     */
+    public function afterTestCasePipeline(AfterTestCasePipelineEvent $event)
+    {
+        $payload      = $event->getPayload();
+        $testsObjects = $payload->getTestsObjects();
+        $assertions   = 0;
+        $errors       = 0;
+
+        foreach($testsObjects as $testsObject) {
+            /** @var TestObject $testsObject */
+            $statsCollector = $testsObject->getStatsCollector();
+
+            $assertions += $statsCollector->getAssertionsCount();
+            $errors += count($statsCollector->getFilterErrors());
+            $errors += count($statsCollector->getErrors());
+        }
+
+        $this->output->writeln('Tests:' . count($testsObjects)
+            . ' Assertions:' . $assertions
+            . ' Errors:' . $errors
+        );
+
+        $this->output->writeln('');
     }
 
     /**
