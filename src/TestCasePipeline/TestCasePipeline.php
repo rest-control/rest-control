@@ -19,6 +19,8 @@ use Psr\Container\ContainerInterface;
 use RestControl\Loader\PsrClassLoader;
 use RestControl\Loader\TestsBag;
 use RestControl\TestCase\ResponseFiltersBag;
+use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
+use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -72,12 +74,37 @@ class TestCasePipeline
 
         $apiClient = $this->container->get($configuration->getApiClient());
 
+        $this->container->get(EventDispatcherInterface::class)
+                        ->dispatch(
+                            BeforeTestCasePipelineEvent::NAME,
+                            new BeforeTestCasePipelineEvent(
+                                $pipeline,
+                                $testsBag,
+                                $configuration,
+                                $apiClient
+                            )
+                        );
+
         $payload = new Payload(
             $apiClient,
             $testsBag->getTests()
         );
 
-        return $pipeline->process($payload);
+        $processedPayload = $pipeline->process($payload);
+
+        $this->container->get(EventDispatcherInterface::class)
+                        ->dispatch(
+                            AfterTestCasePipelineEvent::NAME,
+                            new AfterTestCasePipelineEvent(
+                                $pipeline,
+                                $testsBag,
+                                $configuration,
+                                $apiClient,
+                                $payload
+                            )
+                        );
+
+        return $processedPayload;
     }
 
     /**
