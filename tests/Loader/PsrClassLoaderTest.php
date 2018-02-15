@@ -11,48 +11,45 @@
 
 namespace RestControl\Tests\Loader;
 
-use InvalidArgumentException;
+use Psr\Log\InvalidArgumentException;
 use RestControl\Loader\PsrClassLoader;
 use PHPUnit\Framework\TestCase;
 
 class PsrClassLoaderTest extends TestCase
 {
-    public function testAddInvalidNamespace()
+    public function testSetInvalidNamespace()
     {
-        $loader = new PsrClassLoader();
-
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Namespace must be a string.');
+        $this->expectExceptionMessage('Configuration namespace must be a string.');
 
-        $loader->addNamespace(['wrong namespace format'], []);
+        new PsrClassLoader([]);
     }
 
     public function testNotExistingPathInConfiguration()
     {
-        $loader = new PsrClassLoader();
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Configuration path must be a string.');
 
-        $loader->addNamespace('Sample\\Namespace', []);
+        new PsrClassLoader([
+            'namespace' => 'Sample\\Namespace',
+        ]);
     }
 
     public function testWrongFormatPathInConfiguration()
     {
-        $loader = new PsrClassLoader();
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Configuration path must be a string.');
 
-        $loader->addNamespace('Sample\\Namespace', [
-            'path' => ['wrong format'],
+        new PsrClassLoader([
+            'namespace' => 'Sample\\Namespace\'',
+            'path'      => ['wrong format'],
         ]);
     }
 
     public function testLoad()
     {
-        $loader = new PsrClassLoader();
-        $loader->addNamespace('RestControl\Tests\Loader\SamplePathWithTestCase\\', [
+        $loader = new PsrClassLoader([
+            'namespace' => 'RestControl\Tests\Loader\SamplePathWithTestCase\\',
             'path'         => dirname(__FILE__) . '/SamplePathWithTestsCase',
             'classSuffix'  => 'Test.php',
             'methodPrefix' => 'mySuffix'
@@ -87,7 +84,6 @@ class PsrClassLoaderTest extends TestCase
                 ],
             ]
         ];
-
 
         foreach($delegates as $i => $delegate) {
             /** @var \RestControl\Loader\TestCaseDelegate $delegate */
