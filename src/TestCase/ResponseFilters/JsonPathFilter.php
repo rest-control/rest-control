@@ -110,7 +110,7 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
      */
     protected function check($path, $body, $expression)
     {
-        $transformerPath = $this->transformPath($path);
+        $transformerPath = $this->transformJsonPathToAccessor($path);
         $value           = self::getAccessor()->getValue(
             $body,
             $transformerPath
@@ -130,22 +130,5 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
                  $value,
                  $expression
              );
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function transformPath($path)
-    {
-        $pathParts       = explode('.', $path);
-        $transformedPath = '';
-
-        foreach($pathParts as $part) {
-            $transformedPath .= '[' . $part . ']';
-        }
-
-        return $transformedPath;
     }
 }
