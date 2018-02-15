@@ -39,6 +39,9 @@ class TestCasePipelineTest extends TestCase
                           'namespace' => 'Sample\\',
                           'path'      => 'sample/path',
                       ]);
+        $configuration->expects($this->once())
+                      ->method('getResponseFilters')
+                      ->willReturn([]);
 
         $pipeline = new TestCasePipeline(
             $loader,
@@ -99,6 +102,9 @@ class TestCasePipelineTest extends TestCase
                 'path'        => dirname(__FILE__) . '/../Loader/SamplePathWithTestsCase',
                 'classSuffix' => 'Test.php',
             ]);
+        $configuration->expects($this->once())
+            ->method('getResponseFilters')
+            ->willReturn([]);
         $configuration->expects($this->once())
             ->method('getApiClient')
             ->willReturn(HttpGuzzleClient::class);
