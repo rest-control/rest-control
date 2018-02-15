@@ -29,6 +29,7 @@ class AfterTestCasePipelineEventTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $configuration = $this->getMockBuilder(TestPipelineConfiguration::class)
+            ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $apiClient = $this->getMockBuilder(ApiClientInterface::class)
             ->getMockForAbstractClass();

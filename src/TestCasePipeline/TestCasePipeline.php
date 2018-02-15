@@ -139,7 +139,7 @@ class TestCasePipeline
 
         $testsBag->addLoader(
             new PsrClassLoader(
-                $configuration->getTestsNamespaces()
+                $configuration->getTestsNamespace()
             )
         );
     }

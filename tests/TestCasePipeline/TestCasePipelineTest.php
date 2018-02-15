@@ -31,10 +31,14 @@ class TestCasePipelineTest extends TestCase
                        ->disableOriginalConstructor()
                        ->getMock();
         $configuration = $this->getMockBuilder(TestPipelineConfiguration::class)
+                              ->disableOriginalConstructor()
                               ->getMock();
         $configuration->expects($this->once())
-                      ->method('getTestsNamespaces')
-                      ->willReturn([]);
+                      ->method('getTestsNamespace')
+                      ->willReturn([
+                          'namespace' => 'Sample\\',
+                          'path'      => 'sample/path',
+                      ]);
 
         $pipeline = new TestCasePipeline(
             $loader,
@@ -82,15 +86,19 @@ class TestCasePipelineTest extends TestCase
 
     public function testProcess()
     {
-
         $loader = $this->getMockBuilder(ClassLoader::class)
             ->disableOriginalConstructor()
             ->getMock();
         $configuration = $this->getMockBuilder(TestPipelineConfiguration::class)
+            ->disableOriginalConstructor()
             ->getMock();
         $configuration->expects($this->once())
-            ->method('getTestsNamespaces')
-            ->willReturn([]);
+            ->method('getTestsNamespace')
+            ->willReturn([
+                'namespace'   => 'RestControl\Tests\Loader\SamplePathWithTestCase\\',
+                'path'        => dirname(__FILE__) . '/../Loader/SamplePathWithTestsCase',
+                'classSuffix' => 'Test.php',
+            ]);
         $configuration->expects($this->once())
             ->method('getApiClient')
             ->willReturn(HttpGuzzleClient::class);
