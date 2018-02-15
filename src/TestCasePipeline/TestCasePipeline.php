@@ -177,11 +177,30 @@ class TestCasePipeline
         $this->container->share(ClassLoader::class, $classLoader);
         $this->container->share(ContainerInterface::class, $this->container);
         $this->container->share(TestPipelineConfiguration::class, $configuration);
-        $this->container->share(ResponseFiltersBag::class, new ResponseFiltersBag());
+
+        $this->prepareResponseFiltersBag($configuration);
+
         $this->container->share(EventDispatcherInterface::class, new EventDispatcher());
         $this->container->share(
             TestsBag::class,
             $this->container->get(TestsBag::class)
         );
+    }
+
+    /**
+     * @param TestPipelineConfiguration $configuration
+     */
+    protected function prepareResponseFiltersBag(TestPipelineConfiguration $configuration)
+    {
+        $responseFiltersBag = new ResponseFiltersBag();
+        $responseFilters    = [];
+
+        foreach($configuration->getResponseFilters() as $responseFilter) {
+            $responseFilters []= $this->container->get($responseFilter);
+        }
+
+        $responseFiltersBag->addFilters($responseFilters);
+
+        $this->container->share(ResponseFiltersBag::class, $responseFiltersBag);
     }
 }

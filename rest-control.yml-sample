@@ -5,6 +5,6 @@ tests:
   methodPrefix: test
 
 #responseFilters:
-#  - \Sample\Filter\Response\Class::class
+#  - \Sample\Filter\Response\Class
 
-apiClient: \RestControl\ApiClient\HttpGuzzleClient::class
+apiClient: \RestControl\ApiClient\HttpGuzzleClient
