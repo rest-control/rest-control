@@ -58,14 +58,6 @@ Thank you if you considering contributing to RestControl! The contribution guide
 Project roadmap
 ---
 #### v0.2.0-alpha (Planned release day: 17.02.2018)
- * [x] Simple statistic collector for TestCase
- * [x] HasItem response filter and response items definition
- * [x] Implementations of validation adapters(date, email, float, hostname, iban, int, ip, isbn, length, notEmpty, numeric, regex, string, uri, uuid)
- * [x] New layout of run tests command ouput
- * [x] Fixes for CI scripts
- * [ ] More examples with different response filters
- * [ ] Add statistics in run tests command summary
-
 [More information on Wiki page...](https://github.com/rest-control/rest-control/wiki/Roadmap)
 
 Learning RestControl
