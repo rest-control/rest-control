@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCasePipeline;
 
+use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\HttpGuzzleClient;
 
 /**
@@ -32,20 +33,21 @@ class TestPipelineConfiguration
      */
     public function __construct(array $configuration = [])
     {
-        $this->configuration = $configuration;
+        $this->setConfiguration($configuration);
     }
 
     /**
      * @return array
         <pre>
             [
+                'namespace'     => string, //classes namespace
                 'path'          => string, //path to TestCases
                 'classSuffix'   => string, //suffix for TestCase classes
                 'methodPrefix'  => string, //prefix for TestCase methods
             ]
         </pre>
      */
-    public function getTestsNamespaces()
+    public function getTestsNamespace()
     {
         return (array) $this->get('tests', []);
     }
@@ -79,5 +81,63 @@ class TestPipelineConfiguration
         }
 
         return $default;
+    }
+
+    /**
+     * @param array $configuration
+     */
+    protected function setConfiguration(array $configuration)
+    {
+        if(!isset($configuration['tests']) || !is_array($configuration['tests'])) {
+            throw new InvalidArgumentException('You must provide "tests" configuration.');
+        }
+
+        $this->setTestsConfiguration($configuration['tests']);
+
+        if(isset($configuration['responseFilters']) && is_array($configuration['responseFilters'])) {
+            $this->setResponseFilters($configuration['responseFilters']);
+        }
+
+        if(isset($configuration['apiClient']) && is_string($configuration['apiClient'])) {
+            $this->configuration['apiClient'] = $configuration['apiClient'];
+        }
+    }
+
+    /**
+     * @param array $configuration
+     */
+    protected function setResponseFilters(array $configuration)
+    {
+        foreach($configuration as $filter) {
+            if(!is_string($filter)) {
+                throw new InvalidArgumentException('Filter class must be a string.');
+            }
+        }
+
+        $this->configuration['responseFilters'] = $configuration;
+    }
+
+    /**
+     * @param array $configuration
+     */
+    protected function setTestsConfiguration(array $configuration)
+    {
+        if(!isset($configuration['namespace']) || !is_string($configuration['namespace'])) {
+            throw new InvalidArgumentException('Configuration namespace must be a string.');
+        }
+
+        if(!isset($configuration['path']) || !is_string($configuration['path'])) {
+            throw new InvalidArgumentException('Configuration path must be a string.');
+        }
+
+        if(!isset($configuration['classSuffix']) || !is_string($configuration['classSuffix'])) {
+            $configuration['classSuffix'] = '.php';
+        }
+
+        if(!isset($configuration['methodPrefix']) || !is_string($configuration['methodPrefix'])) {
+            $configuration['methodPrefix'] = 'test';
+        }
+
+        $this->configuration['tests'] = $configuration;
     }
 }

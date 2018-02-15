@@ -1,8 +1,8 @@
 tests:
-  Sample\:
-    path: {{FILE_DIR}}/sample
-    classSuffix: Test.php
-    methodPrefix: test
+  namespace: Sample\\
+  path: {{FILE_DIR}}/sample
+  classSuffix: Test.php
+  methodPrefix: test
 
 #responseFilters:
 #  - \Sample\Filter\Response\Class::class
