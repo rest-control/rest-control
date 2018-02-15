@@ -77,7 +77,11 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
             return false;
         }
 
-        return !isset($params[1]) || is_bool($params[1]);
+        if(!empty($params[1]) && !is_string($params[1])) {
+            return false;
+        }
+
+        return !isset($params[2]) || is_bool($params[2]);
     }
 
     /**
@@ -88,12 +92,13 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
     {
         $body                 = $this->prepareBody($apiResponse);
         $item                 = $params[0];
-        $strictRequiredValues = $params[1] ?? false;
+        $strictRequiredValues = $params[2] ?? false;
+        $jsonPath             = $this->transformJsonPathToAccessor($params[1] ?? '');
 
         $flatStructure  = $this->processItemStructure($item->getStructure());
         $requiredValues = $item->getRequiredValues();
 
-        $this->validFlatStructure($body, $flatStructure);
+        $this->validFlatStructure($body, $flatStructure, $jsonPath);
 
         if($requiredValues === null) {
             return;
@@ -130,14 +135,15 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
     }
 
     /**
-     * @param array $body
-     * @param array $flatStructure
+     * @param array       $body
+     * @param array       $flatStructure
+     * @param null|string $jsonPath
      */
-    protected function validFlatStructure(array $body, array $flatStructure)
+    protected function validFlatStructure(array $body, array $flatStructure, $jsonPath = null)
     {
         foreach($flatStructure as $path => $validatorsString) {
             $validators = $this->parseValidatorsString($validatorsString);
-            $this->checkBody($body, $path, $validators);
+            $this->checkBody($body, $jsonPath . $path, $validators);
         }
     }
 

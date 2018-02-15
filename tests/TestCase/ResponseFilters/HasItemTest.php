@@ -40,6 +40,17 @@ class HasItemTest extends TestCase
 
         $this->assertTrue($filter->validateParams([
             $item,
+            'samplePath',
+        ]));
+
+        $this->assertTrue($filter->validateParams([
+            $item,
+            null,
+            true,
+        ]));
+
+        $this->assertFalse($filter->validateParams([
+            $item,
             true,
         ]));
 
@@ -90,10 +101,29 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id": "46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
         );
 
         $filter->call($apiClientResponse, [$item]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertFalse($statsCollector->hasErrors());
+        $this->assertSame(7, $statsCollector->getAssertionsCount());
+    }
+
+    public function testValidationWithJsonPath()
+    {
+        $filter = new HasItemFilter();
+        $item   = new SampleResponseItem();
+
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"sampleUser":{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}}'
+        );
+
+        $filter->call($apiClientResponse, [$item, 'sampleUser']);
 
         $statsCollector = $filter->getStatsCollector();
 
