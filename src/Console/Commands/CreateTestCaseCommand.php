@@ -36,12 +36,12 @@ class CreateTestCaseCommand extends Command
     protected function configure()
     {
         $this->setName('create:test')
-             ->setDescription('Create test case in given namespace.')
-             ->addArgument(
-                 'path',
-                 InputArgument::REQUIRED,
-                 'Namespace in camelCase and dot notation, eq. sample.Namespace.camelCase.sample'
-             );
+            ->setDescription('Create test case in given namespace.')
+            ->addArgument(
+                'path',
+                InputArgument::REQUIRED,
+                'Namespace in camelCase and dot notation, eq. sample.Namespace.camelCase.sample'
+            );
     }
 
     /**
@@ -86,6 +86,7 @@ class CreateTestCaseCommand extends Command
         );
 
         $dirToNewClass  = $configuration['path'];
+        $dirToNewClass .= DIRECTORY_SEPARATOR;
         $dirToNewClass .= $this->virtualDirToDir($pathInfo['dir'], $configuration['namespace']);
 
         if(!is_dir($dirToNewClass)) {
