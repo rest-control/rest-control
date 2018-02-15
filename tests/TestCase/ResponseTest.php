@@ -122,7 +122,7 @@ class ResponseTest extends TestCase
     public function testHasItem()
     {
         $response = new Response();
-        $response->hasItem(new SampleResponseItem());
+        $response->hasItem(new SampleResponseItem(), 'samplePath', true);
 
         $this->assertSame(1, $response->_getChainLength());
 
@@ -130,5 +130,7 @@ class ResponseTest extends TestCase
         $this->assertCount(1, $objs);
 
         $this->assertInstanceOf(SampleResponseItem::class, $objs[0]->getParam(0));
+        $this->assertSame('samplePath', $objs[0]->getParam(1));
+        $this->assertTrue($objs[0]->getParam(2));
     }
 }

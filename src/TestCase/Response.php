@@ -139,11 +139,12 @@ class Response extends AbstractChain
 
     /**
      * @param AbstractResponseItem $item
-     * @param bool                 $strictRequiredValuesMode
+     * @param null|string          $jsonPath
+     * @param null|bool            $strictRequiredValuesMode
      *
      * @return $this
      */
-    public function hasItem(AbstractResponseItem $item, $strictRequiredValuesMode = false)
+    public function hasItem(AbstractResponseItem $item, $jsonPath = null, $strictRequiredValuesMode = false)
     {
         return $this->_add(self::CO_HAS_ITEM, func_get_args());
     }
