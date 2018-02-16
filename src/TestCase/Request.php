@@ -22,7 +22,6 @@ class Request extends AbstractChain
     const METHOD_GET = 'get';
     const METHOD_PUT = 'put';
 
-    const CO_EXPECTED_RESPONSE = 'expectedResponse';
     const CO_METHOD = 'method';
     const CO_BODY = 'body';
     const CO_FORM_PARAMS = 'form_params';
@@ -43,7 +42,6 @@ class Request extends AbstractChain
             return;
         }
 
-        $this->_add(self::CO_EXPECTED_RESPONSE, [$expectedResponse]);
         $this->expectedResponse = $expectedResponse;
     }
 
@@ -117,8 +115,6 @@ class Request extends AbstractChain
         }
 
         $response = new Response($this);
-
-        $this->_add(self::CO_EXPECTED_RESPONSE, [ $response]);
         $this->expectedResponse = $response;
 
         return $response;

@@ -13,7 +13,6 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use PHPUnit\Framework\TestCase;
 
@@ -49,16 +48,26 @@ class HeaderFilterTest extends TestCase
             ''
         );
 
-        try{
-            $filter->call($apiClientResponse, [
-                'Content-Type',
-                new Expression('containsString', ['html'])
-            ]);
-        } catch(FilterException $e){
-            $this->assertSame($e->getFilter(), $filter);
-            $this->assertSame($e->getErrorType(), HeaderFilter::ERROR_INVALID_VALUE);
-            $this->assertInstanceOf(Expression::class, $e->getExpected());
-            $this->assertSame($e->getGiven(), ['application/json; charset=utf-8']);
-        }
+        $expression = new Expression('containsString', ['html']);
+
+        $filter->call($apiClientResponse, [
+            'Content-Type',
+            $expression
+        ]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(1, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HeaderFilter::ERROR_INVALID_VALUE,
+                'givenValue'    => [
+                    'application/json; charset=utf-8'
+                ],
+                'expectedValue' => $expression,
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 }

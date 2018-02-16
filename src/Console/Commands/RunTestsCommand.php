@@ -81,7 +81,11 @@ class RunTestsCommand extends Command
         OutputInterface $output,
         TestCasePipeline $pipeline
     ){
-        $listener = new ConsoleTestCasePipelineListener($output);
+        $listener = new ConsoleTestCasePipelineListener(
+            $output,
+            $this->getHelper('formatter')
+        );
+
         $pipeline->addSubscriber($listener);
     }
 }

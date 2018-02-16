@@ -12,6 +12,7 @@
 namespace RestControl\Loader;
 
 use Doctrine\Common\Annotations\DocParser;
+use Psr\Log\InvalidArgumentException;
 use RestControl\Loader\Annotations\AnnotationInterface;
 use RestControl\Loader\Annotations\TestAnnotation;
 use Symfony\Component\Finder\Finder;
@@ -34,7 +35,7 @@ class PsrClassLoader implements LoaderInterface
     /**
      * @var array
      */
-    protected $namespaces = [];
+    protected $namespaceConfiguration = [];
 
     /**
      * @var null|DocParser
@@ -44,34 +45,32 @@ class PsrClassLoader implements LoaderInterface
     /**
      * PsrClassLoader constructor.
      *
-     * @param array $namespaces
+     * @param array $namespaceConfiguration
      */
-    public function __construct(array $namespaces = [])
+    public function __construct(array $namespaceConfiguration)
     {
-        foreach($namespaces as $namespace => $configuration) {
-            $this->addNamespace($namespace, $configuration);
-        }
+        $this->setNamespace($namespaceConfiguration);
     }
 
     /**
-     * @param string $namespace
-     * @param array  $configuration
+     * @param array $configuration
        <pre>
          [
+            'namespace'     => string, //classes namespace
             'path'          => string, //path to TestCases
             'classSuffix'   => string, //suffix for TestCase classes
             'methodPrefix'  => string, //prefix for TestCase methods
          ]
        </pre>
      */
-    public function addNamespace($namespace, array $configuration)
+    protected function setNamespace($configuration)
     {
-        if(!is_string($namespace)) {
-            throw new \InvalidArgumentException('Namespace must be a string.');
+        if(!isset($configuration['namespace']) || !is_string($configuration['namespace'])) {
+            throw new InvalidArgumentException('Configuration namespace must be a string.');
         }
 
         if(!isset($configuration['path']) || !is_string($configuration['path'])) {
-            throw new \InvalidArgumentException('Configuration path must be a string.');
+            throw new InvalidArgumentException('Configuration path must be a string.');
         }
 
         if(!isset($configuration['classSuffix']) || !is_string($configuration['classSuffix'])) {
@@ -82,7 +81,7 @@ class PsrClassLoader implements LoaderInterface
             $configuration['methodPrefix'] = 'test';
         }
 
-        $this->namespaces [$namespace] = $configuration;
+        $this->namespaceConfiguration = $configuration;
     }
 
     /**
@@ -94,30 +93,31 @@ class PsrClassLoader implements LoaderInterface
     {
         $delegates = [];
 
-        foreach($this->namespaces as $namespace => $configuration) {
+        $finder = new Finder();
+        $finder->files()
+            ->in($this->namespaceConfiguration['path'])
+            ->name('*' . $this->namespaceConfiguration['classSuffix']);
 
-            $finder = new Finder();
-            $finder->files()
-                    ->in($configuration['path'])
-                    ->name('*' . $configuration['classSuffix']);
+        foreach($finder as $fileInfo) {
+            /** @var \Symfony\Component\Finder\SplFileInfo $fileInfo */
+            $fullNamespace = $this->transformFileInfoIntoNamespace(
+                $this->namespaceConfiguration['namespace'],
+                $fileInfo
+            );
 
-            foreach($finder as $fileInfo) {
-                /** @var \Symfony\Component\Finder\SplFileInfo $fileInfo */
-                $fullNamespace = $this->transformFileInfoIntoNamespace($namespace, $fileInfo);
-                $pathInfo      = pathinfo($fileInfo->getFilename());
+            $pathInfo = pathinfo($fileInfo->getFilename());
 
-                if(!isset($pathInfo['filename'])) {
-                    continue;
-                }
-
-                $reflection = new \ReflectionClass($fullNamespace . $pathInfo['filename']);
-
-                $delegates = array_merge(
-                    $delegates,
-                    $this->compileTestCase($reflection, $configuration)
-                );
-
+            if(!isset($pathInfo['filename'])) {
+                continue;
             }
+
+            $reflection = new \ReflectionClass($fullNamespace . $pathInfo['filename']);
+
+            $delegates = array_merge(
+                $delegates,
+                $this->compileTestCase($reflection)
+            );
+
         }
 
         return $delegates;
@@ -146,18 +146,17 @@ class PsrClassLoader implements LoaderInterface
      * Returns array of TestCaseDelegate.
      *
      * @param \ReflectionClass $reflection
-     * @param array            $namespaceConfiguration
      *
      * @return array
      */
-    protected function compileTestCase(\ReflectionClass $reflection, array $namespaceConfiguration)
+    protected function compileTestCase(\ReflectionClass $reflection)
     {
         $docParser = $this->getDocParser();
         $delegates = [];
 
         foreach($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
 
-            if(strpos($method->getName(), $namespaceConfiguration['methodPrefix']) !== 0) {
+            if(strpos($method->getName(), $this->namespaceConfiguration['methodPrefix']) !== 0) {
                 continue;
             }
 

@@ -36,12 +36,12 @@ class CreateTestCaseCommand extends Command
     protected function configure()
     {
         $this->setName('create:test')
-             ->setDescription('Create test case in given namespace.')
-             ->addArgument(
-                 'path',
-                 InputArgument::REQUIRED,
-                 'Namespace in camelCase and dot notation, eq. sample.Namespace.camelCase.sample'
-             );
+            ->setDescription('Create test case in given namespace.')
+            ->addArgument(
+                'path',
+                InputArgument::REQUIRED,
+                'Namespace in camelCase and dot notation, eq. sample.Namespace.camelCase.sample'
+            );
     }
 
     /**
@@ -70,14 +70,14 @@ class CreateTestCaseCommand extends Command
     {
         $stubGenerator = new StubGenerator();
         $namespace     = $this->parseDir($pathInfo['dir']);
-
-        $configuration = $this->getNamespaceConfiguration($namespace);
+        $configuration = $this->resolveConfiguration()
+                              ->getTestsNamespace();
 
         if(!$configuration) {
             throw new InvalidArgumentException('Invalid namespace '.$namespace);
         }
 
-        $methods = $this->askForMethods($input, $output, $configuration['configuration']['methodPrefix']);
+        $methods = $this->askForMethods($input, $output, $configuration['methodPrefix']);
 
         $classStub = $stubGenerator->create(
             $namespace,
@@ -85,7 +85,8 @@ class CreateTestCaseCommand extends Command
             $methods
         );
 
-        $dirToNewClass  = $configuration['configuration']['path'];
+        $dirToNewClass  = $configuration['path'];
+        $dirToNewClass .= DIRECTORY_SEPARATOR;
         $dirToNewClass .= $this->virtualDirToDir($pathInfo['dir'], $configuration['namespace']);
 
         if(!is_dir($dirToNewClass)) {
@@ -100,7 +101,7 @@ class CreateTestCaseCommand extends Command
             $dirToNewClass
             . DIRECTORY_SEPARATOR
             . $pathInfo['className']
-            . $configuration['configuration']['classSuffix'],
+            . $configuration['classSuffix'],
             $classStub
         )) {
             throw new InvalidArgumentException('Cannot put contents in '. $dirToNewClass . '.');
@@ -148,54 +149,6 @@ class CreateTestCaseCommand extends Command
         ];
 
         return $this->askForMethods($input, $output, $methodPrefix, $methods);
-    }
-
-    /**
-     * @param string $namespace
-     *
-     * @return null|array
-     */
-    protected function getNamespaceConfiguration($namespace)
-    {
-        $configuration = $this->resolveConfiguration();
-        $namespacesConfiguration = $configuration->getTestsNamespaces();
-        $namespaces = array_keys($namespacesConfiguration);
-
-        usort($namespaces, function($a, $b) {
-            return strlen($b) > strlen($a);
-        });
-
-        $namespaceConfig = null;
-
-        foreach($namespaces as $cfgNamespace) {
-
-            if(strpos($namespace, $cfgNamespace) !== 0
-                && strpos($namespace . '\\', $cfgNamespace) !== 0
-            ){
-                continue;
-            }
-
-            $namespaceConfig = [
-                'namespace'     => $cfgNamespace,
-                'configuration' => $namespacesConfiguration[$cfgNamespace],
-            ];
-
-            break;
-        }
-
-        if(!$namespaceConfig) {
-            return;
-        }
-
-        if(!isset($namespaceConfig['configuration']['classSuffix']) || !is_string($namespaceConfig['configuration']['classSuffix'])) {
-            $namespaceConfig['configuration']['classSuffix'] = '.php';
-        }
-
-        if(!isset($namespaceConfig['methodPrefix']) || !is_string($namespaceConfig['configuration']['methodPrefix'])) {
-            $namespaceConfig['configuration']['methodPrefix'] = 'test';
-        }
-
-        return $namespaceConfig;
     }
 
     /**

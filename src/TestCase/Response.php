@@ -12,6 +12,7 @@
 namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\Utils\AbstractResponseItem;
 
 /**
  * Class Response
@@ -23,7 +24,7 @@ class Response extends AbstractChain
     const CO_JSON = 'json';
     const CO_JSON_PATH = 'jsonPath';
     const CO_HEADER = 'header';
-    const CO_EXPECTED_REQUEST = 'expectedRequest';
+    const CO_HAS_ITEM = 'hasItem';
 
     /**
      * @var null|Request
@@ -41,7 +42,6 @@ class Response extends AbstractChain
             return;
         }
 
-        $this->_add(self::CO_EXPECTED_REQUEST, [$expectedRequest]);
         $this->expectedRequest = $expectedRequest;
     }
 
@@ -55,8 +55,6 @@ class Response extends AbstractChain
         }
 
         $expectedRequest = new Request($this);
-
-        $this->_add(self::CO_EXPECTED_REQUEST, [$expectedRequest]);
         $this->expectedRequest = $expectedRequest;
 
         return $expectedRequest;
@@ -137,5 +135,17 @@ class Response extends AbstractChain
         }
 
         return $this;
+    }
+
+    /**
+     * @param AbstractResponseItem $item
+     * @param null|string          $jsonPath
+     * @param null|bool            $strictRequiredValuesMode
+     *
+     * @return $this
+     */
+    public function hasItem(AbstractResponseItem $item, $jsonPath = null, $strictRequiredValuesMode = false)
+    {
+        return $this->_add(self::CO_HAS_ITEM, func_get_args());
     }
 }

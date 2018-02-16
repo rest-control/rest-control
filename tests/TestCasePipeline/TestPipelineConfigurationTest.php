@@ -21,7 +21,10 @@ class TestPipelineConfigurationTest extends TestCase
     {
         $configuration = new TestPipelineConfiguration([
             'tests' => [
-                'Sample\Namespace',
+                'namespace'    => 'Sample\Namespace',
+                'path'         => 'sample',
+                'classSuffix'  => 'Test.php',
+                'methodPrefix' => 'sample',
             ],
             'apiClient' => 'Sample\ApiClient\Namespace',
             'responseFilters' => [
@@ -31,8 +34,11 @@ class TestPipelineConfigurationTest extends TestCase
         ]);
 
         $this->assertSame([
-            'Sample\Namespace',
-        ], $configuration->getTestsNamespaces());
+            'namespace'    => 'Sample\Namespace',
+            'path'         => 'sample',
+            'classSuffix'  => 'Test.php',
+            'methodPrefix' => 'sample',
+        ], $configuration->getTestsNamespace());
 
         $this->assertSame(
             'Sample\ApiClient\Namespace',
@@ -47,9 +53,19 @@ class TestPipelineConfigurationTest extends TestCase
 
     public function testDefaultValues()
     {
-        $configuration = new TestPipelineConfiguration([]);
+        $configuration = new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+        ]);
 
-        $this->assertEmpty($configuration->getTestsNamespaces());
+        $this->assertSame([
+            'namespace'    => 'Sample\\',
+            'path'         => 'sample',
+            'classSuffix'  => '.php',
+            'methodPrefix' => 'test',
+        ], $configuration->getTestsNamespace());
 
         $this->assertSame(
             HttpGuzzleClient::class,

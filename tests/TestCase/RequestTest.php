@@ -134,8 +134,8 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $this->assertInstanceOf(Response::class, $request->expectedResponse());
-        $this->assertSame(1, $request->_getChainLength());
+        $this->assertSame(0, $request->_getChainLength());
         $this->assertInstanceOf(Response::class, $request->expectedResponse());
-        $this->assertSame(1, $request->_getChainLength());
+        $this->assertSame(0, $request->_getChainLength());
     }
 }

@@ -13,9 +13,9 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\StatsCollector\EndContextException;
 
 class JsonPathFilterTest extends TestCase
 {
@@ -46,11 +46,20 @@ class JsonPathFilterTest extends TestCase
 
         try{
             $filter->call($apiClientResponse);
-        } catch(FilterException $e){
-            $this->assertSame($e->getFilter(), $filter);
-            $this->assertSame($e->getErrorType(), JsonPathFilter::ERROR_WRONG_BODY_FORMAT);
-            $this->assertSame($e->getExpected(), 'array|object|json_string');
-            $this->assertSame($e->getGiven(), 'invalid body format');
+        } catch(EndContextException $e){
+
+            $statsCollector = $filter->getStatsCollector();
+
+            $this->assertTrue($statsCollector->hasErrors());
+            $this->assertSame(1, $statsCollector->getAssertionsCount());
+            $this->assertSame([
+                [
+                    'filter' => $filter,
+                    'errorCode' => JsonPathFilter::ERROR_WRONG_BODY_FORMAT,
+                    'givenValue' => 'invalid body format',
+                    'expectedValue' => 'array|object|json',
+                ],
+            ], $statsCollector->getFilterErrors());
         }
     }
 
@@ -65,16 +74,24 @@ class JsonPathFilterTest extends TestCase
             }}'
         );
 
-        try{
-            $filter->call($apiClientResponse, [
-                'test.sample',
-                new Expression('equalsTo', [986785])
-            ]);
-        } catch(FilterException $e){
-            $this->assertSame($e->getFilter(), $filter);
-            $this->assertSame($e->getErrorType(), JsonPathFilter::ERROR_INVALID_VALUE);
-            $this->assertInstanceOf(Expression::class, $e->getExpected());
-            $this->assertSame($e->getGiven(), 1234);
-        }
+        $expression = new Expression('equalsTo', [986785]);
+
+        $filter->call($apiClientResponse, [
+            'test.sample',
+            $expression
+        ]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(2, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonPathFilter::ERROR_INVALID_VALUE,
+                'givenValue'    => 1234,
+                'expectedValue' => $expression,
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 }

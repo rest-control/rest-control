@@ -15,7 +15,12 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\StatsCollector\StatsCollector;
+use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Class ResponseFiltersBag
@@ -37,10 +42,11 @@ class ResponseFiltersBag
     public function __construct(array $filters = [])
     {
         $this->addFilters([
-            new \RestControl\TestCase\ResponseFilters\JsonFilter(),
-            new \RestControl\TestCase\ResponseFilters\HeaderFilter(),
-            new \RestControl\TestCase\ResponseFilters\JsonPathFilter(),
+            new JsonFilter(),
             new HeaderFilter(),
+            new JsonPathFilter(),
+            new HeaderFilter(),
+            new HasItemFilter(),
         ]);
 
         $this->addFilters($filters);
@@ -50,49 +56,64 @@ class ResponseFiltersBag
      * @param ApiClientResponse $apiClientResponse
      * @param Response          $response
      *
-     * @return array
+     * @return StatsCollectorInterface
      */
     public function filterResponse(
         ApiClientResponse $apiClientResponse,
         Response $response
     ){
-        $chain = $response->_getChain();
-        $errors = [];
+        $chain          = $response->_getChain();
+        $statsCollector = new StatsCollector();
 
         foreach($chain as $chainObject) {
             /** @var ChainObject $chainObject */
             $filter = $this->getFilter($chainObject->getObjectName());
 
             if(!$filter) {
+
+                $statsCollector->error(
+                    'Response filter does not exists.',
+                    [
+                        'chainObject' => $chainObject,
+                    ]
+                );
+
                 continue;
             }
 
             try{
+
                 if(!$filter->validateParams($chainObject->getParams())) {
-                    throw new FilterException(
+
+                    $statsCollector->filterError(
                         $filter,
                         FilterInterface::ERROR_INVALID_PARAMS,
                         $chainObject->getParams()
                     );
+
+                    continue;
                 }
+
+                $filter->setStatsCollection($statsCollector);
 
                 $filter->call(
                     $apiClientResponse,
                     $chainObject->getParams()
                 );
 
-            } catch (FilterException $e) {
-                $errors []= $e;
             } catch (\Exception $e) {
-                $errors []= new FilterException(
+
+                $statsCollector->filterError(
                     $filter,
                     FilterInterface::ERROR_INTERNAL_EXCEPTION,
                     $e
                 );
             }
+
+            $filter->setStatsCollection(null);
         }
 
-        return $errors;
+        return $statsCollector;
     }
 
     /**

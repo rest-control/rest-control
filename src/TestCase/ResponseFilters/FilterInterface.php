@@ -12,6 +12,7 @@
 namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
+use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Interface AbstractFilterInterface
@@ -40,4 +41,14 @@ interface FilterInterface
      * @param array             $params
      */
     public function call(ApiClientResponse $apiResponse, array $params = []);
+
+    /**
+     * @param StatsCollectorInterface|null $statsCollector
+     */
+    public function setStatsCollection(StatsCollectorInterface $statsCollector = null);
+
+    /**
+     * @return null|StatsCollectorInterface
+     */
+    public function getStatsCollector();
 }

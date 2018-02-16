@@ -15,6 +15,7 @@ use RestControl\TestCase\ChainObject;
 use RestControl\TestCase\Request;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
+use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 
 class ResponseTest extends TestCase
 {
@@ -22,9 +23,9 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $this->assertInstanceOf(Request::class, $response->expectedRequest());
-        $this->assertSame(1, $response->_getChainLength());
+        $this->assertSame(0, $response->_getChainLength());
         $this->assertInstanceOf(Request::class, $response->expectedRequest());
-        $this->assertSame(1, $response->_getChainLength());
+        $this->assertSame(0, $response->_getChainLength());
     }
 
     public function testJson()
@@ -78,5 +79,58 @@ class ResponseTest extends TestCase
         $this->assertSame('2sample.path', $objs[1]->getParam(0));
         $this->assertSame('!=', $objs[1]->getParam(1));
         $this->assertSame('sample value', $objs[1]->getParam(2));
+    }
+
+    public function testHeader()
+    {
+        $response = new Response();
+        $response->header('sample', 'value');
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $this->assertCount(1, $objs);
+        $this->assertInstanceOf(ChainObject::class, $objs[0]);
+
+        $this->assertSame('sample', $objs[0]->getParam(0));
+        $this->assertSame('value', $objs[0]->getParam(1));
+    }
+
+    public function testHeaders()
+    {
+        $response = new Response();
+        $response->headers([
+            ['sample', 'value'],
+            ['sample2', 'value2'],
+        ]);
+
+        $this->assertSame(2, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $this->assertCount(2, $objs);
+
+        $this->assertInstanceOf(ChainObject::class, $objs[0]);
+        $this->assertInstanceOf(ChainObject::class, $objs[1]);
+
+        $this->assertSame('sample', $objs[0]->getParam(0));
+        $this->assertSame('value', $objs[0]->getParam(1));
+
+        $this->assertSame('sample2', $objs[1]->getParam(0));
+        $this->assertSame('value2', $objs[1]->getParam(1));
+    }
+
+    public function testHasItem()
+    {
+        $response = new Response();
+        $response->hasItem(new SampleResponseItem(), 'samplePath', true);
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(Response::CO_HAS_ITEM);
+        $this->assertCount(1, $objs);
+
+        $this->assertInstanceOf(SampleResponseItem::class, $objs[0]->getParam(0));
+        $this->assertSame('samplePath', $objs[0]->getParam(1));
+        $this->assertTrue($objs[0]->getParam(2));
     }
 }

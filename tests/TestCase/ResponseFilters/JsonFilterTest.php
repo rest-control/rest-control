@@ -12,7 +12,6 @@
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use PHPUnit\Framework\TestCase;
 
@@ -48,7 +47,12 @@ class JsonFilterTest extends TestCase
             ''
         );
 
-        $this->assertNull($filter->call($apiClientResponse, [true, true]));
+        $filter->call($apiClientResponse, [true, true]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertFalse($statsCollector->hasErrors());
+        $this->assertSame(2, $statsCollector->getAssertionsCount());
     }
 
     public function testInvalidCheckContentType()
@@ -65,17 +69,29 @@ class JsonFilterTest extends TestCase
             ''
         );
 
-        try{
-            $filter->call($apiClientResponse);
-        } catch(FilterException $e){
-            $this->assertSame($e->getFilter(), $filter);
-            $this->assertSame($e->getErrorType(), JsonFilter::ERROR_WRONG_CONTENT_TYPE);
-            $this->assertSame($e->getExpected(), '/application/json/');
-            $this->assertSame($e->getGiven(), [
-                'another content type',
-                'application/wrongjson;charset=utf-8',
-            ]);
-        }
+        $filter->call($apiClientResponse);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(2, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter' => $filter,
+                'errorCode' => JsonFilter::ERROR_WRONG_CONTENT_TYPE,
+                'givenValue' => [
+                    'another content type',
+                    'application/wrongjson;charset=utf-8',
+                ],
+                'expectedValue' => '/application/json/',
+            ],
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonFilter::ERROR_INVALID_BODY,
+                'givenValue'    => '',
+                'expectedValue' => 'array|json',
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 
     public function testInvalidBody()
@@ -88,14 +104,20 @@ class JsonFilterTest extends TestCase
             ''
         );
 
-        try{
-            $filter->call($apiClientResponse, [false]);
-        } catch(FilterException $e){
-            $this->assertSame($e->getFilter(), $filter);
-            $this->assertSame($e->getErrorType(), JsonFilter::ERROR_INVALID_BODY);
-            $this->assertSame($e->getExpected(), null);
-            $this->assertSame($e->getGiven(), '');
-        }
+        $filter->call($apiClientResponse, [false]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(1, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonFilter::ERROR_INVALID_BODY,
+                'givenValue'    => '',
+                'expectedValue' => 'array|json',
+            ],
+        ], $statsCollector->getFilterErrors());
     }
 
     public function testIgnoreContentTypeAndBody()
@@ -108,6 +130,12 @@ class JsonFilterTest extends TestCase
             ''
         );
 
-        $this->assertNull($this->assertNull($filter->call($apiClientResponse, [false, true])));
+        $filter->call($apiClientResponse, [false, true]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertFalse($statsCollector->hasErrors());
+        $this->assertSame(1, $statsCollector->getAssertionsCount());
+        $this->assertEmpty($statsCollector->getFilterErrors());
     }
 }

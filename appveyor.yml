@@ -27,5 +27,7 @@ install:
     - cd %APPVEYOR_BUILD_FOLDER%
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - php composer.phar install --prefer-dist -n --no-ansi
+    - appveyor DownloadFile https://phar.phpunit.de/phpunit-6.phar
 test_script:
-    - php vendor/bin/phpunit
+    - cd %APPVEYOR_BUILD_FOLDER%
+    - php phpunit-6.phar
