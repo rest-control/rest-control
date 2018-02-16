@@ -14,30 +14,32 @@ RestControl is modern and powerful framework for testing REST services. RestCont
 Examples
 ---
 
-Here's an simple example of how to make a GET request and validate json response:
+Here is a simple example of how to send a GET request and validate json response:
 
 ```php
-    /**
-     * @test(
-     *     title="Example test",
-     *     description="Example test description",
-     *     tags="find user"
-     * )
-     */
-    public function exampleFindUser()
-    {
-        return $this->send()
-                    ->get('https://jsonplaceholder.typicode.com/users/1')
-                    ->expectedResponse()
-                    ->json()
-                    ->jsonPath('address.street', $this->endsWith('Light'));
-    }
-
+ /**
+  * @test(
+  * title="Example test",
+  * description="Example test description",
+  * tags="find user"
+  * )
+  */
+ public function exampleFindUser()
+ {
+    return $this->send()
+                ->get('https://jsonplaceholder.typicode.com/users/1')
+                ->expectedResponse()
+                ->json()
+                ->jsonPath('address.street', $this->endsWith('Light'));
+ }
 ```
+
 Quick Start
 ---
-The best way for quick start is RestControl standalone application. You can find it here [https://github.com/rest-control/standalone-testing-application](https://github.com/rest-control/standalone-testing-application).
-If you don't have installed all needed dependencies for project on your locally machine, you can use virtual environment from [Docker](https://docker.com/). You'll need for this [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/) in version >= 2.1.
+
+The best way for quick start is to use RestControl standalone application. You can find it here https://github.com/rest-control/standalone-testing-application. If you want to save yourself the hassle of installing dependencies required for this project on your local machine, you can use Docker containers as an alternative. Note that you will need Docker and Docker Compose in version >= 2.1.
+
+To build and start RestControl standalone application, run following commands:
 
 ```
 user@user:~/projects/standalone-testing-application$ make build
@@ -52,15 +54,13 @@ user@machineid:/app# php vendor/bin/rest-control run
 
 Contributing
 ---
-Thank you if you considering contributing to RestControl! The contribution guide will be available soon.
 
+Thank you if you considering contributing to RestControl! The contribution guide will be available soon. Start watching this project to get regular updates.
 
 Project roadmap
 ---
-#### v0.2.0-alpha (Planned release day: 17.02.2018)
-[More information on Wiki page...](https://github.com/rest-control/rest-control/wiki/Roadmap)
+All planned releases you can find here: [https://github.com/rest-control/rest-control/wiki/Roadmap](https://github.com/rest-control/rest-control/wiki/Roadmap).
 
 Learning RestControl
 ---
-RestControl documentation is under construction, please be patient.
-Current documentation files are available on https://github.com/rest-control/docs
+RestControl documentation is under construction, please be patient. Current documentation files are available on https://github.com/rest-control/docs
