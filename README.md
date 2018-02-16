@@ -19,9 +19,9 @@ Here is a simple example of how to send a GET request and validate json response
 ```php
  /**
   * @test(
-  * title="Example test",
-  * description="Example test description",
-  * tags="find user"
+  *     title="Example test",
+  *     description="Example test description",
+  *     tags="find user"
   * )
   */
  public function exampleFindUser()
