@@ -45,13 +45,22 @@ class MockApiClient extends HttpGuzzleClient implements ApiClientInterface
      */
     public function send(ApiClientRequest $schema)
     {
-        $mock = $this->getResponseMock($schema);
+        $routeInfo = $this->getResponseMock($schema);
+
+        if(!$routeInfo) {
+            return parent::send($schema);
+        }
+
+        $mock = $routeInfo[1]();
 
         if(!$mock instanceof MockApiResponseInterface) {
             return parent::send($schema);
         }
 
-        $response = $mock->getApiClientResponse($schema);
+        $response = $mock->getApiClientResponse(
+            $schema,
+            $routeInfo[2] ?? []
+        );
 
         if(!$response instanceof ApiClientResponse) {
             throw new InvalidArgumentException('Api mock response must be instance of ' . ApiClientResponse::class . '.');
@@ -63,7 +72,7 @@ class MockApiClient extends HttpGuzzleClient implements ApiClientInterface
     /**
      * @param ApiClientRequest $schema
      *
-     * @return null|MockApiResponseInterface
+     * @return null|array
      */
     protected function getResponseMock(ApiClientRequest $schema)
     {
@@ -89,7 +98,7 @@ class MockApiClient extends HttpGuzzleClient implements ApiClientInterface
             return null;
         }
 
-        return $routeInfo[1]();
+        return $routeInfo;
     }
 
     /**

@@ -32,7 +32,10 @@ interface MockApiResponseInterface
     /**
      * Transform $request into $apiClientResponse.
      *
+     * @param ApiClientRequest $request
+     * @param array            $routeParams
+     *
      * @return \RestControl\ApiClient\ApiClientResponse
      */
-    public function getApiClientResponse(ApiClientRequest $request);
+    public function getApiClientResponse(ApiClientRequest $request, array $routeParams);
 }
