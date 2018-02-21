@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace RestControl\Utils;
+namespace RestControl\Traits;
 
 /**
  * Trait ChainTrait
  *
- * @package RestControl\Utils
+ * @package RestControl\Traits
  */
 trait DirTrait
 {
