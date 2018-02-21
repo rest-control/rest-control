@@ -14,6 +14,7 @@ namespace RestControl\TestCasePipeline;
 use RestControl\Loader\TestCaseDelegate;
 use RestControl\TestCase\Request;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
@@ -100,10 +101,14 @@ class TestObject
     }
 
     /**
-     * @return null|StatsCollectorInterface
+     * @return StatsCollectorInterface
      */
     public function getStatsCollector()
     {
+        if(!$this->statsCollector) {
+            return new StatsCollector();
+        }
+
         return $this->statsCollector;
     }
 
