@@ -1,8 +1,8 @@
-![test](.github/rest-control.jpg)
+![RestControl](.github/rest-control.jpg)
 
 About RestControl
 ---
-RestControl is modern and powerful framework for testing REST services. RestControl provides set of tools for describing HTTP requests and responses in expressive and elegant way.
+[RestControl](https://rest-control.github.io/) is modern and powerful framework for testing REST services. RestControl provides set of tools for describing HTTP requests and responses in expressive and elegant way.
 
 
 [![Latest Stable Version](https://poser.pugx.org/rest-control/rest-control/v/stable)](https://packagist.org/packages/rest-control/rest-control)
@@ -63,4 +63,4 @@ All planned releases you can find here: [https://github.com/rest-control/rest-co
 
 Learning RestControl
 ---
-RestControl documentation is under construction, please be patient. Current documentation files are available on https://github.com/rest-control/docs
+RestControl documentation is under construction, please be patient. Current documentation files are available on [https://rest-control.github.io/](https://rest-control.github.io/)
