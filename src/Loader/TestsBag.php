@@ -92,14 +92,94 @@ class TestsBag
     /**
      * Returns array of test case delegates.
      *
+     * $tags = 'sample,function' - returns all tests with "sample" or/and "function" tags.
+     * $tags = 'sample function' - returns all tests with "sample" and "function" tags.
+     *
+     * @param string $tags
+     *
      * @return array
      */
-    public function getTests()
+    public function getTests($tags = '')
     {
         if(null === $this->compiledTests) {
             $this->compileTests();
         }
 
-        return $this->compiledTests;
+        return $this->getByTags($tags);
+    }
+
+    /**
+     * @param string $tags
+     *
+     * @return array
+     */
+    protected function getByTags($tags)
+    {
+        if(!$this->compiledTests) {
+            return [];
+        }
+
+        $groups = $this->parseTagStringIntoGroups($tags);
+
+        if(empty($groups)) {
+            return $this->compiledTests;
+        }
+
+        $delegates  = [];
+
+        foreach($this->compiledTests as $test) {
+            /** @var TestCaseDelegate $test */
+            if(!$this->checkTestTags($test, $groups)) {
+                continue;
+            }
+
+            $delegates []= $test;
+        }
+
+        return $delegates;
+    }
+
+    /**
+     * @param TestCaseDelegate $test
+     * @param array            $tagsGroups
+     *
+     * @return bool
+     */
+    protected function checkTestTags(TestCaseDelegate $test, array $tagsGroups)
+    {
+        $testTags = $test->getTags();
+
+        foreach($tagsGroups as $group) {
+            if(count(array_diff($group, $testTags)) === count($group)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $tags
+     *
+     * @return array
+     */
+    protected function parseTagStringIntoGroups($tags)
+    {
+        $parts     = explode(' ', $tags);
+        $tagGroups = [];
+
+        foreach($parts as $part) {
+
+            $tagsAlternatives = [];
+
+            foreach(explode(',', $part) as $alternative) {
+                $alternative = preg_replace('/\s+/', '', $alternative);
+                $tagsAlternatives []= $alternative;
+            }
+
+            $tagGroups []= $tagsAlternatives;
+        }
+
+        return $tagGroups;
     }
 }
