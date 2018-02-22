@@ -112,9 +112,22 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
     protected function check($path, $body, $expression)
     {
         $bodyObject = new JSONPath($body, JSONPath::ALLOW_MAGIC);
-        $results = $bodyObject->find($path);
+        $results    = $bodyObject->find($path)->data();
 
-        foreach($results->data() as $data) {
+        if(empty($results)) {
+            $this->getStatsCollector()
+                ->addAssertionsCount();
+
+            $this->getStatsCollector()
+                ->filterError(
+                    $this,
+                    self::ERROR_INVALID_VALUE,
+                    null,
+                    $expression
+                );
+        }
+
+        foreach($results as $data) {
 
             $this->getStatsCollector()
                 ->addAssertionsCount();
