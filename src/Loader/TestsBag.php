@@ -119,6 +119,10 @@ class TestsBag
             return [];
         }
 
+        if(empty($tags)) {
+            return $this->compiledTests;
+        }
+
         $groups = $this->parseTagStringIntoGroups($tags);
 
         if(empty($groups)) {
