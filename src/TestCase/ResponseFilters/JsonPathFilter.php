@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCase\ResponseFilters;
 
+use Flow\JSONPath\JSONPath;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\StatsCollector\EndContextException;
@@ -110,25 +111,26 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
      */
     protected function check($path, $body, $expression)
     {
-        $transformerPath = $this->transformJsonPathToAccessor($path);
-        $value           = self::getAccessor()->getValue(
-            $body,
-            $transformerPath
-        );
+        $bodyObject = new JSONPath($body, JSONPath::ALLOW_MAGIC);
+        $results = $bodyObject->find($path);
 
-        $this->getStatsCollector()
-             ->addAssertionsCount();
+        foreach($results->data() as $data) {
 
-        if($this->checkExpression($value, $expression)) {
-            return;
+            $this->getStatsCollector()
+                ->addAssertionsCount();
+
+            if($this->checkExpression($data, $expression)) {
+                continue;
+            }
+
+            $this->getStatsCollector()
+                ->filterError(
+                    $this,
+                    self::ERROR_INVALID_VALUE,
+                    $data,
+                    $expression
+                );
+
         }
-
-        $this->getStatsCollector()
-             ->filterError(
-                 $this,
-                 self::ERROR_INVALID_VALUE,
-                 $value,
-                 $expression
-             );
     }
 }
