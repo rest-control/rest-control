@@ -61,9 +61,14 @@ class TestCasePipeline
     }
 
     /**
+     * $tags = 'sample,function' - returns all tests with "sample" or/and "function" tags.
+     * $tags = 'sample function' - returns all tests with "sample" and "function" tags.
+     *
+     * @param string $tags
+     *
      * @return Payload
      */
-    public function process()
+    public function process($tags = '')
     {
         /** @var Pipeline $pipeline */
         $pipeline = $this->container->get(Pipeline::class);
@@ -87,7 +92,7 @@ class TestCasePipeline
 
         $payload = new Payload(
             $apiClient,
-            $testsBag->getTests()
+            $testsBag->getTests($tags)
         );
 
         $processedPayload = $pipeline->process($payload);
