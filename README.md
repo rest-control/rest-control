@@ -30,7 +30,7 @@ Here is a simple example of how to send a GET request and validate json response
                 ->get('https://jsonplaceholder.typicode.com/users/1')
                 ->expectedResponse()
                 ->json()
-                ->jsonPath('address.street', $this->endsWith('Light'));
+                ->jsonPath('$.address.street', $this->endsWith('Light'));
  }
 ```
 
