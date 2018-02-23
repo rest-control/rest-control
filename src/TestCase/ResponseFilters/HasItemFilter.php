@@ -73,7 +73,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
         $item                 = $params[0];
         $strictRequiredValues = $params[2] ?? false;
 
-        $body = $this->prepareJSONBody($apiResponse, $item, $params[1] ?? '$');
+        $body = $this->prepareJSONSingleItemBody($apiResponse, $item, $params[1] ?? '$');
 
         if(!$body) {
             return;
@@ -125,16 +125,9 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
      *
      * @return JSONPath|null
      */
-    protected function prepareJSONBody(ApiClientResponse $apiResponse, AbstractResponseItem $item, $path = '$')
+    protected function prepareJSONSingleItemBody(ApiClientResponse $apiResponse, AbstractResponseItem $item, $path = '$')
     {
-        $preparedBody = $this->prepareBody($apiResponse);
-        $path         = $path ?? '$';
-
-        if('$' === $path) {
-            $path .= '.';
-        }
-
-        $body = (new JSONPath($preparedBody))->find($path);
+        $body = $this->prepareJSONBody($apiResponse, $path);
 
         if(count($body->data()) > 1) {
             $this->getStatsCollector()
@@ -149,6 +142,24 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
         }
 
         return new JSONPath($body->data()[0] ?? []);
+    }
+
+    /**
+     * @param ApiClientResponse $apiResponse
+     * @param string            $path
+     *
+     * @return JSONPath
+     */
+    protected function prepareJSONBody(ApiClientResponse $apiResponse, $path = '$')
+    {
+        $preparedBody = $this->prepareBody($apiResponse);
+        $path         = $path ?? '$';
+
+        if('$' === $path) {
+            $path .= '.';
+        }
+
+        return (new JSONPath($preparedBody))->find($path);
     }
 
     /*
