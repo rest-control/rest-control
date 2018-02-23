@@ -32,5 +32,10 @@ class AbstractTestCaseTest extends TestCase
         $startsWith = $obj->startsWith('sampleString');
         $this->assertInstanceOf(Expression::class, $startsWith);
         $this->assertSame('sampleString', $startsWith->getParam(0));
+
+
+        $endsWith = $obj->endsWith('endsWith');
+        $this->assertInstanceOf(Expression::class, $endsWith);
+        $this->assertSame('endsWith', $endsWith->getParam(0));
     }
 }
