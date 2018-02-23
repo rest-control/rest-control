@@ -19,7 +19,6 @@ use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCasePipeline\TestObject;
 
 /**
