@@ -11,8 +11,10 @@
 
 namespace RestControl\Tests\TestCasePipeline;
 
+use Psr\Log\InvalidArgumentException;
 use RestControl\Loader\TestCaseDelegate;
 use RestControl\TestCase\Request;
+use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 use RestControl\TestCasePipeline\TestObject;
 use PHPUnit\Framework\TestCase;
 
@@ -46,5 +48,20 @@ class TestObjectTest extends TestCase
         $testObject->addException(new \Exception('Sample error'));
         $this->assertSame('Sample error', $testObject->getExceptions()[0]->getMessage());
         $this->assertTrue($testObject->hasErrors());
+
+        $this->assertInstanceOf(StatsCollectorInterface::class, $testObject->getStatsCollector());
+        $this->assertInstanceOf(StatsCollectorInterface::class, $testObject->getStatsCollector());
+    }
+
+    public function testSetterInvalidQueueIndex()
+    {
+        $delegate = new TestCaseDelegate(
+            'sample',
+            'sample2'
+        );
+
+        $testObject = new TestObject($delegate);
+        $this->expectException(InvalidArgumentException::class);
+        $testObject->setQueueIndex(new \stdClass());
     }
 }

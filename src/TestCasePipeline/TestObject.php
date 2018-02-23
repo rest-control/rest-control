@@ -106,7 +106,7 @@ class TestObject
     public function getStatsCollector()
     {
         if(!$this->statsCollector) {
-            return new StatsCollector();
+            $this->statsCollector = new StatsCollector();
         }
 
         return $this->statsCollector;
