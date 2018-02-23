@@ -15,7 +15,6 @@ use Flow\JSONPath\JSONPath;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\StatsCollector\EndContextException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class JsonPathFilter
@@ -26,21 +25,6 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
-
-    protected static $accessor = null;
-
-    /**
-     * @return \Symfony\Component\PropertyAccess\PropertyAccessorInterface
-     */
-    protected static function getAccessor()
-    {
-        if(!self::$accessor) {
-            self::$accessor = PropertyAccess::createPropertyAccessorBuilder()
-                ->getPropertyAccessor();
-        }
-
-        return self::$accessor;
-    }
 
     /**
      * @return string
