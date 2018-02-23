@@ -16,6 +16,7 @@ use RestControl\TestCase\Request;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
+use RestControl\Utils\ResponseItemsCollection;
 
 class ResponseTest extends TestCase
 {
@@ -132,5 +133,21 @@ class ResponseTest extends TestCase
         $this->assertInstanceOf(SampleResponseItem::class, $objs[0]->getParam(0));
         $this->assertSame('samplePath', $objs[0]->getParam(1));
         $this->assertTrue($objs[0]->getParam(2));
+    }
+
+    public function testHasItems()
+    {
+        $response   = new Response();
+        $collection = new ResponseItemsCollection(SampleResponseItem::class);
+
+        $response->hasItems($collection, 'samplePath');
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(Response::CO_HAS_ITEMS);
+        $this->assertCount(1, $objs);
+
+        $this->assertInstanceOf(ResponseItemsCollection::class, $objs[0]->getParam(0));
+        $this->assertSame('samplePath', $objs[0]->getParam(1));
     }
 }
