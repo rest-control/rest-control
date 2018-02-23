@@ -14,12 +14,28 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\StatsCollector\StatsCollector;
 
 class JsonFilterTest extends TestCase
 {
     public function testName()
     {
         $this->assertSame('json', (new JsonFilter())->getName());
+    }
+
+    public function testStatsCollector()
+    {
+        $filter = new JsonFilter();
+
+        $statsCollector = new StatsCollector();
+        $statsCollector->addAssertionsCount(22);
+
+        $filter->setStatsCollection($statsCollector);
+
+        $filterStatsCollector = $filter->getStatsCollector();
+
+        $this->assertSame($statsCollector, $filterStatsCollector);
+        $this->assertSame(22, $filterStatsCollector->getAssertionsCount());
     }
 
     public function testValidateParams()
