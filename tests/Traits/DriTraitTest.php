@@ -22,7 +22,7 @@ class DirTraitTest extends TestCase
     {
         $this->assertSame(
             'Sample\\Namespace\\With\\CamelCase',
-            $this->parseDir('sample.namespace.with.CamelCase')
+            $this->parseDir('sample.namespace..with.CamelCase')
         );
 
         $this->assertSame(
