@@ -13,7 +13,7 @@ namespace RestControl\Console\Commands;
 
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\StubGenerator;
-use RestControl\Utils\DirTrait;
+use RestControl\Traits\DirTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

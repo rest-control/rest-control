@@ -39,6 +39,7 @@ class Factory
         'int'      => IntValidatorAdapter::class,
         'numeric'  => NumericValidatorAdapter::class,
         'float'    => FloatValidatorAdapter::class,
+        'array'    => ArrayValidatorAdapter::class,
     ];
 
     protected static $cache = [];

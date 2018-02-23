@@ -63,6 +63,38 @@ class JsonPathFilterTest extends TestCase
         }
     }
 
+    public function testInvalidPath()
+    {
+        $filter = new JsonPathFilter();
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"test":{
+                "sample": 1234
+            }}'
+        );
+
+        $expression = new Expression('equalsTo', [986785]);
+
+        $filter->call($apiClientResponse, [
+            '$.anotherIndex.sample',
+            $expression
+        ]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(2, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonPathFilter::ERROR_INVALID_VALUE,
+                'givenValue'    => null,
+                'expectedValue' => $expression,
+            ],
+        ], $statsCollector->getFilterErrors());
+    }
+
     public function testInvalidValue()
     {
         $filter = new JsonPathFilter();
@@ -77,7 +109,7 @@ class JsonPathFilterTest extends TestCase
         $expression = new Expression('equalsTo', [986785]);
 
         $filter->call($apiClientResponse, [
-            'test.sample',
+            '$.test.sample',
             $expression
         ]);
 
@@ -90,6 +122,49 @@ class JsonPathFilterTest extends TestCase
                 'filter'        => $filter,
                 'errorCode'     => JsonPathFilter::ERROR_INVALID_VALUE,
                 'givenValue'    => 1234,
+                'expectedValue' => $expression,
+            ],
+        ], $statsCollector->getFilterErrors());
+    }
+
+    public function testInvalidValue2()
+    {
+        $filter = new JsonPathFilter();
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"test":{
+                "sample": [
+                    123,
+                    2542565,
+                    123,
+                    5468768
+                ]
+            }}'
+        );
+
+        $expression = new Expression('equalsTo', [123]);
+
+        $filter->call($apiClientResponse, [
+            '$.test.sample.*',
+            $expression
+        ]);
+
+        $statsCollector = $filter->getStatsCollector();
+
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame(5, $statsCollector->getAssertionsCount());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonPathFilter::ERROR_INVALID_VALUE,
+                'givenValue'    => 2542565,
+                'expectedValue' => $expression,
+            ],
+            [
+                'filter'        => $filter,
+                'errorCode'     => JsonPathFilter::ERROR_INVALID_VALUE,
+                'givenValue'    => 5468768,
                 'expectedValue' => $expression,
             ],
         ], $statsCollector->getFilterErrors());

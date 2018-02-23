@@ -74,4 +74,23 @@ class TestPipelineConfigurationTest extends TestCase
 
         $this->assertEmpty($configuration->getResponseFilters());
     }
+
+    public function testApiMockResponses()
+    {
+        $configuration = new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+            'apiMockResponses' => [
+                'Sample\Class',
+                'Another\Class',
+            ],
+        ]);
+
+        $this->assertSame([
+            'Sample\Class',
+            'Another\Class',
+        ], $configuration->getApiMockResponses());
+    }
 }

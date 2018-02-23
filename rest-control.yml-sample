@@ -7,4 +7,7 @@ tests:
 #responseFilters:
 #  - \Sample\Filter\Response\Class
 
+#apiMockResponses
+#  - \Sample\ApiMockResponse
+
 apiClient: \RestControl\ApiClient\HttpGuzzleClient

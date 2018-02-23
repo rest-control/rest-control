@@ -11,10 +11,10 @@
 
 namespace RestControl\TestCase\ResponseFilters;
 
+use Flow\JSONPath\JSONPath;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\StatsCollector\EndContextException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class JsonPathFilter
@@ -25,21 +25,6 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
-
-    protected static $accessor = null;
-
-    /**
-     * @return \Symfony\Component\PropertyAccess\PropertyAccessorInterface
-     */
-    protected static function getAccessor()
-    {
-        if(!self::$accessor) {
-            self::$accessor = PropertyAccess::createPropertyAccessorBuilder()
-                ->getPropertyAccessor();
-        }
-
-        return self::$accessor;
-    }
 
     /**
      * @return string
@@ -110,25 +95,39 @@ class JsonPathFilter extends AbstractFilter implements FilterInterface
      */
     protected function check($path, $body, $expression)
     {
-        $transformerPath = $this->transformJsonPathToAccessor($path);
-        $value           = self::getAccessor()->getValue(
-            $body,
-            $transformerPath
-        );
+        $bodyObject = new JSONPath($body, JSONPath::ALLOW_MAGIC);
+        $results    = $bodyObject->find($path)->data();
 
-        $this->getStatsCollector()
-             ->addAssertionsCount();
+        if(empty($results)) {
+            $this->getStatsCollector()
+                ->addAssertionsCount();
 
-        if($this->checkExpression($value, $expression)) {
-            return;
+            $this->getStatsCollector()
+                ->filterError(
+                    $this,
+                    self::ERROR_INVALID_VALUE,
+                    null,
+                    $expression
+                );
         }
 
-        $this->getStatsCollector()
-             ->filterError(
-                 $this,
-                 self::ERROR_INVALID_VALUE,
-                 $value,
-                 $expression
-             );
+        foreach($results as $data) {
+
+            $this->getStatsCollector()
+                ->addAssertionsCount();
+
+            if($this->checkExpression($data, $expression)) {
+                continue;
+            }
+
+            $this->getStatsCollector()
+                ->filterError(
+                    $this,
+                    self::ERROR_INVALID_VALUE,
+                    $data,
+                    $expression
+                );
+
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\Utils\AbstractResponseItem;
+use RestControl\Utils\ResponseItemsCollection;
 
 /**
  * Class Response
@@ -25,6 +26,7 @@ class Response extends AbstractChain
     const CO_JSON_PATH = 'jsonPath';
     const CO_HEADER = 'header';
     const CO_HAS_ITEM = 'hasItem';
+    const CO_HAS_ITEMS = 'hasItems';
 
     /**
      * @var null|Request
@@ -147,5 +149,16 @@ class Response extends AbstractChain
     public function hasItem(AbstractResponseItem $item, $jsonPath = null, $strictRequiredValuesMode = false)
     {
         return $this->_add(self::CO_HAS_ITEM, func_get_args());
+    }
+
+    /**
+     * @param ResponseItemsCollection $collection
+     * @param null|string             $jsonPath
+     *
+     * @return $this
+     */
+    public function hasItems(ResponseItemsCollection $collection, $jsonPath = null)
+    {
+        return $this->_add(self::CO_HAS_ITEMS, func_get_args());
     }
 }

@@ -16,6 +16,7 @@ use RestControl\Console\Utils\ConsoleTestCasePipelineListener;
 use RestControl\TestCasePipeline\TestCasePipeline;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -50,7 +51,14 @@ class RunTestsCommand extends Command
     protected function configure()
     {
         $this->setName('run')
-             ->setDescription('Run all given test cases');
+             ->setDescription('Run all given test cases')
+             ->addOption(
+                 'tags',
+                 null,
+                 InputOption::VALUE_REQUIRED,
+                 'Schema: "sample,tags" or "sample tags" or "sample,tags another"',
+                 ''
+             );
     }
 
     /**
@@ -68,7 +76,9 @@ class RunTestsCommand extends Command
 
         $this->addConsolePipelineListener($output, $pipeline);
         
-        $pipeline->process();
+        $pipeline->process(
+            $input->getOption('tags')
+        );
 
         return 0;
     }

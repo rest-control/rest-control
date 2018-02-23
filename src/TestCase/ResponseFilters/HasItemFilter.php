@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCase\ResponseFilters;
 
+use Flow\JSONPath\JSONPath;
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
@@ -18,8 +19,6 @@ use RestControl\TestCase\StatsCollector\EndContextException;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Validators\Factory;
-use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class HasItemFilter
@@ -31,32 +30,13 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
     use FilterTrait;
 
     const ERROR_INVALID_BODY = 1;
-    const ERROR_INVALID_RESPONSE_ITEM_VALUE = 2;
     const ERROR_INVALID_RESPONSE_REQUIRED_VALUES = 3;
-    const ERROR_INVALID_RESPONSE_STRUCTURE = 4;
     const ERROR_INVALID_RESPONSE_VALUE_TYPE = 5;
     const ERROR_INVALID_VALIDATOR = 6;
+    const ERROR_INVALID_RESPONSE_VALUE_STRUCTURE = 7;
 
     const OPTIONAL_RESPONSE_VALUE_VALIDATOR = 'optional';
     const NOT_EMPTY_RESPONSE_VALUE_VALIDATOR = 'notEmpty';
-
-    /**
-     * @var null|\Symfony\Component\PropertyAccess\PropertyAccessorInterface
-     */
-    protected static $accessor = null;
-
-    /**
-     * @return \Symfony\Component\PropertyAccess\PropertyAccessorInterface
-     */
-    protected static function getAccessor()
-    {
-        if(!self::$accessor) {
-            self::$accessor = PropertyAccess::createPropertyAccessorBuilder()
-                ->getPropertyAccessor();
-        }
-
-        return self::$accessor;
-    }
 
     /**
      * @return string
@@ -90,15 +70,19 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
-        $body                 = $this->prepareBody($apiResponse);
         $item                 = $params[0];
         $strictRequiredValues = $params[2] ?? false;
-        $jsonPath             = $this->transformJsonPathToAccessor($params[1] ?? '');
 
-        $flatStructure  = $this->processItemStructure($item->getStructure());
+        $body = $this->prepareJSONSingleItemBody($apiResponse, $item, $params[1] ?? '$');
+
+        if(!$body) {
+            return;
+        }
+
+        $itemStructure  = $item->getStructure();
         $requiredValues = $item->getRequiredValues();
 
-        $this->validFlatStructure($body, $flatStructure, $jsonPath);
+        $this->validStructure($body, $itemStructure);
 
         if($requiredValues === null) {
             return;
@@ -106,7 +90,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
 
         $result = Arr::containsIn(
             $requiredValues,
-            $body,
+            $body->data(),
             $strictRequiredValues,
             function($leftValue, $rightValue) {
 
@@ -129,60 +113,207 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
              ->filterError(
                  $this,
                  self::ERROR_INVALID_RESPONSE_REQUIRED_VALUES,
-                 $body,
+                 $body->data(),
                  $item->getRequiredValues()
              );
     }
 
     /**
-     * @param array       $body
-     * @param array       $flatStructure
-     * @param null|string $jsonPath
+     * @param ApiClientResponse    $apiResponse
+     * @param AbstractResponseItem $item
+     * @param string               $path
+     *
+     * @return JSONPath|null
      */
-    protected function validFlatStructure(array $body, array $flatStructure, $jsonPath = null)
+    protected function prepareJSONSingleItemBody(ApiClientResponse $apiResponse, AbstractResponseItem $item, $path = '$')
     {
-        foreach($flatStructure as $path => $validatorsString) {
-            $validators = $this->parseValidatorsString($validatorsString);
-            $this->checkBody($body, $jsonPath . $path, $validators);
+        $body = $this->prepareJSONBody($apiResponse, $path);
+
+        if(count($body->data()) > 1) {
+            $this->getStatsCollector()
+                ->filterError(
+                    $this,
+                    self::ERROR_INVALID_RESPONSE_VALUE_STRUCTURE,
+                    $body->data(),
+                    $item->getStructure()
+                );
+
+            return null;
+        }
+
+        return new JSONPath($body->data()[0] ?? []);
+    }
+
+    /**
+     * @param ApiClientResponse $apiResponse
+     * @param string            $path
+     *
+     * @return JSONPath
+     */
+    protected function prepareJSONBody(ApiClientResponse $apiResponse, $path = '$')
+    {
+        $preparedBody = $this->prepareBody($apiResponse);
+        $path         = $path ?? '$';
+
+        if('$' === $path) {
+            $path .= '.';
+        }
+
+        return (new JSONPath($preparedBody))->find($path);
+    }
+
+    /*
+     *
+     * @param JSONPath $body
+     * @param array    $itemSegmentStructure
+     * @param string   $trace
+     */
+    protected function validStructure(JSONPath $body, array $itemSegmentStructure, $trace = '$')
+    {
+        foreach($itemSegmentStructure as $index => $segmentData) {
+
+            $indexTrace = $trace . '.' . $this->removeSystemSignatures($index);
+            $data       = $body->find($indexTrace)->data()[0] ?? [];
+
+            $isRepeatSignature  = $this->isRepeatSignature($index);
+            $isArraySegmentData = is_array($segmentData);
+
+            if(!$isRepeatSignature && $isArraySegmentData) {
+
+                $this->checkArraySegmentData(
+                    $body,
+                    $data,
+                    $segmentData,
+                    $indexTrace
+                );
+
+                continue;
+
+            } else if($isRepeatSignature && $isArraySegmentData) {
+
+                $this->checkRepeatedArraySegmentData(
+                    $body,
+                    $data,
+                    $segmentData,
+                    $indexTrace
+                );
+
+                continue;
+
+            } else if($isRepeatSignature) {
+
+                $this->checkRepeatedSegmentData(
+                    $body,
+                    $data,
+                    $segmentData,
+                    $indexTrace
+                );
+
+                continue;
+            }
+
+            $this->validateSegmentData($body, $segmentData, $indexTrace);
         }
     }
 
     /**
-     * @param mixed  $body
-     * @param string $path
-     * @param array  $validators
+     * @param $body
+     * @param $data
+     * @param $segmentData
+     * @param $indexTrace
      */
-    protected function checkBody($body, $path, array $validators)
+    protected function checkRepeatedSegmentData($body, $data, $segmentData, $indexTrace)
     {
-        $accessor       = self::getAccessor();
-        $statsCollector = $this->getStatsCollector();
-
-        $statsCollector->addAssertionsCount();
-
-        try{
-            $value    = $accessor->getValue($body, $path);
-        }catch (UnexpectedTypeException $e) {
-
-            $statsCollector->filterError(
+        if($data && !is_array($data)) {
+            $this->getStatsCollector()->filterError(
                 $this,
-                self::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                $body,
+                self::ERROR_INVALID_RESPONSE_VALUE_STRUCTURE,
+                $data,
                 [
-                    'path'       => $path,
-                    'validators' => $validators,
+                    'path'       => $indexTrace,
+                    'validators' => [
+                        'array' => []
+                    ],
                 ]
             );
 
             return;
         }
 
-        if(isset($validators[self::OPTIONAL_RESPONSE_VALUE_VALIDATOR])) {
+        foreach((array)$data as $iterationIndex => $iterationData) {
+            $this->validateSegmentData($body, $segmentData, $indexTrace . '.'. $iterationIndex);
+        }
+    }
 
-            unset($validators[self::OPTIONAL_RESPONSE_VALUE_VALIDATOR]);
+    /**
+     * @param $body
+     * @param $data
+     * @param $segmentData
+     * @param $indexTrace
+     */
+    protected function checkRepeatedArraySegmentData($body, $data, $segmentData, $indexTrace)
+    {
+        if($data && !is_array($data)) {
+            $this->getStatsCollector()->filterError(
+                $this,
+                self::ERROR_INVALID_RESPONSE_VALUE_STRUCTURE,
+                $data,
+                [
+                    'path'       => $indexTrace,
+                    'validators' => [
+                        'array' => []
+                    ],
+                ]
+            );
 
-            if(empty($value)) {
-                return;
-            }
+            return;
+        }
+
+        foreach((array)$data as $iterationIndex => $iterationData) {
+            $this->validStructure($body, $segmentData, $indexTrace . '.' . $iterationIndex);
+        }
+    }
+
+    /**
+     * @param $body
+     * @param $data
+     * @param $segmentData
+     * @param $indexTrace
+     */
+    protected function checkArraySegmentData($body, $data, $segmentData, $indexTrace)
+    {
+        if($data && !is_array($data)) {
+            $this->getStatsCollector()->filterError(
+                $this,
+                self::ERROR_INVALID_RESPONSE_VALUE_STRUCTURE,
+                $data,
+                [
+                    'path'       => $indexTrace,
+                    'validators' => [
+                        'array' => []
+                    ],
+                ]
+            );
+
+            return;
+        }
+
+        $this->validStructure($body, $segmentData, $indexTrace);
+    }
+
+    /**
+     * @param JSONPath $body
+     * @param string   $validatorsString
+     * @param string   $trace
+     */
+    protected function validateSegmentData(JSONPath $body, $validatorsString, $trace)
+    {
+        $data           = $body->find($trace)->data()[0] ?? [];
+        $validators     = $this->parseValidatorsString($validatorsString);
+        $statsCollector = $this->getStatsCollector();
+
+        if($this->checkOptionalValidator($data, $validators)) {
+            return;
         }
 
         foreach($validators as $validatorName => $validatorConfig) {
@@ -190,7 +321,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
             $statsCollector->addAssertionsCount();
 
             try{
-                if(Factory::isValid($validatorName, $value, $validatorConfig)) {
+                if(Factory::isValid($validatorName, $data, $validatorConfig)) {
                     continue;
                 }
             } catch (InvalidArgumentException $e) {
@@ -199,10 +330,10 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
                     $this,
                     self::ERROR_INVALID_VALIDATOR,
                     [
-                        'path'            => $path,
+                        'path'            => $trace,
                         'info'            => 'Invalid validator name',
                         'validatorName'   => $validatorName,
-                        'value'           => $value,
+                        'value'           => $data,
                         'validatorConfig' => $validatorConfig,
                     ]
                 );
@@ -213,14 +344,63 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
             $statsCollector->filterError(
                 $this,
                 self::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                $value,
+                $data,
                 [
-                    'path'      => $path,
+                    'path'      => $trace,
                     'validator' => $validatorName,
                     'config'    => $validatorConfig,
                 ]
             );
         }
+    }
+
+    /**
+     * Returns true if $data is empty.
+     *
+     * @param mixed $data
+     * @param array $validators
+     *
+     * @return bool
+     */
+    protected function checkOptionalValidator($data, array &$validators)
+    {
+        if(!isset($validators[self::OPTIONAL_RESPONSE_VALUE_VALIDATOR])) {
+            return false;
+        }
+
+        $this->getStatsCollector()
+             ->addAssertionsCount();
+
+        unset($validators[self::OPTIONAL_RESPONSE_VALUE_VALIDATOR]);
+
+        return empty($data);
+    }
+
+    /**
+     * @param string $index
+     *
+     * @return bool
+     */
+    protected function isRepeatSignature($index)
+    {
+        $repeatChar = '.*';
+        $end        = substr($index, -strlen($repeatChar));
+
+        return $end === $repeatChar;
+    }
+
+    /**
+     * @param string $index
+     *
+     * @return bool|string
+     */
+    protected function removeSystemSignatures($index)
+    {
+        if(!$this->isRepeatSignature($index)) {
+            return $index;
+        }
+
+        return substr($index, 0, strlen($index) - 2);
     }
 
     /**
@@ -251,46 +431,6 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
         }
 
         return $configuration;
-    }
-
-    /**
-     * @param array  $structure
-     * @param string $prefix
-     *
-     * @return array
-     *
-     * @throws EndContextException
-     */
-    protected function processItemStructure(array $structure, $prefix = '')
-    {
-        $keys = [];
-
-        foreach($structure as $key => $value) {
-
-            if(is_object($value)) {
-                throw $this->getStatsCollector()
-                           ->filterError(
-                               $this,
-                               self::ERROR_INVALID_RESPONSE_ITEM_VALUE,
-                               $value,
-                               'array|object|json'
-                           )
-                           ->endContext();
-            }
-
-            if(!is_array($value)) {
-                $keys [$prefix . '[' . $key . ']'] = $value;
-                continue;
-            }
-
-            $recKeys = $this->processItemStructure($structure[$key], '[' . $key . ']');
-
-            foreach($recKeys as $k2ey => $v2alue) {
-                $keys [$prefix . $k2ey] = $v2alue;
-            }
-        }
-
-        return $keys;
     }
 
     /**

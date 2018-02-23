@@ -69,6 +69,14 @@ class TestPipelineConfiguration
     }
 
     /**
+     * @return array
+     */
+    public function getApiMockResponses()
+    {
+        return $this->get('apiMockResponses', []);
+    }
+
+    /**
      * @param string $index
      * @param mixed  $default
      *
@@ -100,6 +108,10 @@ class TestPipelineConfiguration
 
         if(isset($configuration['apiClient']) && is_string($configuration['apiClient'])) {
             $this->configuration['apiClient'] = $configuration['apiClient'];
+        }
+
+        if(isset($configuration['apiMockResponses']) && is_array($configuration['apiMockResponses'])) {
+            $this->configuration['apiMockResponses'] = $configuration['apiMockResponses'];
         }
     }
 

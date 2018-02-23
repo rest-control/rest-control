@@ -154,7 +154,7 @@ class HasItemTest extends TestCase
                 'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
                 'givenValue'    => 'invalidUuid',
                 'expectedValue' => [
-                    'path'      => '[id]',
+                    'path'      => '$.id',
                     'validator' => 'uuid',
                     'config'    => [],
                 ],
@@ -178,31 +178,16 @@ class HasItemTest extends TestCase
         $statsCollector = $filter->getStatsCollector();
 
         $this->assertTrue($statsCollector->hasErrors());
-        $this->assertSame(6, $statsCollector->getAssertionsCount());
+        $this->assertSame(4, $statsCollector->getAssertionsCount());
         $this->assertSame([
             [
                 'filter'        => $filter,
-                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                'givenValue'    => [
-                    'name' => 'shouldBeArrayHere',
-                ],
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_STRUCTURE,
+                'givenValue'    => 'shouldBeArrayHere',
                 'expectedValue' => [
-                    'path'       => '[name][firstName]',
+                    'path'       => '$.name',
                     'validators' => [
-                        'optional' => [],
-                    ]
-                ],
-            ],
-            [
-                'filter'        => $filter,
-                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
-                'givenValue'    => [
-                    'name' => 'shouldBeArrayHere',
-                ],
-                'expectedValue' => [
-                    'path'       => '[name][lastName]',
-                    'validators' => [
-                        'optional' => [],
+                        'array' => [],
                     ]
                 ],
             ],
@@ -292,6 +277,52 @@ class HasItemTest extends TestCase
                 ],
                 'expectedValue' => [
                     'id' => $expression
+                ],
+            ],
+        ], $statsCollector->getFilterErrors());
+    }
+
+    public function testsRepeatArraySegmentValue()
+    {
+        $filter = new HasItemFilter();
+        $item   = new SampleResponseItemAnother();
+
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"name":[{"firstName":"sample","lastName":"name"}, {"firstName":"anotherSample","lastName":"name"}]}'
+        );
+
+        $filter->call($apiClientResponse, [$item, 'sampleUser']);
+
+        $statsCollector = $filter->getStatsCollector();
+        $this->assertFalse($statsCollector->hasErrors());
+    }
+
+    public function testsRepeatValueSimpleValue()
+    {
+        $filter = new HasItemFilter();
+        $item   = new SampleResponseItemAnother();
+
+        $apiClientResponse = new ApiClientResponse(
+            200,
+            [],
+            '{"sampleRepeatedValue": ["46fcc8c3-53d6-447c-9a7a-58d035e6b18d", "asdd"]}'
+        );
+
+        $filter->call($apiClientResponse, [$item]);
+
+        $statsCollector = $filter->getStatsCollector();
+        $this->assertTrue($statsCollector->hasErrors());
+        $this->assertSame([
+            [
+                'filter'        => $filter,
+                'errorCode'     => HasItemFilter::ERROR_INVALID_RESPONSE_VALUE_TYPE,
+                'givenValue'    => 'asdd',
+                'expectedValue' => [
+                    'path'      => '$.sampleRepeatedValue.1',
+                    'validator' => 'uuid',
+                    'config'    => [],
                 ],
             ],
         ], $statsCollector->getFilterErrors());

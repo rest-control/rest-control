@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace RestControl\Tests\Utils;
+namespace RestControl\Traits\Utils;
 
 use PHPUnit\Framework\TestCase;
-use RestControl\Utils\DirTrait;
+use RestControl\Traits\DirTrait;
 
 class DirTraitTest extends TestCase
 {
@@ -22,7 +22,7 @@ class DirTraitTest extends TestCase
     {
         $this->assertSame(
             'Sample\\Namespace\\With\\CamelCase',
-            $this->parseDir('sample.namespace.with.CamelCase')
+            $this->parseDir('sample.namespace..with.CamelCase')
         );
 
         $this->assertSame(
