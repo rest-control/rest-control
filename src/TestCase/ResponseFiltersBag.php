@@ -12,7 +12,6 @@
 namespace RestControl\TestCase;
 
 use RestControl\ApiClient\ApiClientResponse;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
