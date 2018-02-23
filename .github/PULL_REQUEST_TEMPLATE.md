@@ -1,4 +1,5 @@
-####General information
+General information
+
 | Q             | A
 | ------------- | ---
 | Branch?       | master for features 
@@ -7,5 +8,5 @@
 | Fixed tickets | #...   <!-- #-prefixed issue number(s), if any -->
 | License       | MIT
 
-####Pull request description
+Pull request description
 > Short README entry for your feature/bugfix here(replace this comment block.)
