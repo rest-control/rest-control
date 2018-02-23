@@ -37,25 +37,4 @@ trait FilterTrait
 
         return false;
     }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function transformJsonPathToAccessor($path)
-    {
-        if(!$path) {
-            return '';
-        }
-
-        $pathParts       = explode('.', $path);
-        $transformedPath = '';
-
-        foreach($pathParts as $part) {
-            $transformedPath .= '[' . $part . ']';
-        }
-
-        return $transformedPath;
-    }
 }
