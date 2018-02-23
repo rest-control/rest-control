@@ -128,7 +128,13 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
     protected function prepareJSONBody(ApiClientResponse $apiResponse, AbstractResponseItem $item, $path = '$')
     {
         $preparedBody = $this->prepareBody($apiResponse);
-        $body = (new JSONPath($preparedBody))->find($path ?? '$');
+        $path         = $path ?? '$';
+
+        if('$' === $path) {
+            $path .= '.';
+        }
+
+        $body = (new JSONPath($preparedBody))->find($path);
 
         if(count($body->data()) > 1) {
             $this->getStatsCollector()
@@ -142,7 +148,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
             return null;
         }
 
-        return new JSONPath(array_shift($body->data()));
+        return new JSONPath($body->data()[0] ?? []);
     }
 
     /*
@@ -156,7 +162,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
         foreach($itemSegmentStructure as $index => $segmentData) {
 
             $indexTrace = $trace . '.' . $this->removeSystemSignatures($index);
-            $data       = array_shift($body->find($indexTrace)->data());
+            $data       = $body->find($indexTrace)->data()[0] ?? [];
 
             $isRepeatSignature  = $this->isRepeatSignature($index);
             $isArraySegmentData = is_array($segmentData);
@@ -291,7 +297,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
      */
     protected function validateSegmentData(JSONPath $body, $validatorsString, $trace)
     {
-        $data           = array_shift($body->find($trace)->data());
+        $data           = $body->find($trace)->data()[0] ?? [];
         $validators     = $this->parseValidatorsString($validatorsString);
         $statsCollector = $this->getStatsCollector();
 
