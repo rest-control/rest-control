@@ -128,7 +128,7 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
     protected function prepareJSONBody(ApiClientResponse $apiResponse, AbstractResponseItem $item, $path = '$')
     {
         $preparedBody = $this->prepareBody($apiResponse);
-        $body = (new JSONPath($preparedBody))->find($path);
+        $body = (new JSONPath($preparedBody))->find($path ?? '$');
 
         if(count($body->data()) > 1) {
             $this->getStatsCollector()
