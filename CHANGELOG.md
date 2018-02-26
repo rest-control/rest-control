@@ -1,3 +1,9 @@
+#### v0.3.1-alpha
+* Create ISSUE_TEMPLATE
+* Create PULL_REQUEST_TEMPLATE
+* Create CHANGELOG
+* [Feature #6 Traits with helpers](https://github.com/rest-control/rest-control/issues/6) 
+
 #### v0.3.0-alpha
 *  Posibility to validate list of items in response filters
 *  Implementation of jsonPath in jsonPath helper
