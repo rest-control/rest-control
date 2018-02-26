@@ -11,6 +11,9 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\Traits\RequestMethodsTrait;
+use RestControl\TestCase\Traits\RequestTrait;
+
 /**
  * Class Request
  *
@@ -18,12 +21,15 @@ namespace RestControl\TestCase;
  */
 class Request extends AbstractChain
 {
-    const METHOD_POST = 'post';
-    const METHOD_GET = 'get';
-    const METHOD_PUT = 'put';
+    use RequestTrait,
+        RequestMethodsTrait;
 
-    const CO_METHOD = 'method';
-    const CO_BODY = 'body';
+    const METHOD_POST = 'post';
+    const METHOD_GET  = 'get';
+    const METHOD_PUT  = 'put';
+
+    const CO_METHOD      = 'method';
+    const CO_BODY        = 'body';
     const CO_FORM_PARAMS = 'form_params';
 
     /**
@@ -43,66 +49,6 @@ class Request extends AbstractChain
         }
 
         $this->expectedResponse = $expectedResponse;
-    }
-
-    /**
-     * @param string     $url
-     * @param array      $urlParams
-     * @param null|mixed $body
-     *
-     * @return $this
-     */
-    public function post($url, array $urlParams = [], $body = null)
-    {
-        return $this->remove(self::CO_METHOD)
-                    ->_add(self::CO_METHOD, [self::METHOD_POST, $url, $urlParams])
-                    ->body($body);
-    }
-
-    /**
-     * @param string $url
-     * @param array  $urlParams
-     *
-     * @return $this
-     */
-    public function get($url, array $urlParams = [])
-    {
-        return $this->remove(self::CO_METHOD)
-                    ->_add(self::CO_METHOD, [self::METHOD_GET, $url, $urlParams]);
-    }
-
-    /**
-     * @param string     $url
-     * @param array      $urlParams
-     * @param null|mixed $body
-     *
-     * @return $this
-     */
-    public function put($url, array $urlParams = [], $body = null)
-    {
-        return $this->remove(self::CO_METHOD)
-                    ->_add(self::CO_METHOD, [self::METHOD_PUT, $url, $urlParams])
-                    ->body($body);
-    }
-
-    /**
-     * @param null|mixed $body
-     *
-     * @return $this
-     */
-    public function body($body = null)
-    {
-        return $this->_add(self::CO_BODY, func_get_args());
-    }
-
-    /**
-     * @param array $formParams
-     *
-     * @return $this
-     */
-    public function formParams(array $formParams = [])
-    {
-        return $this->_add(self::CO_FORM_PARAMS, func_get_args());
     }
 
     /**
