@@ -59,7 +59,7 @@ Thank you if you considering contributing to RestControl! The contribution guide
 
 Project roadmap
 ---
-All planned releases you can find here: [https://github.com/rest-control/rest-control/wiki/Roadmap](https://github.com/rest-control/rest-control/wiki/Roadmap).
+All planned releases you can find here: [https://github.com/rest-control/rest-control/milestones](https://github.com/rest-control/rest-control/milestones).
 
 Learning RestControl
 ---
