@@ -12,6 +12,7 @@
 namespace RestControl\Tests\TestCase\ExpressionLanguage;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 
@@ -47,19 +48,7 @@ class LessThanTest extends TestCase
             6
         ));
 
-        $this->assertTrue($checker->check(
-            $this->getExpression(10, true),
-            [
-                10,
-                1,
-                10,
-                2,
-                5,
-                6,
-                7
-            ]
-        ));
-
+        $this->expectException(InvalidArgumentException::class);
         $this->assertFalse($checker->check(
             $this->getExpression(10, true),
             [

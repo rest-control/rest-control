@@ -11,6 +11,8 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
+use Psr\Log\InvalidArgumentException;
+
 /**
  * Class LessThan
  *
@@ -34,21 +36,11 @@ class LessThan implements ExpressionValidatorInterface
      */
     public function check(Expression $expression, $value)
     {
-        if(is_scalar($value)) {
-            return $this->checkScalarValue($expression, $value);
+        if(!is_scalar($value)) {
+            throw new InvalidArgumentException('[ExpressionLanguage][' . $this->getName() . '] Value must be scalar.');
         }
 
-        if(!is_array($value)) {
-            return false;
-        }
-
-        foreach($value as $iValue) {
-            if(!$this->checkScalarValue($expression, $iValue)){
-                return false;
-            }
-        }
-
-        return true;
+        return $this->checkScalarValue($expression, $value);
     }
 
     /**
