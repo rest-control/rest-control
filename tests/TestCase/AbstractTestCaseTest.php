@@ -41,5 +41,16 @@ class AbstractTestCaseTest extends TestCase
         $this->assertInstanceOf(Expression::class, $lessThan);
         $this->assertSame(123, $lessThan->getParam(0));
         $this->assertTrue( $lessThan->getParam(1));
+
+        $each = $obj->each($lessThan);
+        $this->assertInstanceOf(Expression::class, $each);
+        $this->assertSame($lessThan, $each->getParam(0));
+
+        $each2 = $obj->each([$lessThan, $endsWith]);
+        $this->assertInstanceOf(Expression::class, $each2);
+        $this->assertArrayHasKey(0, $each2->getParam(0));
+        $this->assertArrayHasKey(1, $each2->getParam(0));
+        $this->assertSame($lessThan, $each2->getParam(0)[0]);
+        $this->assertSame($endsWith, $each2->getParam(0)[1]);
     }
 }

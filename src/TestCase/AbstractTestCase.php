@@ -79,4 +79,14 @@ abstract class AbstractTestCase
     {
         return new Expression('lessThan', [$lessThan, $orEqual]);
     }
+
+    /**
+     * @param array|Expression $expression
+     *
+     * @return Expression
+     */
+    public function each($expression)
+    {
+        return new Expression('each', [$expression]);
+    }
 }
