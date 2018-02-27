@@ -36,6 +36,7 @@ class Validators
         ContainsString::class,
         StartsWith::class,
         EndsWith::class,
+        LessThan::class,
     ];
 
     /**
