@@ -47,6 +47,8 @@ class LessThan implements ExpressionValidatorInterface
                 return false;
             }
         }
+
+        return true;
     }
 
     /**

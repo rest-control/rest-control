@@ -46,6 +46,32 @@ class LessThanTest extends TestCase
             $this->getExpression(5, true),
             6
         ));
+
+        $this->assertTrue($checker->check(
+            $this->getExpression(10, true),
+            [
+                10,
+                1,
+                10,
+                2,
+                5,
+                6,
+                7
+            ]
+        ));
+
+        $this->assertFalse($checker->check(
+            $this->getExpression(10, true),
+            [
+                10,
+                1,
+                10,
+                2,
+                5,
+                6,
+                22
+            ]
+        ));
     }
 
     /**
