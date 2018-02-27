@@ -68,4 +68,15 @@ abstract class AbstractTestCase
     {
         return new Expression('endsWith', [$string]);
     }
+
+    /**
+     * @param mixed $lessThan
+     * @param bool  $orEqual
+     *
+     * @return Expression
+     */
+    public function lessThan($lessThan, $orEqual = false)
+    {
+        return new Expression('lessThan', [$lessThan, $orEqual]);
+    }
 }

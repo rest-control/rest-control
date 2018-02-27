@@ -33,9 +33,13 @@ class AbstractTestCaseTest extends TestCase
         $this->assertInstanceOf(Expression::class, $startsWith);
         $this->assertSame('sampleString', $startsWith->getParam(0));
 
-
         $endsWith = $obj->endsWith('endsWith');
         $this->assertInstanceOf(Expression::class, $endsWith);
         $this->assertSame('endsWith', $endsWith->getParam(0));
+
+        $lessThan = $obj->lessThan(123, true);
+        $this->assertInstanceOf(Expression::class, $lessThan);
+        $this->assertSame(123, $lessThan->getParam(0));
+        $this->assertTrue( $lessThan->getParam(1));
     }
 }
