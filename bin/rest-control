@@ -1,17 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-$vendorAutoloadFiles = [
+$autoloadFiles = [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php',
+
+    __DIR__ . '/../src/helpers.php',
+    __DIR__ . '/../rest-control/rest-control/src/helpers.php',
 ];
 
 $loader = null;
 
-foreach($vendorAutoloadFiles as $autoloadFile) {
+foreach($autoloadFiles as $autoloadFile) {
     if(file_exists($autoloadFile)) {
         $loader = require_once $autoloadFile;
-        break;
     }
 }
 

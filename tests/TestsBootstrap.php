@@ -17,6 +17,9 @@ ini_set('display_errors', 1);
 $autoloadPaths = [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php',
+
+    __DIR__ . '/../src/helpers.php',
+    __DIR__ . '/../rest-control/rest-control/src/helpers.php',
 ];
 
 $loader = null;
@@ -24,7 +27,6 @@ $loader = null;
 foreach($autoloadPaths as $path) {
     if(file_exists($path)) {
         $loader = require_once $path;
-        break;
     }
 }
 
