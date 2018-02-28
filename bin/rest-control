@@ -2,27 +2,32 @@
 <?php
 
 $autoloadFiles = [
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
-
-    __DIR__ . '/../src/helpers.php',
-    __DIR__ . '/../rest-control/rest-control/src/helpers.php',
+    'loader' => [
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../../autoload.php',
+    ],
+    'helpers' => [
+        __DIR__ . '/../src/helpers.php',
+        __DIR__ . '/../rest-control/rest-control/src/helpers.php',
+    ],
 ];
 
-$loader = null;
+$loadedFiles = null;
 
-foreach($autoloadFiles as $autoloadFile) {
-    if(file_exists($autoloadFile)) {
-        $loader = require_once $autoloadFile;
+foreach($autoloadFiles as $autoloadFileName => $autoloadFileDirs) {
+    foreach($autoloadFileDirs as $dir) {
+        if(file_exists($dir)) {
+            $loadedFiles[$autoloadFileName] = require_once $dir;
+        }
     }
 }
 
-if(!$loader) {
+if(empty($loadedFiles['loader'])) {
     throw new \Exception('Cannot find autoload.php. Please install dependencies via composer.');
 }
 
 try{
-    $console = new \RestControl\Console\Console($loader);
+    $console = new \RestControl\Console\Console($loadedFiles['loader']);
     exit($console->run());
 } catch (\Exception $e) {
     echo $e->getMessage() . "\n";
