@@ -1,6 +1,7 @@
 #### v0.4.0-alpha
-*  [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
+* [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
 * "Each" expression language helper
+* [\#4 [ExpressionLanguage] moreThan helper](https://github.com/rest-control/rest-control/issues/4)
 #### v0.3.0-alpha
 *  Posibility to validate list of items in response filters
 *  Implementation of jsonPath in jsonPath helper
