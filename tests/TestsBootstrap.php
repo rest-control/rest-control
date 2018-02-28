@@ -14,22 +14,27 @@ namespace RestControl\Tests;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$autoloadPaths = [
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
-
-    __DIR__ . '/../src/helpers.php',
-    __DIR__ . '/../rest-control/rest-control/src/helpers.php',
+$autoloadFiles = [
+    'loader' => [
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../../autoload.php',
+    ],
+    'helpers' => [
+        __DIR__ . '/../src/helpers.php',
+        __DIR__ . '/../rest-control/rest-control/src/helpers.php',
+    ],
 ];
 
-$loader = null;
+$loadedFiles = null;
 
-foreach($autoloadPaths as $path) {
-    if(file_exists($path)) {
-        $loader = require_once $path;
+foreach($autoloadFiles as $autoloadFileName => $autoloadFileDirs) {
+    foreach($autoloadFileDirs as $dir) {
+        if(file_exists($dir)) {
+            $loadedFiles[$autoloadFileName] = require_once $dir;
+        }
     }
 }
 
-if(!$loader) {
+if(!$loadedFiles['loader']) {
     throw new \Exception('Can\'t find autoload.php. Please install dependencies via composer.');
 }
