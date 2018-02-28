@@ -18,12 +18,14 @@ namespace RestControl\TestCase\ExpressionLanguage;
  */
 class MoreThan extends LessThan
 {
+    const FILTER_NAME = 'moreThan';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'moreThan';
+        return self::FILTER_NAME;
     }
 
     /**

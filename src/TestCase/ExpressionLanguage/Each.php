@@ -20,12 +20,14 @@ use Psr\Log\InvalidArgumentException;
  */
 class Each implements ExpressionValidatorInterface
 {
+    const FILTER_NAME = 'each';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'each';
+        return self::FILTER_NAME;
     }
 
     /**

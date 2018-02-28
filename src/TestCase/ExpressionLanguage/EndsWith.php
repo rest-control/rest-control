@@ -18,12 +18,14 @@ namespace RestControl\TestCase\ExpressionLanguage;
  */
 class EndsWith implements ExpressionValidatorInterface
 {
+    const FILTER_NAME = 'endsWith';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'endsWith';
+        return self::FILTER_NAME;
     }
 
     /**

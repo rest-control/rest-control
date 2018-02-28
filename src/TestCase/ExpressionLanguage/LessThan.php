@@ -20,12 +20,14 @@ use Psr\Log\InvalidArgumentException;
  */
 class LessThan implements ExpressionValidatorInterface
 {
+    const FILTER_NAME = 'lessThan';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'lessThan';
+        return self::FILTER_NAME;
     }
 
     /**

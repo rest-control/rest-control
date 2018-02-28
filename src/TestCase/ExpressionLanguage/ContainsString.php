@@ -18,12 +18,14 @@ namespace RestControl\TestCase\ExpressionLanguage;
  */
 class ContainsString implements ExpressionValidatorInterface
 {
+    const FILTER_NAME = 'containsString';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'containsString';
+        return self::FILTER_NAME;
     }
 
     /**
