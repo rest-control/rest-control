@@ -12,16 +12,16 @@
 namespace RestControl\Tests\TestCase\ExpressionLanguage;
 
 use PHPUnit\Framework\TestCase;
-use RestControl\TestCase\ExpressionLanguage\Each;
+use RestControl\TestCase\ExpressionLanguage\EachItems;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 
-class EachTest extends TestCase
+class EachItemsTest extends TestCase
 {
     public function testChecker()
     {
-        $checker = new Each();
+        $checker = new EachItems();
 
-        $this->assertSame('each', $checker->getName());
+        $this->assertSame('eachItems', $checker->getName());
 
         $this->assertTrue($checker->check(
             $this->getExpression([

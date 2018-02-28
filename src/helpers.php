@@ -8,7 +8,7 @@ use RestControl\TestCase\ExpressionLanguage\StartsWith;
 use RestControl\TestCase\ExpressionLanguage\EndsWith;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\MoreThan;
-use RestControl\TestCase\ExpressionLanguage\Each;
+use RestControl\TestCase\ExpressionLanguage\EachItems;
 
 if(!function_exists('send')) {
     function send() { return new Request(); }
@@ -52,6 +52,6 @@ if(!function_exists('moreThan')) {
 
 if(!function_exists('eachItems')) {
     function eachItems($expression){
-        return new Expression(Each::FILTER_NAME, [$expression]);
+        return new Expression(EachItems::FILTER_NAME, [$expression]);
     }
 }

@@ -37,7 +37,7 @@ class Validators
         StartsWith::class,
         EndsWith::class,
         LessThan::class,
-        Each::class,
+        EachItems::class,
         MoreThan::class,
     ];
 

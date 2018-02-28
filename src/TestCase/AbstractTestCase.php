@@ -12,7 +12,7 @@
 namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\ContainsString;
-use RestControl\TestCase\ExpressionLanguage\Each;
+use RestControl\TestCase\ExpressionLanguage\EachItems;
 use RestControl\TestCase\ExpressionLanguage\EndsWith;
 use RestControl\TestCase\ExpressionLanguage\EqualsTo;
 use RestControl\TestCase\ExpressionLanguage\Expression;
@@ -105,6 +105,6 @@ abstract class AbstractTestCase
      */
     public function each($expression)
     {
-        return new Expression(Each::FILTER_NAME, [$expression]);
+        return new Expression(EachItems::FILTER_NAME, [$expression]);
     }
 }
