@@ -11,7 +11,14 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\ExpressionLanguage\ContainsString;
+use RestControl\TestCase\ExpressionLanguage\Each;
+use RestControl\TestCase\ExpressionLanguage\EndsWith;
+use RestControl\TestCase\ExpressionLanguage\EqualsTo;
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\ExpressionLanguage\LessThan;
+use RestControl\TestCase\ExpressionLanguage\MoreThan;
+use RestControl\TestCase\ExpressionLanguage\StartsWith;
 
 /**
  * Class AbstractTestCase
@@ -36,7 +43,7 @@ abstract class AbstractTestCase
      */
     public function equalsTo($value, $exactlyTheSame = false)
     {
-        return new Expression('equalsTo', [$value, $exactlyTheSame]);
+        return new Expression(EqualsTo::FILTER_NAME, [$value, $exactlyTheSame]);
     }
 
     /**
@@ -46,7 +53,7 @@ abstract class AbstractTestCase
      */
     public function containsString($string)
     {
-        return new Expression('containsString', [$string]);
+        return new Expression(ContainsString::FILTER_NAME, [$string]);
     }
 
     /**
@@ -56,7 +63,7 @@ abstract class AbstractTestCase
      */
     public function startsWith($string)
     {
-        return new Expression('startsWith', [$string]);
+        return new Expression(StartsWith::FILTER_NAME, [$string]);
     }
 
     /**
@@ -66,7 +73,7 @@ abstract class AbstractTestCase
      */
     public function endsWith($string)
     {
-        return new Expression('endsWith', [$string]);
+        return new Expression(EndsWith::FILTER_NAME, [$string]);
     }
 
     /**
@@ -77,7 +84,7 @@ abstract class AbstractTestCase
      */
     public function lessThan($lessThan, $orEqual = false)
     {
-        return new Expression('lessThan', [$lessThan, $orEqual]);
+        return new Expression(LessThan::FILTER_NAME, [$lessThan, $orEqual]);
     }
 
     /**
@@ -88,7 +95,7 @@ abstract class AbstractTestCase
      */
     public function moreThan($moreThan, $orEqual = false)
     {
-        return new Expression('lessThan', [$moreThan, $orEqual]);
+        return new Expression(MoreThan::FILTER_NAME, [$moreThan, $orEqual]);
     }
 
     /**
@@ -98,6 +105,6 @@ abstract class AbstractTestCase
      */
     public function each($expression)
     {
-        return new Expression('each', [$expression]);
+        return new Expression(Each::FILTER_NAME, [$expression]);
     }
 }
