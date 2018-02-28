@@ -53,6 +53,6 @@ class EachItemsTest extends TestCase
      */
     protected function getExpression(array $params = [])
     {
-        return new Expression('each', $params);
+        return new Expression('eachItems', $params);
     }
 }
