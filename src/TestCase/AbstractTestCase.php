@@ -81,6 +81,17 @@ abstract class AbstractTestCase
     }
 
     /**
+     * @param mixed $moreThan
+     * @param bool  $orEqual
+     *
+     * @return Expression
+     */
+    public function moreThan($moreThan, $orEqual = false)
+    {
+        return new Expression('lessThan', [$moreThan, $orEqual]);
+    }
+
+    /**
      * @param array|Expression $expression
      *
      * @return Expression
