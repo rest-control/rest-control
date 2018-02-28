@@ -38,6 +38,7 @@ class Validators
         EndsWith::class,
         LessThan::class,
         Each::class,
+        MoreThan::class,
     ];
 
     /**
