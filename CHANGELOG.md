@@ -2,6 +2,7 @@
 * Create ISSUE_TEMPLATE
 * Create PULL_REQUEST_TEMPLATE
 * Create CHANGELOG
+* Create CONTRIBUTING
 * [Feature #6 Traits with helpers](https://github.com/rest-control/rest-control/issues/6) 
 
 #### v0.3.0-alpha
