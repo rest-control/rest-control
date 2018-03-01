@@ -15,6 +15,7 @@ use RestControl\TestCase\ChainObject;
 use RestControl\TestCase\Request;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
 
@@ -149,5 +150,34 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceOf(ResponseItemsCollection::class, $objs[0]->getParam(0));
         $this->assertSame('samplePath', $objs[0]->getParam(1));
+    }
+
+    public function testHttpCodes()
+    {
+        $httpCode = (new Response())->httpCode(200)->_getChain()[0];
+        $this->assertInstanceOf(ChainObject::class, $httpCode);
+        $this->assertSame(200, $httpCode->getParam(0));
+
+
+        $traitReflection = new \ReflectionClass(ResponseHttpCodesTrait::class);
+        $omittedMethods = [
+            'httpCode',
+        ];
+
+        foreach($traitReflection->getMethods() as $method) {
+
+            if(in_array($method->getName(), $omittedMethods)) {
+                continue;
+            }
+
+            $response = new Response();
+            $response->{$method->getName()}();
+
+            $this->assertSame(1, $response->_getChainLength());
+            $this->assertInstanceOf(
+                ChainObject::class,
+                $response->_getChain()[0]
+            );
+        }
     }
 }

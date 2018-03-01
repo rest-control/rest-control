@@ -17,6 +17,26 @@ use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\HttpCode;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionRefused;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionTimedOut;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpContinue;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpCreated;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMovedPermanently;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMultipleChoices;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNoContent;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNonAuthoritativeInformation;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotModified;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpOk;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPartialContent;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpResetContent;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSeeOther;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchingProtocols;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchProxy;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTemporaryRedirect;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTooManyRedirects;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\StatsCollector\StatsCollector;
@@ -48,6 +68,27 @@ class ResponseFiltersBag
             new HeaderFilter(),
             new HasItemFilter(),
             new HasItemsFilter(),
+
+            new HttpCode(),
+            new HttpConnectionRefused(),
+            new HttpConnectionTimedOut(),
+            new HttpContinue(),
+            new HttpSwitchingProtocols(),
+            new HttpOk(),
+            new HttpCreated(),
+            new HttpNonAuthoritativeInformation(),
+            new HttpNoContent(),
+            new HttpResetContent(),
+            new HttpPartialContent(),
+            new HttpMultipleChoices(),
+            new HttpMovedPermanently(),
+            new HttpFound(),
+            new HttpSeeOther(),
+            new HttpNotModified(),
+            new HttpUseProxy(),
+            new HttpSwitchProxy(),
+            new HttpTemporaryRedirect(),
+            new HttpTooManyRedirects(),
         ]);
 
         $this->addFilters($filters);
