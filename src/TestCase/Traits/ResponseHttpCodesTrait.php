@@ -12,7 +12,9 @@
 namespace RestControl\TestCase\Traits;
 
 use RestControl\TestCase\ResponseFilters\HttpCode;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadGateway;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadRequest;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBandwidthLimitExceeded;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConflict;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionRefused;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionTimedOut;
@@ -21,15 +23,23 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpCreated;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpExpectationFailed;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpForbidden;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGatewayTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGone;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpHttpVersionNotSupported;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpImATeapot;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInsufficientStorage;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInternalServerError;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLengthRequired;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLoopDetected;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMovedPermanently;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMultipleChoices;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNetworkAuthenticationRequired;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNoContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNonAuthoritativeInformation;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotAcceptable;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotExtended;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotImplemented;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotModified;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpOk;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPartialContent;
@@ -42,6 +52,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestUriTooLong;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpResetContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSeeOther;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpServiceUnavailable;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchingProtocols;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTemporaryRedirect;
@@ -50,6 +61,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnauthorized;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnavailableForLegalReasons;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnsupportedMediaType;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpVariantAlsoNegotiates;
 
 /**
  * Trait ResponseHttpCodesTrait
@@ -368,5 +380,101 @@ trait ResponseHttpCodesTrait
     public function httpStatusUnavailableForLegalReasons()
     {
         return $this->_add(HttpUnavailableForLegalReasons::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusInternalServerError()
+    {
+        return $this->_add(HttpInternalServerError::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusNotImplemented()
+    {
+        return $this->_add(HttpNotImplemented::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusBadGateway()
+    {
+        return $this->_add(HttpBadGateway::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusServiceUnavailable()
+    {
+        return $this->_add(HttpServiceUnavailable::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusGatewayTimeout()
+    {
+        return $this->_add(HttpGatewayTimeout::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusHttpVersionNotSupported()
+    {
+        return $this->_add(HttpHttpVersionNotSupported::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusVariantAlsoNegotiates()
+    {
+        return $this->_add(HttpVariantAlsoNegotiates::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusInsufficientStorage()
+    {
+        return $this->_add(HttpInsufficientStorage::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusLoopDetected()
+    {
+        return $this->_add(HttpLoopDetected::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusBandwidthLimitExceeded()
+    {
+        return $this->_add(HttpBandwidthLimitExceeded::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusNotExtended()
+    {
+        return $this->_add(HttpNotExtended::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusNetworkAuthenticationRequired()
+    {
+        return $this->_add(HttpNetworkAuthenticationRequired::FILTER_NAME, func_get_args());
     }
 }

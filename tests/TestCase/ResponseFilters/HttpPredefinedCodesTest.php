@@ -14,7 +14,9 @@ namespace RestControl\Tests\TestCase\ResponseFilters;
 use PHPUnit\Framework\TestCase;
 use RestControl\TestCase\ResponseFilters\HttpCodes\AbstractPredefinedHttpCode;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpAccepted;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadGateway;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadRequest;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBandwidthLimitExceeded;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConflict;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionRefused;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionTimedOut;
@@ -23,15 +25,23 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpCreated;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpExpectationFailed;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpForbidden;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGatewayTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGone;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpHttpVersionNotSupported;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpImATeapot;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInsufficientStorage;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInternalServerError;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLengthRequired;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLoopDetected;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMethodNotAllowed;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMovedPermanently;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMultipleChoices;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNetworkAuthenticationRequired;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNoContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNonAuthoritativeInformation;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotExtended;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotImplemented;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotModified;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpOk;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPartialContent;
@@ -44,6 +54,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestUriTooLong;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpResetContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSeeOther;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpServiceUnavailable;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchingProtocols;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTemporaryRedirect;
@@ -51,6 +62,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnauthorized;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnavailableForLegalReasons;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnsupportedMediaType;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpVariantAlsoNegotiates;
 
 class HttpPredefinedCodesTest extends TestCase
 {
@@ -245,6 +257,66 @@ class HttpPredefinedCodesTest extends TestCase
             HttpUnavailableForLegalReasons::class,
             451,
             'httpStatusUnavailableForLegalReasons',
+        ],
+        [
+            HttpInternalServerError::class,
+            500,
+            'httpStatusInternalServerError',
+        ],
+        [
+            HttpNotImplemented::class,
+            501,
+            'httpStatusNotImplemented',
+        ],
+        [
+            HttpBadGateway::class,
+            502,
+            'httpStatusBadGateway',
+        ],
+        [
+            HttpServiceUnavailable::class,
+            503,
+            'httpStatusServiceUnavailable',
+        ],
+        [
+            HttpGatewayTimeout::class,
+            504,
+            'httpStatusGatewayTimeout',
+        ],
+        [
+            HttpHttpVersionNotSupported::class,
+            505,
+            'httpStatusHttpVersionNotSupported',
+        ],
+        [
+            HttpVariantAlsoNegotiates::class,
+            506,
+            'httpStatusVariantAlsoNegotiates',
+        ],
+        [
+            HttpInsufficientStorage::class,
+            507,
+            'httpStatusInsufficientStorage',
+        ],
+        [
+            HttpLoopDetected::class,
+            508,
+            'httpStatusLoopDetected',
+        ],
+        [
+            HttpBandwidthLimitExceeded::class,
+            509,
+            'httpStatusBandwidthLimitExceeded',
+        ],
+        [
+            HttpNotExtended::class,
+            510,
+            'httpStatusNotExtended',
+        ],
+        [
+            HttpNetworkAuthenticationRequired::class,
+            511,
+            'httpStatusNetworkAuthenticationRequired',
         ],
     ];
 

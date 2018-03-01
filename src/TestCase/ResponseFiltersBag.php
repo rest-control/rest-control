@@ -18,7 +18,9 @@ use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\HttpCode;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadGateway;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadRequest;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBandwidthLimitExceeded;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConflict;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionRefused;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionTimedOut;
@@ -27,16 +29,24 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpCreated;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpExpectationFailed;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpForbidden;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGatewayTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGone;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpHttpVersionNotSupported;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpImATeapot;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInsufficientStorage;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpInternalServerError;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLengthRequired;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLoopDetected;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMethodNotAllowed;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMovedPermanently;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMultipleChoices;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNetworkAuthenticationRequired;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNoContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNonAuthoritativeInformation;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotAcceptable;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotExtended;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotImplemented;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotModified;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpOk;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPartialContent;
@@ -48,6 +58,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestTimeout;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestUriTooLong;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpResetContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSeeOther;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpServiceUnavailable;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchingProtocols;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTemporaryRedirect;
@@ -56,6 +67,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnauthorized;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnavailableForLegalReasons;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnsupportedMediaType;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpVariantAlsoNegotiates;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\StatsCollector\StatsCollector;
@@ -126,6 +138,18 @@ class ResponseFiltersBag
             new HttpExpectationFailed(),
             new HttpImATeapot(),
             new HttpUnavailableForLegalReasons(),
+            new HttpInternalServerError(),
+            new HttpNotImplemented(),
+            new HttpBadGateway(),
+            new HttpServiceUnavailable(),
+            new HttpGatewayTimeout(),
+            new HttpHttpVersionNotSupported(),
+            new HttpVariantAlsoNegotiates(),
+            new HttpInsufficientStorage(),
+            new HttpLoopDetected(),
+            new HttpBandwidthLimitExceeded(),
+            new HttpNotExtended(),
+            new HttpNetworkAuthenticationRequired(),
         ]);
 
         $this->addFilters($filters);
