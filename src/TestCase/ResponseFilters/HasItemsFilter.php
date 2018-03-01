@@ -25,7 +25,7 @@ use RestControl\Utils\ResponseItemsCollection;
  */
 class HasItemsFilter extends HasItemFilter
 {
-    const FILTER_NAME =  'hasItems';
+    const FILTER_NAME = 'hasItems';
 
     /**
      * @param array $params

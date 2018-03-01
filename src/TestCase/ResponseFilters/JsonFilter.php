@@ -20,7 +20,7 @@ use RestControl\ApiClient\ApiClientResponse;
  */
 class JsonFilter extends AbstractFilter implements FilterInterface
 {
-    const FILTER_NAME =  'json';
+    const FILTER_NAME = 'json';
 
     const ERROR_WRONG_CONTENT_TYPE = 1;
 

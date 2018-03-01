@@ -23,7 +23,7 @@ class HeaderFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;
 
-    const FILTER_NAME         =  'header';
+    const FILTER_NAME         = 'header';
     const ERROR_INVALID_VALUE = 1;
 
     /**
