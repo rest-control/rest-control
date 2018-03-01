@@ -12,28 +12,48 @@
 namespace RestControl\TestCase\Traits;
 
 use RestControl\TestCase\ResponseFilters\HttpCode;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpBadRequest;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConflict;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionRefused;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpConnectionTimedOut;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpContinue;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpCreated;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpExpectationFailed;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpForbidden;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpFound;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpGone;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpImATeapot;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpLengthRequired;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMovedPermanently;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpMultipleChoices;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNoContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNonAuthoritativeInformation;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotAcceptable;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotFound;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpNotModified;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpOk;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPartialContent;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPaymentRequired;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpPreconditionFailed;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpProxyAuthenticationRequired;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestedRangeNotSatisfiable;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestEntityTooLarge;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestTimeout;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpRequestUriTooLong;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpResetContent;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSeeOther;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchingProtocols;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpSwitchProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTemporaryRedirect;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpTooManyRedirects;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnauthorized;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnavailableForLegalReasons;
+use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnsupportedMediaType;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
 
 /**
  * Trait ResponseHttpCodesTrait
+ *
  * @package RestControl\TestCase\Traits
  */
 trait ResponseHttpCodesTrait
@@ -196,5 +216,157 @@ trait ResponseHttpCodesTrait
     public function httpStatusTooManyRedirects()
     {
         return $this->_add(HttpTooManyRedirects::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusBadRequest()
+    {
+        return $this->_add(HttpBadRequest::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusUnauthorized()
+    {
+        return $this->_add(HttpUnauthorized::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusPaymentRequired()
+    {
+        return $this->_add(HttpPaymentRequired::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusForbidden()
+    {
+        return $this->_add(HttpForbidden::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusNotFound()
+    {
+        return $this->_add(HttpNotFound::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusNotAcceptable()
+    {
+        return $this->_add(HttpNotAcceptable::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusProxyAuthenticationRequired()
+    {
+        return $this->_add(HttpProxyAuthenticationRequired::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusRequestTimeout()
+    {
+        return $this->_add(HttpRequestTimeout::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusConflict()
+    {
+        return $this->_add(HttpConflict::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusGone()
+    {
+        return $this->_add(HttpGone::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusLengthRequired()
+    {
+        return $this->_add(HttpLengthRequired::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusPreconditionFailed()
+    {
+        return $this->_add(HttpPreconditionFailed::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusRequestEntityTooLarge()
+    {
+        return $this->_add(HttpRequestEntityTooLarge::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusRequestUriTooLong()
+    {
+        return $this->_add(HttpRequestUriTooLong::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusUnsupportedMediaType()
+    {
+        return $this->_add(HttpUnsupportedMediaType::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusRequestedRangeNotSatisfiable()
+    {
+        return $this->_add(HttpRequestedRangeNotSatisfiable::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusExpectationFailed()
+    {
+        return $this->_add(HttpExpectationFailed::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusImATeapot()
+    {
+        return $this->_add(HttpImATeapot::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @return $this
+     */
+    public function httpStatusUnavailableForLegalReasons()
+    {
+        return $this->_add(HttpUnavailableForLegalReasons::FILTER_NAME, func_get_args());
     }
 }
