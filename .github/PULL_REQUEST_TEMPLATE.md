@@ -2,7 +2,7 @@ General information
 
 | Q             | A
 | ------------- | ---
-| Branch?       | master for features 
+| Branch?       | master for features
 | Bug fix?      | yes/no
 | New feature?  | yes/no
 | Fixed tickets | #...   <!-- #-prefixed issue number(s), if any -->
