@@ -23,16 +23,10 @@ use RestControl\TestCase\StatsCollector\EndContextException;
  */
 class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
+    const FILTER_NAME = 'jsonPath';
+
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'jsonPath';
-    }
 
     /**
      * @param array $params

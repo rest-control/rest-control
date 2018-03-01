@@ -25,13 +25,7 @@ use RestControl\Utils\ResponseItemsCollection;
  */
 class HasItemsFilter extends HasItemFilter
 {
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'hasItems';
-    }
+    const FILTER_NAME =  'hasItems';
 
     /**
      * @param array $params
