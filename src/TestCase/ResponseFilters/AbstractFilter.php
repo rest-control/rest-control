@@ -23,10 +23,20 @@ abstract class AbstractFilter
 {
     use FilterTrait;
 
+    const FILTER_NAME = '';
+
     /**
      * @var StatsCollectorInterface|null
      */
     protected $statsCollector = null;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return (string) $this::FILTER_NAME;
+    }
 
     /**
      * @param StatsCollectorInterface|null $statsCollector
