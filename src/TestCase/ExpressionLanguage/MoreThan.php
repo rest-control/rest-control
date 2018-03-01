@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class MoreThan
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class MoreThan extends LessThan
 {
     const FILTER_NAME = 'moreThan';

@@ -13,11 +13,6 @@ namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 
-/**
- * Class HttpCode
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class HttpCode extends AbstractFilter implements FilterInterface
 {
     const FILTER_NAME         = 'httpCode';

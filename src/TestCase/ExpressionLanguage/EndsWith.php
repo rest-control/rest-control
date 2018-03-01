@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class EndsWith
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class EndsWith implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'endsWith';

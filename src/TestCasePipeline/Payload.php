@@ -17,8 +17,6 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class Payload
- *
- * @package RestControl\TestCasePipeline
  */
 class Payload
 {

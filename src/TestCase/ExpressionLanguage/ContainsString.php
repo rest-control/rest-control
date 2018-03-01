@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class ContainsString
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class ContainsString implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'containsString';

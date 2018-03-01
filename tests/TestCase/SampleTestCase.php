@@ -12,7 +12,6 @@
 namespace RestControl\Tests\TestCase;
 
 use RestControl\TestCase\AbstractTestCase;
-use RestControl\Tests\TestCase\ResponseFilters\AnotherResponseItem;
 
 class SampleTestCase extends AbstractTestCase
 {

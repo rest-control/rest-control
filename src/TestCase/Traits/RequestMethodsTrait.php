@@ -13,11 +13,6 @@ namespace RestControl\TestCase\Traits;
 
 use RestControl\TestCase\Request;
 
-/**
- * Trait RequestMethodsTrait
- *
- * @package RestControl\TestCase\Traits
- */
 trait RequestMethodsTrait
 {
     /**

@@ -73,11 +73,6 @@ use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
-/**
- * Class ResponseFiltersBag
- *
- * @package RestControl\TestCase
- */
 class ResponseFiltersBag
 {
     /**

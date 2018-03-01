@@ -13,11 +13,6 @@ namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\ApiClient\ApiClientResponse;
 
-/**
- * Class JsonFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class JsonFilter extends AbstractFilter implements FilterInterface
 {
     const FILTER_NAME = 'json';

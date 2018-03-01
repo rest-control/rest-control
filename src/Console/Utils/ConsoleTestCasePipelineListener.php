@@ -21,11 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use RestControl\TestCasePipeline\TestObject;
 
-/**
- * Class ConsoleTestCasePipelineListener
- *
- * @package RestControl\Console\Utils
- */
 class ConsoleTestCasePipelineListener implements EventSubscriberInterface
 {
     const TABLE_WIDTH = 12;

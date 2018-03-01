@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class EqualsTo
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class EqualsTo implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'equalsTo';

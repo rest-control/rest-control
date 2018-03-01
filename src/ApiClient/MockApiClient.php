@@ -19,11 +19,6 @@ use Psr\Log\InvalidArgumentException;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 use RestControl\Utils\MockApiResponseInterface;
 
-/**
- * Class MockApiClient
- *
- * @package RestControl\ApiClient
- */
 class MockApiClient extends HttpGuzzleClient implements ApiClientInterface
 {
     /**

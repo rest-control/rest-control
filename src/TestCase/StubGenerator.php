@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase;
 
-/**
- * Class StubGenerator
- *
- * @package RestControl\Loader
- */
 class StubGenerator
 {
     /**

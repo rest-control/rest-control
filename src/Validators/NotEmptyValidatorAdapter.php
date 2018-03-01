@@ -15,8 +15,6 @@ use Zend\Validator\NotEmpty;
 
 /**
  * Class NotEmptyValidator
- *
- * @package RestControl\Validators
  */
 class NotEmptyValidatorAdapter extends AbstractValidatorAdapter
 {

@@ -11,9 +11,4 @@
 
 namespace RestControl\TestCase\StatsCollector;
 
-/**
- * Class EndContextException
- *
- * @package RestControl\TestCase\StatsCollector
- */
 class EndContextException extends \Exception{}

@@ -15,8 +15,6 @@ use Zend\Validator\Isbn;
 
 /**
  * Class ISBNValidator
- *
- * @package RestControl\Validators
  */
 class ISBNValidatorAdapter extends AbstractValidatorAdapter
 {

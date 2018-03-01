@@ -15,8 +15,6 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class ResponseItemsCollection
- *
- * @package RestControl\Utils
  */
 class ResponseItemsCollection
 {

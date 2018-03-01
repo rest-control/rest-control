@@ -15,8 +15,6 @@ use Zend\Validator\Hostname;
 
 /**
  * Class HostnameValidator
- *
- * @package RestControl\Validators
  */
 class HostnameValidatorAdapter extends AbstractValidatorAdapter
 {

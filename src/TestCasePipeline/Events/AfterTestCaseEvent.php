@@ -13,8 +13,6 @@ namespace RestControl\TestCasePipeline\Events;
 
 /**
  * Class AfterTestCaseEvent
- *
- * @package RestControl\TestCasePipeline\Events
  */
 class AfterTestCaseEvent extends BeforeTestCaseEvent
 {

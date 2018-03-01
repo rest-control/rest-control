@@ -14,11 +14,6 @@ namespace RestControl\ApiClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 
-/**
- * Class HttpGuzzleClient
- *
- * @package RestControl\ApiClient
- */
 class HttpGuzzleClient implements ApiClientInterface
 {
     /**

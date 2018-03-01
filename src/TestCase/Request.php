@@ -14,11 +14,6 @@ namespace RestControl\TestCase;
 use RestControl\TestCase\Traits\RequestMethodsTrait;
 use RestControl\TestCase\Traits\RequestTrait;
 
-/**
- * Class Request
- *
- * @package RestControl\TestCase
- */
 class Request extends AbstractChain
 {
     use RequestTrait,

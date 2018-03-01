@@ -15,8 +15,6 @@ use Zend\Validator\Uuid;
 
 /**
  * Class UUIDValidator
- *
- * @package RestControl\Validators
  */
 class UUIDValidatorAdapter extends AbstractValidatorAdapter
 {

@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class Expression
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class Expression
 {
     /**

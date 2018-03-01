@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class Validators
- *
- * @package RestControl\TestCase
- */
 class Validators
 {
     /**

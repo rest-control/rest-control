@@ -14,11 +14,6 @@ namespace RestControl\TestCase\ResponseFilters;
 use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
-/**
- * Class AbstractFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 abstract class AbstractFilter
 {
     use FilterTrait;

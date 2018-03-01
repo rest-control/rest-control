@@ -16,11 +16,6 @@ use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
 
-/**
- * Class Response
- *
- * @package RestControl\TestCase
- */
 class Response extends AbstractChain
 {
     const CO_JSON = 'json';

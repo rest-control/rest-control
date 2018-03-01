@@ -17,6 +17,8 @@ return PhpCsFixer\Config::create()
                 'phpdoc_trim'                 => true,
                 'phpdoc_inline_tag'           => true,
                 'phpdoc_separation'           => true,
+                'phpdoc_no_package'           => true,
+                'no_unused_imports'           => true,
                 'blank_line_before_statement' => [
                     'statements' => [
                         'return',

@@ -13,11 +13,6 @@ namespace RestControl\TestCase\ExpressionLanguage;
 
 use Psr\Log\InvalidArgumentException;
 
-/**
- * Class EachItems
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class EachItems implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'eachItems';

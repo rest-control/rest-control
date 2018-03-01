@@ -20,11 +20,6 @@ use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\MoreThan;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
 
-/**
- * Class AbstractTestCase
- *
- * @package RestControl\Utils
- */
 abstract class AbstractTestCase
 {
     /**

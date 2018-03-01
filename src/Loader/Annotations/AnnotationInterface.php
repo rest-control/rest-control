@@ -11,11 +11,6 @@
 
 namespace RestControl\Loader\Annotations;
 
-/**
- * Interface AnnotationInterface
- *
- * @package RestControl\Loader\Annotations
- */
 interface AnnotationInterface
 {
     /**

@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Interface ExpressionValidatorInterface
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 interface ExpressionValidatorInterface
 {
     /**

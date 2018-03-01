@@ -11,11 +11,6 @@
 
 namespace RestControl\Loader;
 
-/**
- * Class TestCaseRunner
- *
- * @package RestControl\Loader
- */
 class TestCaseDelegate
 {
     /**

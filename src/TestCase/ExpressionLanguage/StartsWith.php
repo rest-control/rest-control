@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class StartsWith
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class StartsWith implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'startsWith';

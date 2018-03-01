@@ -13,11 +13,6 @@ namespace RestControl\TestCase\ExpressionLanguage;
 
 use Psr\Log\InvalidArgumentException;
 
-/**
- * Class LessThan
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class LessThan implements ExpressionValidatorInterface
 {
     const FILTER_NAME = 'lessThan';

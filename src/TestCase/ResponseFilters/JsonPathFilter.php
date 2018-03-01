@@ -16,11 +16,6 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\StatsCollector\EndContextException;
 
-/**
- * Class JsonPathFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
     const FILTER_NAME = 'jsonPath';

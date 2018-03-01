@@ -28,8 +28,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class TestCasePipeline
- *
- * @package RestControl\TestCasePipeline
  */
 class TestCasePipeline
 {

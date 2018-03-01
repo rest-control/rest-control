@@ -19,8 +19,6 @@ use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Class TestObject
- *
- * @package RestControl\TestCasePipeline
  */
 class TestObject
 {

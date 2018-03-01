@@ -16,8 +16,6 @@ use RestControl\TestCase\Request;
 
 /**
  * Class ApiClientRequestAdapter
- *
- * @package RestControl\TestCasePipeline\Adapters
  */
 class ApiClientRequestAdapter
 {

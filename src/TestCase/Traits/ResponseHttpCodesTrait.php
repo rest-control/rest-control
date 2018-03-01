@@ -63,11 +63,6 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUnsupportedMediaType;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpVariantAlsoNegotiates;
 
-/**
- * Trait ResponseHttpCodesTrait
- *
- * @package RestControl\TestCase\Traits
- */
 trait ResponseHttpCodesTrait
 {
     /**

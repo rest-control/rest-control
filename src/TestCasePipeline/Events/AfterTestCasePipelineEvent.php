@@ -20,8 +20,6 @@ use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
 /**
  * Class AfterTestCasePipelineEvent
- *
- * @package RestControl\TestCasePipeline\Events
  */
 class AfterTestCasePipelineEvent extends Event
 {

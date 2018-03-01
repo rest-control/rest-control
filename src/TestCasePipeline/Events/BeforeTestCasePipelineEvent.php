@@ -19,8 +19,6 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BeforeTestCasePipelineEvent
- *
- * @package RestControl\TestCasePipeline\Events
  */
 class BeforeTestCasePipelineEvent extends Event
 {

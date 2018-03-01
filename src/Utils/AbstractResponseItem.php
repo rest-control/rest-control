@@ -15,8 +15,6 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class AbstractResponseItem
- *
- * @package RestControl\Utils
  */
 abstract class AbstractResponseItem
 {

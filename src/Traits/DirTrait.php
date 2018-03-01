@@ -13,8 +13,6 @@ namespace RestControl\Traits;
 
 /**
  * Trait ChainTrait
- *
- * @package RestControl\Traits
  */
 trait DirTrait
 {

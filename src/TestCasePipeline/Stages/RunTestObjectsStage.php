@@ -24,8 +24,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RunTestObjectsStage
- *
- * @package RestControl\TestCasePipeline\Stages
  */
 class RunTestObjectsStage
 {

@@ -11,13 +11,10 @@
 
 namespace RestControl\Validators;
 
-use Zend\Validator\Iban;
 use Zend\Validator\Ip;
 
 /**
  * Class IPValidator
- *
- * @package RestControl\Validators
  */
 class IPValidatorAdapter extends AbstractValidatorAdapter
 {

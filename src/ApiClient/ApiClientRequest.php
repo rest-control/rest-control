@@ -11,11 +11,6 @@
 
 namespace RestControl\ApiClient;
 
-/**
- * Class RequestSchema
- *
- * @package RestControl\Utils
- */
 class ApiClientRequest
 {
     /**

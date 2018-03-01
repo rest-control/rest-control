@@ -11,14 +11,8 @@
 
 namespace RestControl\Loader;
 
-use League\Container\Container;
 use Psr\Container\ContainerInterface;
 
-/**
- * Class TestsBag
- *
- * @package RestControl\Loader
- */
 class TestsBag
 {
     /**

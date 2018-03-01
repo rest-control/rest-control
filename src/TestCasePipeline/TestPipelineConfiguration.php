@@ -16,8 +16,6 @@ use RestControl\ApiClient\HttpGuzzleClient;
 
 /**
  * Class TestPipelineConfiguration
- *
- * @package RestControl\TestCasePipeline
  */
 class TestPipelineConfiguration
 {

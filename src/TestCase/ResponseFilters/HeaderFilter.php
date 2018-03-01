@@ -14,11 +14,6 @@ namespace RestControl\TestCase\ResponseFilters;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 
-/**
- * Class HeaderFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class HeaderFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;

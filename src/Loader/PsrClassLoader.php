@@ -18,11 +18,6 @@ use RestControl\Loader\Annotations\TestAnnotation;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- * Class PsrClassLoader
- *
- * @package RestControl\Loader
- */
 class PsrClassLoader implements LoaderInterface
 {
     /**

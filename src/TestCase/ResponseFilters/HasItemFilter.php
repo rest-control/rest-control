@@ -20,11 +20,6 @@ use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Validators\Factory;
 
-/**
- * Class HasItemFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class HasItemFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;
