@@ -118,11 +118,11 @@ class TestPipelineConfigurationTest extends TestCase
             ],
         ], $configuration->getVariables());
 
-        $this->assertSame(
-            HttpGuzzleClient::class,
-            $configuration->getApiClient()
-        );
+        $this->assertSame([
+            'sample',
+            'sample2',
+        ], $configuration->getVariable('$.sample2.*'));
 
-        $this->assertEmpty($configuration->getResponseFilters());
+        $this->assertSame('value', $configuration->getVariable('$.sample')[0]);
     }
 }
