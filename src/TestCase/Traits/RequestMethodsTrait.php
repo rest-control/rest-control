@@ -54,4 +54,18 @@ trait RequestMethodsTrait
                     ->_add(Request::CO_METHOD, [Request::METHOD_PUT, $url, $urlParams])
                     ->body($body);
     }
+
+    /**
+     * @param string     $url
+     * @param array      $urlParams
+     * @param null|mixed $body
+     *
+     * @return $this
+     */
+    public function delete($url, array $urlParams = [], $body = null)
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_DELETE, $url, $urlParams])
+                    ->body($body);
+    }
 }

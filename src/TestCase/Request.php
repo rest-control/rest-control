@@ -19,9 +19,10 @@ class Request extends AbstractChain
     use RequestTrait,
         RequestMethodsTrait;
 
-    const METHOD_POST = 'post';
-    const METHOD_GET  = 'get';
-    const METHOD_PUT  = 'put';
+    const METHOD_POST   = 'post';
+    const METHOD_GET    = 'get';
+    const METHOD_PUT    = 'put';
+    const METHOD_DELETE = 'delete';
 
     const CO_METHOD      = 'method';
     const CO_BODY        = 'body';
