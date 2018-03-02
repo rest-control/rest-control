@@ -39,6 +39,23 @@ abstract class AbstractTestCase
     }
 
     /**
+     * @param string $varPath
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getVar($varPath, $default = null)
+    {
+        $data = $this->testPipelineConfiguration->getVariable($varPath);
+
+        if(empty($data)) {
+            return $default;
+        }
+
+        return $data[0];
+    }
+
+    /**
      * @return Request
      */
     public function send()

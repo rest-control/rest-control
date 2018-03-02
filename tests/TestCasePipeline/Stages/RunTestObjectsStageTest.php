@@ -14,7 +14,6 @@ namespace RestControl\Tests\TestCasePipeline\Stages;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use RestControl\ApiClient\ApiClientInterface;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\Loader\TestCaseDelegate;

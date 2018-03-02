@@ -19,11 +19,29 @@ class AbstractTestCaseTest extends TestCase
 {
     public function testExpressions()
     {
-        $configuration = $this->getMockBuilder(TestPipelineConfiguration::class)
-                              ->disableOriginalConstructor()
-                              ->getMockForAbstractClass();
+        $configuration = new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+            'variables' => [
+                'sample' => 'value',
+                'sample2' => [
+                    'sample'  => 'value2',
+                    'sample2' => 'value3',
+                ],
+            ],
+        ]);
 
         $obj = new SampleTestCase($configuration);
+
+        $this->assertSame('value', $obj->getVar('sample'));
+        $this->assertSame('value2', $obj->getVar('sample2.sample'));
+        $this->assertSame('value3', $obj->getVar('sample2.sample2'));
+        $this->assertSame([
+            'sample'  => 'value2',
+            'sample2' => 'value3',
+        ], $obj->getVar('sample2'));
 
         $equalsTo = $obj->equalsTo(20, true);
         $this->assertInstanceOf(Expression::class, $equalsTo);
