@@ -117,7 +117,19 @@ trait RequestMethodsTrait
     public function options($url, array $urlParams = [], $body = null)
     {
         return $this->remove(Request::CO_METHOD)
-            ->_add(Request::CO_METHOD, [Request::METHOD_OPTIONS, $url, $urlParams])
-            ->body($body);
+                    ->_add(Request::CO_METHOD, [Request::METHOD_OPTIONS, $url, $urlParams])
+                    ->body($body);
+    }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function trace($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_TRACE, $url, $urlParams]);
     }
 }

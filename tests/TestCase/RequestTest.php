@@ -156,7 +156,6 @@ class RequestTest extends TestCase
         );
     }
 
-
     public function testOptions()
     {
         $this->checkRequest(
@@ -168,6 +167,19 @@ class RequestTest extends TestCase
                 'sample' => 'asdfasdf',
             ],
             'sample body'
+        );
+    }
+
+    public function testTrace()
+    {
+        $this->checkRequest(
+            1,
+            Request::METHOD_TRACE,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ]
         );
     }
 
