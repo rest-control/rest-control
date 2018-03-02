@@ -24,6 +24,7 @@ class Request extends AbstractChain
     const METHOD_PUT    = 'put';
     const METHOD_DELETE = 'delete';
     const METHOD_HEAD   = 'head';
+    const METHOD_PATCH  = 'patch';
 
     const CO_METHOD      = 'method';
     const CO_BODY        = 'body';
