@@ -58,7 +58,7 @@ class SampleTestCase extends BaseTestCase
     public function testSampleMethod()
     {
         //todo
-        return $this->send();
+        return send();
     }
     
     /**
@@ -71,7 +71,7 @@ class SampleTestCase extends BaseTestCase
     public function anotherMethod()
     {
         //todo
-        return $this->send();
+        return send();
     }
 }';
         $this->assertSame(
