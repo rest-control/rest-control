@@ -75,6 +75,14 @@ class TestPipelineConfiguration
     }
 
     /**
+     * @return array
+     */
+    public function getVariables()
+    {
+        return $this->get('variables', []);
+    }
+
+    /**
      * @param string $index
      * @param mixed  $default
      *
@@ -110,6 +118,10 @@ class TestPipelineConfiguration
 
         if(isset($configuration['apiMockResponses']) && is_array($configuration['apiMockResponses'])) {
             $this->configuration['apiMockResponses'] = $configuration['apiMockResponses'];
+        }
+
+        if(isset($configuration['variables']) && is_array($configuration['variables'])) {
+            $this->configuration['variables'] = $configuration['variables'];
         }
     }
 

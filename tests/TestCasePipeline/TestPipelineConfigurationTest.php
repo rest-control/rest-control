@@ -93,4 +93,36 @@ class TestPipelineConfigurationTest extends TestCase
             'Another\Class',
         ], $configuration->getApiMockResponses());
     }
+
+    public function testVariables()
+    {
+        $configuration = new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+            'variables' => [
+                'sample'  => 'value',
+                'sample2' => [
+                    'sample',
+                    'sample2',
+                ],
+            ],
+        ]);
+
+        $this->assertSame([
+            'sample'  => 'value',
+            'sample2' => [
+                'sample',
+                'sample2',
+            ],
+        ], $configuration->getVariables());
+
+        $this->assertSame(
+            HttpGuzzleClient::class,
+            $configuration->getApiClient()
+        );
+
+        $this->assertEmpty($configuration->getResponseFilters());
+    }
 }
