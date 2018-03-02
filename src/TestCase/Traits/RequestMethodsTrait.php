@@ -106,4 +106,18 @@ trait RequestMethodsTrait
         return $this->remove(Request::CO_METHOD)
                     ->_add(Request::CO_METHOD, [Request::METHOD_PURGE, $url, $urlParams]);
     }
+
+    /**
+     * @param string     $url
+     * @param array      $urlParams
+     * @param null|mixed $body
+     *
+     * @return $this
+     */
+    public function options($url, array $urlParams = [], $body = null)
+    {
+        return $this->remove(Request::CO_METHOD)
+            ->_add(Request::CO_METHOD, [Request::METHOD_OPTIONS, $url, $urlParams])
+            ->body($body);
+    }
 }

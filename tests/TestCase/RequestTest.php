@@ -157,6 +157,20 @@ class RequestTest extends TestCase
     }
 
 
+    public function testOptions()
+    {
+        $this->checkRequest(
+            2,
+            Request::METHOD_OPTIONS,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ],
+            'sample body'
+        );
+    }
+
     protected function checkRequest(
         $expectedChainLength = 1,
         $method,
