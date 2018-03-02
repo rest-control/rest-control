@@ -13,12 +13,17 @@ namespace RestControl\Tests\TestCase;
 
 use PHPUnit\Framework\TestCase;
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
 class AbstractTestCaseTest extends TestCase
 {
     public function testExpressions()
     {
-        $obj = new SampleTestCase();
+        $configuration = $this->getMockBuilder(TestPipelineConfiguration::class)
+                              ->disableOriginalConstructor()
+                              ->getMockForAbstractClass();
+
+        $obj = new SampleTestCase($configuration);
 
         $equalsTo = $obj->equalsTo(20, true);
         $this->assertInstanceOf(Expression::class, $equalsTo);

@@ -19,9 +19,25 @@ use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\MoreThan;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
+use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
 abstract class AbstractTestCase
 {
+    /**
+     * @var TestPipelineConfiguration
+     */
+    protected $testPipelineConfiguration;
+
+    /**
+     * AbstractTestCase constructor.
+     *
+     * @param TestPipelineConfiguration $testPipelineConfiguration
+     */
+    public function __construct(TestPipelineConfiguration $testPipelineConfiguration)
+    {
+        $this->testPipelineConfiguration = $testPipelineConfiguration;
+    }
+
     /**
      * @return Request
      */

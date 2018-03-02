@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCasePipeline\Stages;
 
+use Psr\Container\ContainerInterface;
 use RestControl\ApiClient\ApiClientRequest;
 use RestControl\TestCase\ChainTrait;
 use RestControl\TestCase\ResponseFiltersBag;
@@ -45,18 +46,26 @@ class RunTestObjectsStage
     protected $eventDispatcher;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * RunTestObjectsStage constructor.
      *
      * @param ResponseFiltersBag       $responseFiltersBag
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ContainerInterface       $container
      */
     public function __construct(
         ResponseFiltersBag $responseFiltersBag,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ContainerInterface $container
     ){
         $this->apiClientRequestAdapter = new ApiClientRequestAdapter();
         $this->responseFiltersBag      = $responseFiltersBag;
         $this->eventDispatcher         = $eventDispatcher;
+        $this->container               = $container;
     }
 
     /**
@@ -131,7 +140,7 @@ class RunTestObjectsStage
         $className = $delegate->getClassName();
 
         $chain = call_user_func([
-            new $className(),
+            $this->container->get($className),
             $delegate->getMethodName()
         ]);
 

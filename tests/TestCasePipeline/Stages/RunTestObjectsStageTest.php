@@ -11,7 +11,10 @@
 
 namespace RestControl\Tests\TestCasePipeline\Stages;
 
+use League\Container\Container;
+use League\Container\ReflectionContainer;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use RestControl\ApiClient\ApiClientInterface;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\Loader\TestCaseDelegate;
@@ -22,6 +25,7 @@ use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
 use RestControl\TestCasePipeline\Payload;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
 use RestControl\TestCasePipeline\TestObject;
+use RestControl\TestCasePipeline\TestPipelineConfiguration;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RunTestObjectsStageTest extends TestCase
@@ -34,6 +38,9 @@ class RunTestObjectsStageTest extends TestCase
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
                                 ->getMockForAbstractClass();
 
+        $container = new Container();
+        $container->delegate(new ReflectionContainer());
+
         $payload = $this->getMockBuilder(Payload::class)
                         ->disableOriginalConstructor()
                         ->getMock();
@@ -43,7 +50,8 @@ class RunTestObjectsStageTest extends TestCase
 
         $stage = new RunTestObjectsStage(
             $responseFiltersBag,
-            $eventDispatcher
+            $eventDispatcher,
+            $container
         );
 
         $this->assertInstanceOf(Payload::class, $stage->__invoke(
@@ -94,9 +102,19 @@ class RunTestObjectsStageTest extends TestCase
                            ->method('filterResponse')
                            ->willReturn($statsCollector);
 
+        $container = new Container();
+        $container->delegate(new ReflectionContainer());
+        $container->add(TestPipelineConfiguration::class, new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+        ]));
+
         $stage = new RunTestObjectsStage(
             $responseFiltersBag,
-            $eventDispatcher
+            $eventDispatcher,
+            $container
         );
 
         $stage->__invoke($payload);
