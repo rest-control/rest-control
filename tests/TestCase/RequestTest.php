@@ -20,80 +20,43 @@ class RequestTest extends TestCase
 {
     public function testPost()
     {
-        $request = new Request();
-        $request->post('http://sample/{id}', [
-            'id' => 23,
+        $this->checkRequest(
+            2,
+            Request::METHOD_POST,
+            'http://sample/{id}',
+            [
+                'id' => 23,
             'sample' => 'asdfasdf',
-        ], 'sample body');
-
-        $this->assertSame(2, $request->_getChainLength());
-
-        $obj = $request->_getChainObject(Request::CO_METHOD);
-        $this->assertInstanceOf(ChainObject::class, $obj);
-        $this->assertSame(Request::CO_METHOD, $obj->getObjectName());
-
-        $this->assertSame(Request::METHOD_POST, $obj->getParam(0));
-        $this->assertSame('http://sample/{id}', $obj->getParam(1));
-        $this->assertSame([
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], $obj->getParam(2));
-
-        $bodyObj = $request->_getChainObject(Request::CO_BODY);
-        $this->assertInstanceOf(ChainObject::class, $bodyObj);
-        $this->assertSame(Request::CO_BODY, $bodyObj->getObjectName());
-
-        $this->assertSame('sample body', $bodyObj->getParam(0));
+            ],
+            'sample body'
+        );
     }
 
     public function testGet()
     {
-        $request = new Request();
-        $request->get('http://sample/{id}', [
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ]);
-
-        $this->assertSame(1, $request->_getChainLength());
-
-        $obj = $request->_getChainObject(Request::CO_METHOD);
-        $this->assertInstanceOf(ChainObject::class, $obj);
-        $this->assertSame(Request::CO_METHOD, $obj->getObjectName());
-
-        $this->assertSame(Request::METHOD_GET, $obj->getParam(0));
-        $this->assertSame('http://sample/{id}', $obj->getParam(1));
-        $this->assertSame([
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], $obj->getParam(2));
+        $this->checkRequest(
+            1,
+            Request::METHOD_GET,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ]
+        );
     }
 
     public function testPut()
     {
-        $request = new Request();
-        $request->put('http://sample/{id}', [
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], 'sample body');
-
-        $this->assertSame(2, $request->_getChainLength());
-
-        $obj = $request->_getChainObject(Request::CO_METHOD);
-        $this->assertInstanceOf(ChainObject::class, $obj);
-        $this->assertSame(Request::CO_METHOD, $obj->getObjectName());
-
-        $this->assertSame(Request::METHOD_PUT, $obj->getParam(0));
-        $this->assertSame('http://sample/{id}', $obj->getParam(1));
-        $this->assertSame([
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], $obj->getParam(2));
-
-        $bodyObj = $request->_getChainObject(Request::CO_BODY);
-        $this->assertInstanceOf(ChainObject::class, $bodyObj);
-        $this->assertSame(Request::CO_BODY, $bodyObj->getObjectName());
-
-        $this->assertSame('sample body', $bodyObj->getParam(0));
+        $this->checkRequest(
+            2,
+            Request::METHOD_PUT,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ],
+            'sample body'
+        );
     }
 
     public function testBody()
@@ -141,29 +104,59 @@ class RequestTest extends TestCase
 
     public function testDelete()
     {
-        $request = new Request();
-        $request->delete('http://sample/{id}', [
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], 'sample body');
+        $this->checkRequest(
+            2,
+            Request::METHOD_DELETE,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ],
+            'sample body'
+        );
+    }
 
-        $this->assertSame(2, $request->_getChainLength());
+    public function testHead()
+    {
+        $this->checkRequest(
+            1,
+            Request::METHOD_HEAD,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ]
+        );
+    }
+
+    protected function checkRequest(
+        $expectedChainLength = 1,
+        $method,
+        $uri,
+        array $urlParams = [],
+        $body = null
+    ){
+        $request = new Request();
+        $request->{$method}($uri, $urlParams, $body);
+
+        $this->assertSame($expectedChainLength, $request->_getChainLength());
 
         $obj = $request->_getChainObject(Request::CO_METHOD);
         $this->assertInstanceOf(ChainObject::class, $obj);
         $this->assertSame(Request::CO_METHOD, $obj->getObjectName());
 
-        $this->assertSame(Request::METHOD_DELETE, $obj->getParam(0));
-        $this->assertSame('http://sample/{id}', $obj->getParam(1));
-        $this->assertSame([
-            'id' => 23,
-            'sample' => 'asdfasdf',
-        ], $obj->getParam(2));
+        $this->assertSame($method, $obj->getParam(0));
+        $this->assertSame($uri, $obj->getParam(1));
+        $this->assertSame($urlParams, $obj->getParam(2));
+
+        if(!$body) {
+            return;
+        }
 
         $bodyObj = $request->_getChainObject(Request::CO_BODY);
         $this->assertInstanceOf(ChainObject::class, $bodyObj);
         $this->assertSame(Request::CO_BODY, $bodyObj->getObjectName());
 
-        $this->assertSame('sample body', $bodyObj->getParam(0));
+        $this->assertSame($body, $bodyObj->getParam(0));
     }
 }
