@@ -183,6 +183,19 @@ class RequestTest extends TestCase
         );
     }
 
+    public function testConnect()
+    {
+        $this->checkRequest(
+            1,
+            Request::METHOD_CONNECT,
+            'http://sample/{id}',
+            [
+                'id' => 23,
+                'sample' => 'asdfasdf',
+            ]
+        );
+    }
+
     protected function checkRequest(
         $expectedChainLength = 1,
         $method,

@@ -132,4 +132,16 @@ trait RequestMethodsTrait
         return $this->remove(Request::CO_METHOD)
                     ->_add(Request::CO_METHOD, [Request::METHOD_TRACE, $url, $urlParams]);
     }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function connect($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+            ->_add(Request::CO_METHOD, [Request::METHOD_CONNECT, $url, $urlParams]);
+    }
 }
