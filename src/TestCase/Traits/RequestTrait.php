@@ -34,4 +34,15 @@ trait RequestTrait
     {
         return $this->_add(Request::CO_FORM_PARAMS, func_get_args());
     }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function header($name, $value)
+    {
+        return $this->_add(Request::CO_HEADER, [$name, $value]);
+    }
 }

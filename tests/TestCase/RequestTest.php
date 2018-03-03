@@ -196,6 +196,21 @@ class RequestTest extends TestCase
         );
     }
 
+    public function testHttpBasicAuth()
+    {
+        $request = new Request();
+        $request->httpBasicAuth('user', 'secret');
+
+        $this->assertSame(1, $request->_getChainLength());
+
+        $obj = $request->_getChainObject(Request::CO_HEADER);
+        $this->assertInstanceOf(ChainObject::class, $obj);
+        $this->assertSame(Request::CO_HEADER, $obj->getObjectName());
+
+        $this->assertSame(Request::HEADER_AUTH, $obj->getParam(0));
+        $this->assertSame('user:secret', base64_decode($obj->getParam(1)));
+    }
+
     protected function checkRequest(
         $expectedChainLength = 1,
         $method,

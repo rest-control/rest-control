@@ -11,13 +11,15 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\Traits\RequestAuthTrait;
 use RestControl\TestCase\Traits\RequestMethodsTrait;
 use RestControl\TestCase\Traits\RequestTrait;
 
 class Request extends AbstractChain
 {
     use RequestTrait,
-        RequestMethodsTrait;
+        RequestMethodsTrait,
+        RequestAuthTrait;
 
     const METHOD_POST    = 'post';
     const METHOD_GET     = 'get';
@@ -30,9 +32,12 @@ class Request extends AbstractChain
     const METHOD_TRACE   = 'trace';
     const METHOD_CONNECT = 'connect';
 
+    const HEADER_AUTH    = 'auth';
+
     const CO_METHOD      = 'method';
     const CO_BODY        = 'body';
     const CO_FORM_PARAMS = 'form_params';
+    const CO_HEADER      = 'header';
 
     /**
      * @var null|Response
