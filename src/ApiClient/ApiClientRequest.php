@@ -41,6 +41,11 @@ class ApiClientRequest
     protected $body = null;
 
     /**
+     * @var array
+     */
+    protected $headers = [];
+
+    /**
      * @param string $method
      */
     public function setMethod($method)
@@ -74,6 +79,23 @@ class ApiClientRequest
     public function getMethod()
     {
         return $this->method;
+    }
+
+    /**
+     * @param string $headerName
+     * @param mixed  $value
+     */
+    public function addHeader($headerName, $value)
+    {
+        $this->headers[$headerName] = $value;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**
