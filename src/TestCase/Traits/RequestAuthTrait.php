@@ -25,7 +25,7 @@ trait RequestAuthTrait
     {
         return $this->header(
             Request::HEADER_AUTH,
-            base64_encode($username . ':' . $password)
+            'Basic ' . base64_encode($username . ':' . $password)
         );
     }
 }
