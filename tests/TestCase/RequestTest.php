@@ -208,7 +208,12 @@ class RequestTest extends TestCase
         $this->assertSame(Request::CO_HEADER, $obj->getObjectName());
 
         $this->assertSame(Request::HEADER_AUTH, $obj->getParam(0));
-        $this->assertSame('user:secret', base64_decode($obj->getParam(1)));
+
+        $expl = explode(' ', $obj->getParam(1));
+
+        $this->assertCount(2, $expl);
+        $this->assertSame('Basic', $expl[0]);
+        $this->assertSame('user:secret', base64_decode($expl[1]));
     }
 
     protected function checkRequest(
