@@ -32,7 +32,7 @@ class Request extends AbstractChain
     const METHOD_TRACE   = 'trace';
     const METHOD_CONNECT = 'connect';
 
-    const HEADER_AUTH    = 'auth';
+    const HEADER_AUTH    = 'Authorization';
 
     const CO_METHOD      = 'method';
     const CO_BODY        = 'body';
