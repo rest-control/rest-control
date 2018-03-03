@@ -31,6 +31,7 @@ class ApiClientRequestAdapter
         $this->transformMethod($request, $apiRequest);
         $this->transformFormParams($request, $apiRequest);
         $this->transformBody($request, $apiRequest);
+        $this->transformHeaders($request, $apiRequest);
 
         return $apiRequest;
     }
@@ -98,5 +99,22 @@ class ApiClientRequestAdapter
         }
 
         $apiRequest->form($formData);
+    }
+
+    /**
+     * @param Request          $request
+     * @param ApiClientRequest $apiRequest
+     */
+    protected function transformHeaders(Request $request, ApiClientRequest $apiRequest)
+    {
+        $headersObject = $request->_getChainObjects(Request::CO_HEADER);
+
+        foreach($headersObject as $row) {
+            /** @var  \RestControl\TestCase\ChainObject $row */
+            $apiRequest->addHeader(
+                $row->getParam(0),
+                $row->getParam(1)
+            );
+        }
     }
 }
