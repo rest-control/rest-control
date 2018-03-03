@@ -44,6 +44,7 @@ class HttpGuzzleClient implements ApiClientInterface
         $options = [
             'query'       => $this->getQueryParams($schema),
             'form_params' => $schema->getFormParams(),
+            'headers'     => $schema->getHeaders(),
         ];
 
         return $options;
