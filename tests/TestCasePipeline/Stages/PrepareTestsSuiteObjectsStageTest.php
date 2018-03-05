@@ -26,23 +26,18 @@ class PrepareTestsSuiteObjectsStageTest extends TestCase
     public function testStage()
     {
         $testsObjects = [
-            new TestObject(
-                new TestCaseDelegate(
-                    SampleTestCase::class,
-                    'sampleMethod'
-                )
+            new TestCaseDelegate(
+                SampleTestCase::class,
+                'sampleMethod'
+            )
+            ,
+            new TestCaseDelegate(
+                SampleTestCase::class,
+                'anotherMethod'
             ),
-            new TestObject(
-                new TestCaseDelegate(
-                    SampleTestCase::class,
-                    'anotherMethod'
-                )
-            ),
-            new TestObject(
-                new TestCaseDelegate(
-                    AnotherTestCase::class,
-                    'sampleMethod'
-                )
+            new TestCaseDelegate(
+                AnotherTestCase::class,
+                'sampleMethod'
             ),
         ];
 
@@ -82,17 +77,17 @@ class PrepareTestsSuiteObjectsStageTest extends TestCase
         $this->assertInstanceOf(TestSuiteObject::class, $suites[0]);
         $this->assertInstanceOf(TestSuiteObject::class, $suites[1]);
 
-        $this->assertSame([
-            $testsObjects[0],
-            $testsObjects[1],
-        ], $suites[0]->getTestsObjects());
+        $suite1Objects = $suites[0]->getTestsObjects();
 
-        $this->assertSame([
-            $testsObjects[2],
-        ], $suites[1]->getTestsObjects());
+        $this->assertCount(2, $suite1Objects);
+        $this->assertInstanceOf(TestObject::class, $suite1Objects[0]);
+        $this->assertInstanceOf(TestObject::class, $suite1Objects[1]);
+        $this->assertSame($testsObjects[0], $suite1Objects[0]->getDelegate());
+        $this->assertSame($testsObjects[1], $suite1Objects[1]->getDelegate());
 
-        $this->assertSame($suites[0], $testsObjects[0]->getTestSuiteObject());
-        $this->assertSame($suites[0], $testsObjects[1]->getTestSuiteObject());
-        $this->assertSame($suites[1], $testsObjects[2]->getTestSuiteObject());
+        $suite2Objects = $suites[1]->getTestsObjects();
+        $this->assertCount(1, $suite2Objects);
+        $this->assertInstanceOf(TestObject::class, $suite2Objects[0]);
+        $this->assertSame($testsObjects[2], $suite2Objects[0]->getDelegate());
     }
 }

@@ -54,13 +54,13 @@ class PrepareTestsSuiteObjectsStage
     }
 
     /**
-     * @param array $testsObjects
+     * @param array $testsObjectDelegates
      *
      * @return array
      */
-    protected function prepareTestSuiteObjects(array $testsObjects)
+    protected function prepareTestSuiteObjects(array $testsObjectDelegates)
     {
-        $groups = $this->groupTestsObjects($testsObjects);
+        $groups = $this->groupTestsObjects($testsObjectDelegates);
         $suites = [];
 
         foreach($groups as $testObjectsGroupName => $groupObjects) {
@@ -78,28 +78,21 @@ class PrepareTestsSuiteObjectsStage
     }
 
     /**
-     * @param array $testsObjects
+     * @param array $testsObjectDelegates
      *
      * @return array
      */
-    protected function groupTestsObjects(array $testsObjects)
+    protected function groupTestsObjects(array $testsObjectDelegates)
     {
         $groups = [];
 
-        foreach($testsObjects as $testsObject) {
+        foreach($testsObjectDelegates as $testsObjectDelegate) {
 
-            /** @var TestObject $testsObject */
-            $delegate = $testsObject->getDelegate();
-
-            if(!$delegate) {
-                throw new InvalidArgumentException('TestObject must have Delegate');
+            if(!isset($groups[$testsObjectDelegate->getClassName()])) {
+                $groups[$testsObjectDelegate->getClassName()] = [];
             }
 
-            if(!isset($groups[$delegate->getClassName()])) {
-                $groups[$delegate->getClassName()] = [];
-            }
-
-            $groups[$delegate->getClassName()] []= $testsObject;
+            $groups[$testsObjectDelegate->getClassName()] []= new TestObject($testsObjectDelegate);
         }
 
         return $groups;
