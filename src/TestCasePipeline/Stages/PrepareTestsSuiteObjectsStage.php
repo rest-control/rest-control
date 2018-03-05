@@ -12,7 +12,6 @@
 namespace RestControl\TestCasePipeline\Stages;
 
 use Psr\Container\ContainerInterface;
-use Psr\Log\InvalidArgumentException;
 use RestControl\TestCasePipeline\Payload;
 use RestControl\TestCasePipeline\TestObject;
 use RestControl\TestCasePipeline\TestSuiteObject;
