@@ -1,0 +1,32 @@
+<?php
+
+/*
+ * This file is part of the Rest-Control package.
+ *
+ * (c) Kamil Szela <kamil.szela@cothe.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace RestControl\Tests\TestCasePipeline\Events;
+
+use PHPUnit\Framework\TestCase;
+use RestControl\TestCasePipeline\Events\BeforeTestsSuiteEvent;
+use RestControl\TestCasePipeline\TestSuiteObject;
+
+class BeforeTestsSuiteEventTest extends TestCase
+{
+    public function testEvent()
+    {
+        $testSuiteObject = $this->getMockBuilder(TestSuiteObject::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event = new BeforeTestsSuiteEvent($testSuiteObject);
+
+        $this->assertSame('before.testsSuite', BeforeTestsSuiteEvent::NAME);
+        $this->assertInstanceOf(TestSuiteObject::class, $event->getTestSuiteObject());
+    }
+}
+
