@@ -17,9 +17,6 @@ use RestControl\Loader\TestsBag;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class BeforeTestCasePipelineEvent
- */
 class BeforeTestCasePipelineEvent extends Event
 {
     const NAME = 'before.testCasePipeline';

@@ -14,9 +14,6 @@ namespace RestControl\TestCasePipeline\Adapters;
 use RestControl\ApiClient\ApiClientRequest;
 use RestControl\TestCase\Request;
 
-/**
- * Class ApiClientRequestAdapter
- */
 class ApiClientRequestAdapter
 {
     /**

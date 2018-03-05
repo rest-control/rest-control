@@ -14,9 +14,6 @@ namespace RestControl\TestCasePipeline\Events;
 use RestControl\TestCasePipeline\TestObject;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class BeforeTestCaseEvent
- */
 class BeforeTestCaseEvent extends Event
 {
     const NAME = 'before.testCase';

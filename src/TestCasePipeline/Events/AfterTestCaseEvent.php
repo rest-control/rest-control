@@ -11,9 +11,6 @@
 
 namespace RestControl\TestCasePipeline\Events;
 
-/**
- * Class AfterTestCaseEvent
- */
 class AfterTestCaseEvent extends BeforeTestCaseEvent
 {
     const NAME = 'after.testCase';
