@@ -92,7 +92,8 @@ class TestCasePipeline
 
         $payload = new Payload(
             $apiClient,
-            $testsBag
+            $testsBag,
+            $tags
         );
 
         $processedPayload = $pipeline->process($payload);
