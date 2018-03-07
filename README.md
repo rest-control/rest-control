@@ -28,10 +28,36 @@ Here is a simple example of how to send a GET request and validate json response
  {
     return send()->get('https://jsonplaceholder.typicode.com/users/1')
                  ->expectedResponse()
+                 ->httpStatusOk()
                  ->json()
                  ->jsonPath('$.address.street', endsWith('Light'));
  }
 ```
+
+Features/Helpers
+---
+- Easily sending HTTP Requests, variety of http methods like post, get, put, delete, head, patch, purge, options, trace, connect 
+- forms
+- request headers
+- basic HTTP authentication
+- oAuth && oAuth2 authentication(in progress)
+- JSON response validation
+- JSON Path body validation
+- easily JSON body items and collection of items validation
+- sets of http response code helpers like httpStatusOk, httpBadGateway etc.
+- easily to use expression language
+    - iteration over body items
+    - values comparing (e.g. equalsTo, lessThan)
+    - string validation (e.g. startsWith, endsWith)
+    - custom validation via closure
+- annotations describing tests
+- measuring response time and tests statistics
+- XML validation(in progress)
+- easily system of tests environments
+- json, html reporting system(in progress)
+- cookies(in progress)
+- proxy, ssl support(in progress)
+- command for automatic generation of tests
 
 Quick Start
 ---
