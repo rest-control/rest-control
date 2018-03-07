@@ -15,8 +15,6 @@ use Psr\Log\InvalidArgumentException;
 
 /**
  * Class Factory
- *
- * @package RestControl\Validators
  */
 class Factory
 {

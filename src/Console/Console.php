@@ -19,11 +19,6 @@ use RestControl\Console\Commands\CreateTestCaseCommand;
 use RestControl\Console\Commands\RunTestsCommand;
 use Symfony\Component\Console\Application;
 
-/**
- * Class Console
- *
- * @package RestControl\Console
- */
 class Console
 {
     /**

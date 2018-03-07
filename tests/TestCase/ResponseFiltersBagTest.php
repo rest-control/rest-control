@@ -15,28 +15,12 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ChainObject;
-use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ResponseFilters\FilterException;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
-use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
-use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\ResponseFiltersBag;
 
 class ResponseFiltersBagTest extends TestCase
 {
-    public function testDefaultFilters()
-    {
-        $bag = new ResponseFiltersBag();
-
-        $filters = $bag->getFilters();
-
-        $this->assertInstanceOf(JsonFilter::class, $filters[0]);
-        $this->assertInstanceOf(HeaderFilter::class, $filters[1]);
-        $this->assertInstanceOf(JsonPathFilter::class, $filters[2]);
-        $this->assertInstanceOf(HeaderFilter::class, $filters[3]);
-    }
-
     public function testGetFilter()
     {
         $bag = new ResponseFiltersBag();

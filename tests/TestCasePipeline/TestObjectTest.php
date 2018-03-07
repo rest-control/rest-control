@@ -17,6 +17,7 @@ use RestControl\TestCase\Request;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 use RestControl\TestCasePipeline\TestObject;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCasePipeline\TestSuiteObject;
 
 class TestObjectTest extends TestCase
 {
@@ -51,6 +52,14 @@ class TestObjectTest extends TestCase
 
         $this->assertInstanceOf(StatsCollectorInterface::class, $testObject->getStatsCollector());
         $this->assertInstanceOf(StatsCollectorInterface::class, $testObject->getStatsCollector());
+
+        $this->assertNull($testObject->getTestSuiteObject());
+
+        $suite = new TestSuiteObject(new \stdClass());
+        $testObject->setTestSuiteObject($suite);
+
+        $this->assertSame($suite, $testObject->getTestSuiteObject());
+
     }
 
     public function testSetterInvalidQueueIndex()

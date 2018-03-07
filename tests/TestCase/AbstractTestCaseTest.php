@@ -13,12 +13,35 @@ namespace RestControl\Tests\TestCase;
 
 use PHPUnit\Framework\TestCase;
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
 class AbstractTestCaseTest extends TestCase
 {
     public function testExpressions()
     {
-        $obj = new SampleTestCase();
+        $configuration = new TestPipelineConfiguration([
+            'tests' => [
+                'namespace' => 'Sample\\',
+                'path'      => 'sample',
+            ],
+            'variables' => [
+                'sample' => 'value',
+                'sample2' => [
+                    'sample'  => 'value2',
+                    'sample2' => 'value3',
+                ],
+            ],
+        ]);
+
+        $obj = new SampleTestCase($configuration);
+
+        $this->assertSame('value', $obj->getVar('sample'));
+        $this->assertSame('value2', $obj->getVar('sample2.sample'));
+        $this->assertSame('value3', $obj->getVar('sample2.sample2'));
+        $this->assertSame([
+            'sample'  => 'value2',
+            'sample2' => 'value3',
+        ], $obj->getVar('sample2'));
 
         $equalsTo = $obj->equalsTo(20, true);
         $this->assertInstanceOf(Expression::class, $equalsTo);
@@ -33,9 +56,29 @@ class AbstractTestCaseTest extends TestCase
         $this->assertInstanceOf(Expression::class, $startsWith);
         $this->assertSame('sampleString', $startsWith->getParam(0));
 
-
         $endsWith = $obj->endsWith('endsWith');
         $this->assertInstanceOf(Expression::class, $endsWith);
         $this->assertSame('endsWith', $endsWith->getParam(0));
+
+        $lessThan = $obj->lessThan(123, true);
+        $this->assertInstanceOf(Expression::class, $lessThan);
+        $this->assertSame(123, $lessThan->getParam(0));
+        $this->assertTrue( $lessThan->getParam(1));
+
+        $each = $obj->each($lessThan);
+        $this->assertInstanceOf(Expression::class, $each);
+        $this->assertSame($lessThan, $each->getParam(0));
+
+        $each2 = $obj->each([$lessThan, $endsWith]);
+        $this->assertInstanceOf(Expression::class, $each2);
+        $this->assertArrayHasKey(0, $each2->getParam(0));
+        $this->assertArrayHasKey(1, $each2->getParam(0));
+        $this->assertSame($lessThan, $each2->getParam(0)[0]);
+        $this->assertSame($endsWith, $each2->getParam(0)[1]);
+
+        $moreThan = $obj->moreThan(123, true);
+        $this->assertInstanceOf(Expression::class, $moreThan);
+        $this->assertSame(123, $moreThan->getParam(0));
+        $this->assertTrue( $moreThan->getParam(1));
     }
 }

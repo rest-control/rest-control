@@ -15,8 +15,6 @@ use Zend\Validator\Uri;
 
 /**
  * Class URIValidator
- *
- * @package RestControl\Validators
  */
 class URIValidatorAdapter extends AbstractValidatorAdapter
 {

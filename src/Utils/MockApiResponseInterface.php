@@ -15,8 +15,6 @@ use RestControl\ApiClient\ApiClientRequest;
 
 /**
  * Interface MockApiResponseInterface
- *
- * @package RestControl\Utils
  */
 interface MockApiResponseInterface
 {

@@ -21,6 +21,7 @@ use RestControl\Loader\TestsBag;
 use RestControl\TestCase\ResponseFiltersBag;
 use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
+use RestControl\TestCasePipeline\Stages\PrepareTestsSuiteObjectsStage;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,8 +29,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class TestCasePipeline
- *
- * @package RestControl\TestCasePipeline
  */
 class TestCasePipeline
 {
@@ -42,6 +41,7 @@ class TestCasePipeline
      * @var array
      */
     protected $pipelineStages = [
+        PrepareTestsSuiteObjectsStage::class,
         RunTestObjectsStage::class
     ];
 
@@ -92,7 +92,8 @@ class TestCasePipeline
 
         $payload = new Payload(
             $apiClient,
-            $testsBag->getTests($tags)
+            $testsBag,
+            $tags
         );
 
         $processedPayload = $pipeline->process($payload);

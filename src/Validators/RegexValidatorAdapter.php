@@ -15,8 +15,6 @@ use Zend\Validator\Regex;
 
 /**
  * Class RegexValidator
- *
- * @package RestControl\Validators
  */
 class RegexValidatorAdapter extends AbstractValidatorAdapter
 {

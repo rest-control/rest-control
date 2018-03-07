@@ -11,11 +11,6 @@
 
 namespace RestControl\ApiClient;
 
-/**
- * Class RequestSchema
- *
- * @package RestControl\Utils
- */
 class ApiClientRequest
 {
     /**
@@ -44,6 +39,11 @@ class ApiClientRequest
      * @var null|mixed
      */
     protected $body = null;
+
+    /**
+     * @var array
+     */
+    protected $headers = [];
 
     /**
      * @param string $method
@@ -79,6 +79,23 @@ class ApiClientRequest
     public function getMethod()
     {
         return $this->method;
+    }
+
+    /**
+     * @param string $headerName
+     * @param mixed  $value
+     */
+    public function addHeader($headerName, $value)
+    {
+        $this->headers[$headerName] = $value;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**

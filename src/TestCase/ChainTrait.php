@@ -13,11 +13,6 @@ namespace RestControl\TestCase;
 
 use Psr\Log\InvalidArgumentException;
 
-/**
- * Trait ChainTrait
- *
- * @package RestControl\TestCase
- */
 trait ChainTrait
 {
     /**

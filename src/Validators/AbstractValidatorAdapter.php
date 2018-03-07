@@ -15,8 +15,6 @@ use Zend\Validator\ValidatorInterface;
 
 /**
  * Class AbstractValidator
- *
- * @package RestControl\Validators
  */
 abstract class AbstractValidatorAdapter
 {

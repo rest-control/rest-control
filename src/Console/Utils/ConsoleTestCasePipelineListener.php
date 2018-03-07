@@ -16,16 +16,13 @@ use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
 use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
+use RestControl\TestCasePipeline\Payload;
+use RestControl\TestCasePipeline\TestSuiteObject;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use RestControl\TestCasePipeline\TestObject;
 
-/**
- * Class ConsoleTestCasePipelineListener
- *
- * @package RestControl\Console\Utils
- */
 class ConsoleTestCasePipelineListener implements EventSubscriberInterface
 {
     const TABLE_WIDTH = 12;
@@ -95,7 +92,7 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
     public function afterTestCasePipeline(AfterTestCasePipelineEvent $event)
     {
         $payload      = $event->getPayload();
-        $testsObjects = $payload->getTestsObjects();
+        $testsObjects = $this->getAllTests($payload);
         $assertions   = 0;
         $errors       = 0;
 
@@ -114,6 +111,23 @@ class ConsoleTestCasePipelineListener implements EventSubscriberInterface
         );
 
         $this->output->writeln('');
+    }
+
+    /**
+     * @param Payload $payload
+     *
+     * @return array
+     */
+    protected function getAllTests(Payload $payload)
+    {
+        $tests = [];
+
+        foreach($payload->getTestsSuiteObjects() as $suiteObject) {
+            /** @var TestSuiteObject $suiteObject */
+            $tests = array_merge($tests, $suiteObject->getTestsObjects());
+        }
+
+        return $tests;
     }
 
     /**

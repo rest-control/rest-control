@@ -20,14 +20,11 @@ use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Validators\Factory;
 
-/**
- * Class HasItemFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class HasItemFilter extends AbstractFilter implements FilterInterface
 {
     use FilterTrait;
+
+    const FILTER_NAME = 'hasItem';
 
     const ERROR_INVALID_BODY = 1;
     const ERROR_INVALID_RESPONSE_REQUIRED_VALUES = 3;
@@ -37,14 +34,6 @@ class HasItemFilter extends AbstractFilter implements FilterInterface
 
     const OPTIONAL_RESPONSE_VALUE_VALIDATOR = 'optional';
     const NOT_EMPTY_RESPONSE_VALUE_VALIDATOR = 'notEmpty';
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'hasItem';
-    }
 
     /**
      * @param array $params

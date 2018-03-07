@@ -15,8 +15,6 @@ use Zend\Validator\StringLength;
 
 /**
  * Class LengthValidator
- *
- * @package RestControl\Validators
  */
 class LengthValidatorAdapter extends AbstractValidatorAdapter
 {

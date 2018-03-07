@@ -12,13 +12,9 @@
 namespace RestControl\ApiClient;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
 
-/**
- * Class HttpGuzzleClient
- *
- * @package RestControl\ApiClient
- */
 class HttpGuzzleClient implements ApiClientInterface
 {
     /**
@@ -30,11 +26,17 @@ class HttpGuzzleClient implements ApiClientInterface
     {
         $client = new Client();
 
-        $response = $client->request(
-            strtoupper($schema->getMethod()),
-            $this->getUrl($schema),
-            $this->buildOptions($schema)
-        );
+        try{
+
+            $response = $client->request(
+                strtoupper($schema->getMethod()),
+                $this->getUrl($schema),
+                $this->buildOptions($schema)
+            );
+
+        } catch ( ClientException $e) {
+            $response = $e->getResponse();
+        }
 
         return $this->paresResponse($response);
     }
@@ -49,6 +51,7 @@ class HttpGuzzleClient implements ApiClientInterface
         $options = [
             'query'       => $this->getQueryParams($schema),
             'form_params' => $schema->getFormParams(),
+            'headers'     => $schema->getHeaders(),
         ];
 
         return $options;

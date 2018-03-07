@@ -8,5 +8,5 @@
     public function ``methodName``()
     {
         //todo
-        return $this->send();
+        return send();
     }

@@ -13,8 +13,6 @@ namespace RestControl\Utils;
 
 /**
  * Class Arr
- *
- * @package RestControl\Utils
  */
 class Arr
 {

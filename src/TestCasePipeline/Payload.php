@@ -12,20 +12,23 @@
 namespace RestControl\TestCasePipeline;
 
 use RestControl\ApiClient\ApiClientInterface;
-use RestControl\Loader\TestCaseDelegate;
 use Psr\Log\InvalidArgumentException;
+use RestControl\Loader\TestsBag;
 
 /**
  * Class Payload
- *
- * @package RestControl\TestCasePipeline
  */
 class Payload
 {
     /**
-     * @var array
+     * @var TestsBag
      */
-    protected $testsObjects = [];
+    protected $testsBag;
+
+    /**
+     * @var string
+     */
+    protected $testsTags;
 
     /**
      * @var ApiClientInterface
@@ -33,27 +36,56 @@ class Payload
     protected $apiClient;
 
     /**
+     * @var array
+     */
+    protected $testsSuiteObjects = [];
+
+    /**
      * Payload constructor.
      *
      * @param ApiClientInterface $apiClient
-     * @param array              $testsDelegates
+     * @param TestsBag           $testsBag
+     * @param string             $testsTags
      */
     public function __construct(
         ApiClientInterface $apiClient,
-        array $testsDelegates = []
+        TestsBag $testsBag,
+        $testsTags = ''
     ){
         $this->apiClient = $apiClient;
-        $this->setTestDelegates($testsDelegates);
+        $this->testsBag  = $testsBag;
+        $this->testsTags = (string) $testsTags;
     }
 
     /**
-     * Returns array of TestObject.
-     *
+     * @param TestSuiteObject $suiteObject
+     */
+    public function addTestSuiteObject(TestSuiteObject $suiteObject)
+    {
+        $this->testsSuiteObjects []= $suiteObject;
+    }
+
+    /**
+     * @param array $objects
+     */
+    public function setTestSuiteObjects(array $objects)
+    {
+        foreach($objects as $object) {
+
+            if(!$object instanceof TestSuiteObject) {
+                throw new InvalidArgumentException('Object must be instance of ' . TestSuiteObject::class . '.');
+            }
+
+            $this->addTestSuiteObject($object);
+        }
+    }
+
+    /**
      * @return array
      */
-    public function getTestsObjects()
+    public function getTestsSuiteObjects()
     {
-        return $this->testsObjects;
+        return $this->testsSuiteObjects;
     }
 
     /**
@@ -65,16 +97,18 @@ class Payload
     }
 
     /**
-     * @param array $delegates
+     * @return TestsBag
      */
-    protected function setTestDelegates(array $delegates = [])
+    public function getTestsBag()
     {
-        foreach($delegates as $delegate) {
-            if(!$delegate instanceof TestCaseDelegate) {
-                throw new InvalidArgumentException('Delegate must be instance of TestCaseDelegate.');
-            }
+        return $this->testsBag;
+    }
 
-            $this->testsObjects []= new TestObject($delegate);
-        }
+    /**
+     * @return string
+     */
+    public function getTestsTag()
+    {
+        return $this->testsTags;
     }
 }

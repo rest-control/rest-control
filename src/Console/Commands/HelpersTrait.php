@@ -15,11 +15,6 @@ use Psr\Log\InvalidArgumentException;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * Trait HelpersTrait
- *
- * @package RestControl\Console\Commands
- */
 trait HelpersTrait
 {
     /**

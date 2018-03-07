@@ -13,11 +13,6 @@ namespace RestControl\TestCase;
 
 use Psr\Log\InvalidArgumentException;
 
-/**
- * Class ChainObject
- *
- * @package RestControl\TestCase
- */
 class ChainObject
 {
     /**

@@ -18,20 +18,9 @@ use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\Arr;
 use RestControl\Utils\ResponseItemsCollection;
 
-/**
- * Class HasItemsFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class HasItemsFilter extends HasItemFilter
 {
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'hasItems';
-    }
+    const FILTER_NAME = 'hasItems';
 
     /**
      * @param array $params

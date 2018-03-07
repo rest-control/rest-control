@@ -13,11 +13,6 @@ namespace RestControl\TestCase\Traits;
 
 use RestControl\TestCase\Request;
 
-/**
- * Trait RequestMethodsTrait
- *
- * @package RestControl\TestCase\Traits
- */
 trait RequestMethodsTrait
 {
     /**
@@ -58,5 +53,95 @@ trait RequestMethodsTrait
         return $this->remove(Request::CO_METHOD)
                     ->_add(Request::CO_METHOD, [Request::METHOD_PUT, $url, $urlParams])
                     ->body($body);
+    }
+
+    /**
+     * @param string     $url
+     * @param array      $urlParams
+     * @param null|mixed $body
+     *
+     * @return $this
+     */
+    public function patch($url, array $urlParams = [], $body = null)
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_PATCH, $url, $urlParams])
+                    ->body($body);
+    }
+
+    /**
+     * @param string     $url
+     * @param array      $urlParams
+     * @param null|mixed $body
+     *
+     * @return $this
+     */
+    public function delete($url, array $urlParams = [], $body = null)
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_DELETE, $url, $urlParams])
+                    ->body($body);
+    }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function head($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_HEAD, $url, $urlParams]);
+    }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function purge($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_PURGE, $url, $urlParams]);
+    }
+
+    /**
+     * @param string     $url
+     * @param array      $urlParams
+     * @param null|mixed $body
+     *
+     * @return $this
+     */
+    public function options($url, array $urlParams = [], $body = null)
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_OPTIONS, $url, $urlParams])
+                    ->body($body);
+    }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function trace($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+                    ->_add(Request::CO_METHOD, [Request::METHOD_TRACE, $url, $urlParams]);
+    }
+
+    /**
+     * @param string $url
+     * @param array  $urlParams
+     *
+     * @return $this
+     */
+    public function connect($url, array $urlParams = [])
+    {
+        return $this->remove(Request::CO_METHOD)
+            ->_add(Request::CO_METHOD, [Request::METHOD_CONNECT, $url, $urlParams]);
     }
 }

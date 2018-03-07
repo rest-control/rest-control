@@ -11,21 +11,25 @@
 
 namespace RestControl\TestCasePipeline\Stages;
 
+use Psr\Container\ContainerInterface;
+use RestControl\ApiClient\ApiClientInterface;
 use RestControl\ApiClient\ApiClientRequest;
 use RestControl\TestCase\ChainTrait;
 use RestControl\TestCase\ResponseFiltersBag;
+use RestControl\TestCase\TestCaseEventsInterface;
 use RestControl\TestCasePipeline\Adapters\ApiClientRequestAdapter;
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCasePipeline\Events\AfterTestCaseEvent;
+use RestControl\TestCasePipeline\Events\AfterTestsSuiteEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCaseEvent;
+use RestControl\TestCasePipeline\Events\BeforeTestsSuiteEvent;
 use RestControl\TestCasePipeline\Payload;
 use RestControl\TestCasePipeline\TestObject;
+use RestControl\TestCasePipeline\TestSuiteObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RunTestObjectsStage
- *
- * @package RestControl\TestCasePipeline\Stages
  */
 class RunTestObjectsStage
 {
@@ -47,18 +51,26 @@ class RunTestObjectsStage
     protected $eventDispatcher;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * RunTestObjectsStage constructor.
      *
      * @param ResponseFiltersBag       $responseFiltersBag
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ContainerInterface       $container
      */
     public function __construct(
         ResponseFiltersBag $responseFiltersBag,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ContainerInterface $container
     ){
         $this->apiClientRequestAdapter = new ApiClientRequestAdapter();
         $this->responseFiltersBag      = $responseFiltersBag;
         $this->eventDispatcher         = $eventDispatcher;
+        $this->container               = $container;
     }
 
     /**
@@ -68,34 +80,100 @@ class RunTestObjectsStage
      */
     public function __invoke(Payload $payload)
     {
-        foreach($payload->getTestsObjects() as $i => $testsObject) {
-            /** @var TestObject $testsObject */
-            $testsObject->setQueueIndex($i);
+        $suiteObjects = $payload->getTestsSuiteObjects();
+        $testCaseId   = 1;
 
-            $this->eventDispatcher->dispatch(
-                BeforeTestCaseEvent::NAME,
-                new BeforeTestCaseEvent($testsObject)
-            );
+        foreach($suiteObjects as $suite) {
+            /** @var TestSuiteObject $suite */
+            $this->runBeforeSuiteEvents($suite);
 
-            $this->runTestsObject($payload, $testsObject);
+            $testCaseId = $this->runSuite($suite, $payload, $testCaseId);
 
-            $this->eventDispatcher->dispatch(
-                AfterTestCaseEvent::NAME,
-                new AfterTestCaseEvent($testsObject)
-            );
+            $this->runAfterSuiteEvents($suite);
         }
 
         return $payload;
     }
 
     /**
-     * @param Payload    $payload
-     * @param TestObject $testObject
+     * @param TestSuiteObject $suite
+     * @param Payload         $payload
+     * @param int             $testCaseId
+     *
+     * @return int
      */
-    protected function runTestsObject(Payload $payload, TestObject $testObject)
+    protected function runSuite(TestSuiteObject $suite, Payload $payload, $testCaseId)
+    {
+        foreach($suite->getTestsObjects() as $testsObject) {
+            /** @var TestObject $testsObject */
+            $testsObject->setQueueIndex($testCaseId);
+
+            $this->eventDispatcher->dispatch(
+                BeforeTestCaseEvent::NAME,
+                new BeforeTestCaseEvent($testsObject)
+            );
+
+            $this->runTestsObject(
+                $payload->getApiClient(),
+                $testsObject
+            );
+
+            $this->eventDispatcher->dispatch(
+                AfterTestCaseEvent::NAME,
+                new AfterTestCaseEvent($testsObject)
+            );
+
+            $testCaseId++;
+        }
+
+        return $testCaseId;
+    }
+
+    /**
+     * @param TestSuiteObject $suite
+     */
+    protected function runBeforeSuiteEvents(TestSuiteObject $suite)
+    {
+        $this->eventDispatcher->dispatch(
+            BeforeTestsSuiteEvent::NAME,
+            new BeforeTestsSuiteEvent($suite)
+        );
+
+        $object = $suite->getSuite();
+
+        if(!$object instanceof TestCaseEventsInterface) {
+            return;
+        }
+
+        $object->__beforeTests();
+    }
+
+    /**
+     * @param TestSuiteObject $suite
+     */
+    protected function runAfterSuiteEvents(TestSuiteObject $suite)
+    {
+        $this->eventDispatcher->dispatch(
+            AfterTestsSuiteEvent::NAME,
+            new BeforeTestsSuiteEvent($suite)
+        );
+
+        $object = $suite->getSuite();
+
+        if(!$object instanceof TestCaseEventsInterface) {
+            return;
+        }
+
+        $object->__afterTests();
+    }
+
+    /**
+     * @param ApiClientInterface $apiClient
+     * @param TestObject         $testObject
+     */
+    protected function runTestsObject(ApiClientInterface $apiClient, TestObject $testObject)
     {
         $apiClientRequest = $this->prepareApiClientRequest($testObject);
-        $apiClient        = $payload->getApiClient();
 
         try{
 
@@ -124,16 +202,15 @@ class RunTestObjectsStage
      */
     protected function prepareApiClientRequest(TestObject $testObject)
     {
-        $delegate = $testObject->getDelegate();
+        $delegateObject = $testObject->getTestSuiteObject()->getSuite();
+        $delegate       = $testObject->getDelegate();
 
         if(!$delegate) {
             throw new InvalidArgumentException('TestObject must have Delegate');
         }
 
-        $className = $delegate->getClassName();
-
         $chain = call_user_func([
-            new $className(),
+            $delegateObject,
             $delegate->getMethodName()
         ]);
 

@@ -108,4 +108,19 @@ class ApiClientRequestAdapterTest extends TestCase
 
         $this->assertSame('Another body', $apiRequest->getBody());
     }
+
+    public function testHeaders()
+    {
+        $request = new Request();
+        $request->header('sample', 'header');
+        $request->header('sample2', 'header2');
+
+        $adapter = new ApiClientRequestAdapter();
+        $apiRequest = $adapter->transform($request);
+
+        $this->assertSame([
+            'sample'  => 'header',
+            'sample2' => 'header2',
+        ], $apiRequest->getHeaders());
+    }
 }

@@ -18,11 +18,6 @@ use RestControl\ApiClient\ApiClientInterface;
 use RestControl\Loader\TestsBag;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
-/**
- * Class AfterTestCasePipelineEvent
- *
- * @package RestControl\TestCasePipeline\Events
- */
 class AfterTestCasePipelineEvent extends Event
 {
     const NAME = 'after.testCasePipeline';

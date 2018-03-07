@@ -19,8 +19,6 @@ use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
 /**
  * Class TestObject
- *
- * @package RestControl\TestCasePipeline
  */
 class TestObject
 {
@@ -55,6 +53,11 @@ class TestObject
     protected $statsCollector = null;
 
     /**
+     * @var null|TestSuiteObject
+     */
+    protected $suiteObject = null;
+
+    /**
      * TestObject constructor.
      *
      * @param TestCaseDelegate $delegate
@@ -62,6 +65,22 @@ class TestObject
     public function __construct(TestCaseDelegate $delegate)
     {
         $this->delegate = $delegate;
+    }
+
+    /**
+     * @param TestSuiteObject $object
+     */
+    public function setTestSuiteObject(TestSuiteObject $object)
+    {
+        $this->suiteObject = $object;
+    }
+
+    /**
+     * @return null|TestSuiteObject
+     */
+    public function getTestSuiteObject()
+    {
+        return $this->suiteObject;
     }
 
     /**

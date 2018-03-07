@@ -11,3 +11,9 @@ tests:
 #  - \Sample\ApiMockResponse
 
 apiClient: \RestControl\ApiClient\HttpGuzzleClient
+#Custom variables loaded for all testCases
+#variables:
+#  sample: value
+#  sample2:
+#    - arrayValue
+#    - arrayValue2

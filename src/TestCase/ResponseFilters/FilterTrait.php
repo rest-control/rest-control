@@ -14,11 +14,6 @@ namespace RestControl\TestCase\ResponseFilters;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\Validators;
 
-/**
- * Trait FilterTrait
- *
- * @package RestControl\TestCase
- */
 trait FilterTrait
 {
     /**

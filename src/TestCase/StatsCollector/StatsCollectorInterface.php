@@ -13,11 +13,6 @@ namespace RestControl\TestCase\StatsCollector;
 
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 
-/**
- * Interface StatsCollectorInterface
- *
- * @package RestControl\TestCase\StatsCollector
- */
 interface StatsCollectorInterface
 {
 

@@ -13,12 +13,7 @@ namespace RestControl\TestCase;
 
 use Psr\Log\InvalidArgumentException;
 
-/**
- * Class AbstractChain
- *
- * @package RestControl\TestCase
- */
-abstract class AbstractChain
+abstract class AbstractChain implements TestCaseEventsInterface
 {
     /**
      * @var array
@@ -40,6 +35,10 @@ abstract class AbstractChain
     {
         return count($this->chain);
     }
+
+    public function __beforeTests(){}
+
+    public function __afterTests() {}
 
     /**
      * @param $objectName

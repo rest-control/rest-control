@@ -15,8 +15,6 @@ use Zend\Validator\EmailAddress;
 
 /**
  * Class EmailValidator
- *
- * @package RestControl\Validators
  */
 class EmailValidatorAdapter extends AbstractValidatorAdapter
 {

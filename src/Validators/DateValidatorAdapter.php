@@ -15,8 +15,6 @@ use Zend\Validator\Date;
 
 /**
  * Class DateValidator
- *
- * @package RestControl\Validators
  */
 class DateValidatorAdapter extends AbstractValidatorAdapter
 {

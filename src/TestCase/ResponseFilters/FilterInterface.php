@@ -14,11 +14,6 @@ namespace RestControl\TestCase\ResponseFilters;
 use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
-/**
- * Interface AbstractFilterInterface
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 interface FilterInterface
 {
     const ERROR_INVALID_PARAMS = -100;

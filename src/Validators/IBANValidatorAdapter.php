@@ -15,8 +15,6 @@ use Zend\Validator\Iban;
 
 /**
  * Class IBANValidator
- *
- * @package RestControl\Validators
  */
 class IBANValidatorAdapter extends AbstractValidatorAdapter
 {

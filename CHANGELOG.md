@@ -1,3 +1,21 @@
+#### v0.4.0-alpha
+* [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
+* "EachItems" expression language helper
+* [\#4 [ExpressionLanguage] moreThan helper](https://github.com/rest-control/rest-control/issues/4)
+* Add global helpers functions
+* Add before and after tests suite events
+* [\#18 Before and after testCases group](https://github.com/rest-control/rest-control/issues/18)
+* [\#16 [RequestHelper] HTTP basic authentication](https://github.com/rest-control/rest-control/issues/16)
+* [\#14 [RequestHelper] helper connect](https://github.com/rest-control/rest-control/issues/14)
+* [\#13 [RequestHelper] helper trace](https://github.com/rest-control/rest-control/issues/13)
+* [\#12 [RequestHelper] helper options](https://github.com/rest-control/rest-control/issues/12)
+* [\#11 [RequestHelper] helper purge](https://github.com/rest-control/rest-control/issues/11)
+* [\#10 [RequestHelper] helper delete](https://github.com/rest-control/rest-control/issues/10)
+* [\#9 [RequestHelper] helper patch](https://github.com/rest-control/rest-control/issues/9)
+* [\#8 [RequestHelper] helper put](https://github.com/rest-control/rest-control/issues/8)
+* [\#7 [RequestHelper] helper head](https://github.com/rest-control/rest-control/issues/7)
+* [\#5 [ResponseFilters] httpCode helper](https://github.com/rest-control/rest-control/issues/5)
+
 #### v0.3.1-alpha
 * Create ISSUE_TEMPLATE
 * Create PULL_REQUEST_TEMPLATE

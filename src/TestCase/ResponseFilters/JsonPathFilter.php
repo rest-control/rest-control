@@ -16,23 +16,12 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\StatsCollector\EndContextException;
 
-/**
- * Class JsonPathFilter
- *
- * @package RestControl\TestCase\ResponseFilters
- */
 class JsonPathFilter extends AbstractFilter implements FilterInterface
 {
+    const FILTER_NAME = 'jsonPath';
+
     const ERROR_WRONG_BODY_FORMAT = 1;
     const ERROR_INVALID_VALUE = 2;
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'jsonPath';
-    }
 
     /**
      * @param array $params

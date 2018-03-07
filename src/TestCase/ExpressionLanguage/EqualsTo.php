@@ -11,19 +11,16 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class EqualsTo
- *
- * @package RestControl\TestCase\ExpressionLanguage
- */
 class EqualsTo implements ExpressionValidatorInterface
 {
+    const FILTER_NAME = 'equalsTo';
+
     /**
      * @return string
      */
     public function getName()
     {
-        return 'equalsTo';
+        return self::FILTER_NAME;
     }
 
     /**

@@ -11,11 +11,6 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-/**
- * Class Validators
- *
- * @package RestControl\TestCase
- */
 class Validators
 {
     /**
@@ -36,6 +31,9 @@ class Validators
         ContainsString::class,
         StartsWith::class,
         EndsWith::class,
+        LessThan::class,
+        EachItems::class,
+        MoreThan::class,
     ];
 
     /**

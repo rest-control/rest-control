@@ -15,8 +15,6 @@ use Zend\Validator\Callback;
 
 /**
  * Class NumericValidatorAdapter
- *
- * @package RestControl\Validators
  */
 class NumericValidatorAdapter extends AbstractValidatorAdapter
 {

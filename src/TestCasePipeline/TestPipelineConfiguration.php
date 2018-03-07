@@ -11,13 +11,12 @@
 
 namespace RestControl\TestCasePipeline;
 
+use Flow\JSONPath\JSONPath;
 use Psr\Log\InvalidArgumentException;
 use RestControl\ApiClient\HttpGuzzleClient;
 
 /**
  * Class TestPipelineConfiguration
- *
- * @package RestControl\TestCasePipeline
  */
 class TestPipelineConfiguration
 {
@@ -77,6 +76,32 @@ class TestPipelineConfiguration
     }
 
     /**
+     * @return array
+     */
+    public function getVariables()
+    {
+        return $this->get('variables')->data();
+    }
+
+    /**
+     * @param string $jsonPath
+     *
+     * @return mixed
+     */
+    public function getVariable($jsonPath)
+    {
+        $jsonPath  = $jsonPath ?? '$';
+
+        if('$' === $jsonPath) {
+            $jsonPath .= '.';
+        }
+
+        return $this->get('variables')
+                    ->find($jsonPath)
+                    ->data();
+    }
+
+    /**
      * @param string $index
      * @param mixed  $default
      *
@@ -112,6 +137,12 @@ class TestPipelineConfiguration
 
         if(isset($configuration['apiMockResponses']) && is_array($configuration['apiMockResponses'])) {
             $this->configuration['apiMockResponses'] = $configuration['apiMockResponses'];
+        }
+
+        if(isset($configuration['variables']) && is_array($configuration['variables'])) {
+            $this->configuration['variables'] = new JSONPath($configuration['variables']);
+        } else {
+            $this->configuration['variables'] = new JSONPath([]);
         }
     }
 
