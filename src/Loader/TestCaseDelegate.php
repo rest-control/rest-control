@@ -11,7 +11,9 @@
 
 namespace RestControl\Loader;
 
-class TestCaseDelegate
+use JsonSerializable;
+
+class TestCaseDelegate implements JsonSerializable
 {
     /**
      * @var null|string
@@ -99,5 +101,19 @@ class TestCaseDelegate
     public function getClassName()
     {
         return $this->className;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'className'   => $this->getClassName(),
+            'methodName'  => $this->getMethodName(),
+            'title'       => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'tags'        => $this->getTags(),
+        ];
     }
 }
