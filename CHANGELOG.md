@@ -1,3 +1,6 @@
+#### v0.5.0-alpha
+* Add jsonSerializable in request/response chain, statsCollector, tcDelegate, tcSuiteObject and tsObject
+
 #### v0.4.0-alpha
 * [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
 * "EachItems" expression language helper
