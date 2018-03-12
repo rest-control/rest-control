@@ -13,8 +13,9 @@ namespace RestControl\TestCase\ResponseFilters;
 
 use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
+use JsonSerializable;
 
-abstract class AbstractFilter
+abstract class AbstractFilter implements JsonSerializable
 {
     use FilterTrait;
 
@@ -53,5 +54,16 @@ abstract class AbstractFilter
         $this->statsCollector = new StatsCollector();
 
         return $this->statsCollector;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'name'  => $this->getName(),
+            'class' => get_class($this),
+        ];
     }
 }
