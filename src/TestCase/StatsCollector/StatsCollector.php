@@ -128,4 +128,16 @@ class StatsCollector implements StatsCollectorInterface
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'assertions'   => $this->assertions,
+            'filterErrors' => $this->filterErrors,
+            'errors'       => $this->errors,
+        ];
+    }
 }
