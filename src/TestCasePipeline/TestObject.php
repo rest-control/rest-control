@@ -207,6 +207,7 @@ class TestObject implements JsonSerializable
                 'request'       => $request,
                 'response'      => $response,
             ],
+            'statistics'    => $this->statsCollector,
         ];
     }
 }
