@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+    <style type="text/css">
+        .uk-navbar-container:not(.uk-navbar-transparent) {
+            background: #3b4450;
+        }
+        .uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+            height: 60px;
+        }
+
+        .uk-navbar-item .uk-link:hover, a:hover{
+            color: #379fe1;
+        }
+        .uk-navbar-item .uk-link, a{
+            color: white;
+        }
+
+        .uk-link, a {
+            color: #379fe1;
+        }
+
+        .logo-left-span {
+            color:white;
+            font-weight:bold;
+        }
+
+        .logo-right-span {
+            font-weight:bold;
+            color:#379fe1;
+        }
+
+        .logo-small-info {
+            font-size: 12px;
+            color:#87919c;
+        }
+
+        .tests-table .ok .status-icon span {
+            color:green;
+        }
+
+        .tests-table .errors .status-icon span {
+            color:red;
+        }
+
+        .breadcrumb-container {
+            background: whitesmoke;
+            padding: 7px 10px;
+        }
+
+        .breadcrumb-container .uk-breadcrumb {
+            margin:0;
+        }
+
+        body{
+            padding-bottom:100px;
+        }
+
+        section.foot {
+            border-top: 1px solid #efefef;
+            position:fixed;
+            bottom:0;
+            width:100%;
+            padding:30px 0;
+            text-align:center;
+        }
+
+        section.foot a {
+            color:silver;
+        }
+    </style>
+</head>
+
+<body>
+<header class="site-header">
+    <nav class="uk-navbar-container uk-margin uk-navbar" uk-navbar="">
+        <div class="uk-navbar-center">
+            <div class="uk-navbar-left">
+
+                <a class="uk-navbar-item uk-logo" target="_blank" href="https://rest-control.github.io/index.html">
+                    <span class="logo-left-span">Rest</span>
+                    <span class="logo-right-span">Control</span>&nbsp;
+                    <span class="logo-small-info">:: REST testing framework</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="uk-container">
+    <div class="breadcrumb-container">
+        <ul class="uk-breadcrumb">
+            <ul class="uk-breadcrumb">
+                <li><span uk-icon="home"></span></li>
+                <?php
+                $path  = explode('\\', $namespace);
+                $iPath = '';
+
+                foreach($path as $item) {
+
+                    if($iPath) {
+                        $iPath .= '\\';
+                    }
+
+                    $iPath .= $item;
+                    $namespaceFile = 'namespace_' . strtolower(str_replace('\\', '_', $iPath)) . '.html';
+
+                    ?>
+                <li><a href="<?php echo $namespaceFile; ?>"><?php echo $item; ?></a></li>
+                <?php
+                }
+                ?>
+            </ul>
+    </div>
+    <div class="uk-margin-top">
+        <table class="uk-table uk-table-justify uk-table-divider tests-table">
+            <thead>
+            <tr>
+                <td>Status</td>
+                <td>Namespace</td>
+                <td>Passed tests</td>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+
+                $suiteRelativePaths = [];
+
+                foreach($suites as $suite) {
+                    /** @var \RestControl\TestCasePipeline\TestSuiteObject $suite */
+                    $suiteClassName = get_class($suite->getSuite());
+            $suiteRelativePath = str_replace($namespace . '\\', '', $suiteClassName);
+
+            if (strpos($suiteRelativePath, '\\') === false) {
+            continue;
+            }
+
+            $suiteRelativePathParts = explode('\\', $suiteRelativePath);
+
+            if (!isset($suiteRelativePaths[$suiteRelativePathParts[0]])) {
+            $suiteRelativePaths[$suiteRelativePathParts[0]] = [];
+            }
+
+            $suiteRelativePaths[$suiteRelativePathParts[0]] [] = $suite;
+            }
+
+            foreach($suiteRelativePaths as $relativePath => $relativeSuites) {
+
+            $errors = 0;
+            $testObjectsCount = 0;
+            $suiteInfoFile  = 'namespace_' . strtolower(str_replace('\\', '_', $namespace . '\\' . $relativePath)) . '.html';
+
+
+            foreach($relativeSuites as $suite) {
+
+            $testObjectsCount += count($suite->getTestsObjects());
+
+            foreach($suite->getTestsObjects() as $object) {
+            /** @var \RestControl\TestCasePipeline\TestObject $object */
+            if($object->hasErrors()) {
+            $errors++;
+            }
+            }
+            }
+
+            ?>
+            <tr class="<?php echo ($errors > 0) ? "errors" : "ok"; ?>">
+            <td class="status-icon"><span uk-icon="<?php echo ($errors > 0) ? "close" : "check"; ?>"></span></td>
+            <td><a href="<?php echo $suiteInfoFile; ?>"><span uk-icon="folder"></span> <?php echo $relativePath; ?></a></td>
+            <td><?php echo $testObjectsCount - $errors; ?>/<?php echo $testObjectsCount; ?></td>
+            </tr>
+            <?php
+                }
+
+                foreach($suites as $suite) {
+                    /** @var \RestControl\TestCasePipeline\TestSuiteObject $suite */
+
+                    $suiteClassName    = get_class($suite->getSuite());
+            $suiteRelativePath = str_replace($namespace . '\\', '', $suiteClassName);
+
+            if (strpos($suiteRelativePath, '\\') !== false) {
+            continue;
+            }
+
+            $suiteInfoFile     = strtolower(str_replace('\\', '_', $suiteClassName)) . '.html';
+            $hasErrors         = false;
+            $errors            = 0;
+            $testObjectsCount  = count($suite->getTestsObjects());
+
+            foreach($suite->getTestsObjects() as $object) {
+            /** @var \RestControl\TestCasePipeline\TestObject $object */
+            if($object->hasErrors()) {
+            $errors++;
+            }
+            }
+
+            ?>
+            <tr class="<?php echo ($errors > 0) ? "errors" : "ok"; ?>">
+            <td class="status-icon"><span uk-icon="<?php echo ($errors > 0) ? "close" : "check"; ?>"></span></td>
+            <td><a href="<?php echo $suiteInfoFile; ?>"><?php echo str_replace($namespace . '\\', '', $suiteClassName); ?></a></td>
+            <td><?php echo $testObjectsCount - $errors; ?>/<?php echo $testObjectsCount; ?></td>
+            </tr>
+            <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<section class="foot">
+    <div class="uk-container">
+        <div>
+            <a href="#"  target="_blank" href="https://rest-control.github.io/index.html">RestControl :: REST testing framework </a>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+</body>
+</html>
+
