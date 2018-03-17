@@ -21,6 +21,7 @@ use RestControl\Loader\TestsBag;
 use RestControl\TestCase\ResponseFiltersBag;
 use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
+use RestControl\TestCasePipeline\Reports\HTMLReport;
 use RestControl\TestCasePipeline\Stages\PrepareTestsSuiteObjectsStage;
 use RestControl\TestCasePipeline\Stages\ReportStage;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
@@ -215,6 +216,7 @@ class TestCasePipeline
 
             $factory = new ReportsFactory();
             $factory->addReport(new JsonReport());
+            $factory->addReport(new HTMLReport());
 
             return $factory;
         });
