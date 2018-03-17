@@ -12,7 +12,6 @@
 namespace RestControl\Tests\TestCasePipeline;
 
 use Composer\Autoload\ClassLoader;
-use League\Pipeline\Pipeline;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use RestControl\ApiClient\HttpGuzzleClient;
@@ -79,11 +78,6 @@ class TestCasePipelineTest extends TestCase
         $this->assertInstanceOf(
             TestsBag::class,
             $di->get(TestsBag::class)
-        );
-
-        $this->assertInstanceOf(
-            Pipeline::class,
-            $di->get(Pipeline::class)
         );
     }
 

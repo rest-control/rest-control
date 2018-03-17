@@ -12,6 +12,7 @@
 namespace RestControl\Console\Commands;
 
 use Composer\Autoload\ClassLoader;
+use Psr\Log\InvalidArgumentException;
 use RestControl\Console\Utils\ConsoleTestCasePipelineListener;
 use RestControl\TestCasePipeline\TestCasePipeline;
 use Symfony\Component\Console\Command\Command;
@@ -53,6 +54,20 @@ class RunTestsCommand extends Command
                  InputOption::VALUE_REQUIRED,
                  'Schema: "sample,tags" or "sample tags" or "sample,tags another"',
                  ''
+             )
+             ->addOption(
+                 'report',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Type of report: "json" or "html"',
+                 null
+             )
+             ->addOption(
+                 'report-dir',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Report source dir',
+                 null
              );
     }
 
@@ -70,6 +85,7 @@ class RunTestsCommand extends Command
         );
 
         $this->addConsolePipelineListener($output, $pipeline);
+        $this->setReportStage($input, $pipeline);
         
         $pipeline->process(
             $input->getOption('tags')
@@ -92,5 +108,28 @@ class RunTestsCommand extends Command
         );
 
         $pipeline->addSubscriber($listener);
+    }
+
+    /**
+     * @param InputInterface   $input
+     * @param TestCasePipeline $pipeline
+     */
+    protected function setReportStage(
+        InputInterface $input,
+        TestCasePipeline $pipeline
+    ){
+        $report = $input->getOption('report');
+
+        if(!$report) {
+            return;
+        }
+
+        $reportDir = $input->getOption('report-dir');
+
+        if(!$reportDir) {
+            throw new InvalidArgumentException('You must provide report-dir.');
+        }
+
+        $pipeline->addReport($report, $reportDir);
     }
 }
