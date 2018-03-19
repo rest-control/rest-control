@@ -12,9 +12,11 @@
 namespace RestControl\Tests\TestCase;
 
 use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\Request;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -96,6 +98,21 @@ class ResponseTest extends TestCase
 
         $this->assertSame('sample', $objs[0]->getParam(0));
         $this->assertSame('value', $objs[0]->getParam(1));
+    }
+
+    public function testContentType()
+    {
+        $expression = new Expression('containsString', ['json']);
+        $response = new Response();
+        $response->contentType($expression);
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(ContentTypeFilter::FILTER_NAME);
+        $this->assertCount(1, $objs);
+        $this->assertInstanceOf(ChainObject::class, $objs[0]);
+
+        $this->assertSame($expression, $objs[0]->getParam(0));
     }
 
     public function testHeaders()

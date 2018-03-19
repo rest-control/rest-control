@@ -12,6 +12,7 @@
 namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -24,7 +25,7 @@ class Response extends AbstractChain
     const CO_HAS_ITEM = 'hasItem';
     const CO_HAS_ITEMS = 'hasItems';
 
-    use ResponseHttpCodesTrait;
+    use ResponseHttpCodesTrait, ResponseContentTypeTrait;
 
     /**
      * @var null|Request
