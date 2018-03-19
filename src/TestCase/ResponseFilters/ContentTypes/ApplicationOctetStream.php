@@ -13,6 +13,6 @@ namespace RestControl\TestCase\ResponseFilters\ContentTypes;
 
 class ApplicationOctetStream extends AbstractContentType
 {
-    const FILTER_NAME = 'contentTypeApplicationOctetStream.';
+    const FILTER_NAME = 'contentTypeApplicationOctetStream';
     const HTTP_CONTENT_TYPES  = ['application/octet-stream'];
 }
