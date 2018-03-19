@@ -38,6 +38,7 @@ class Request extends AbstractChain
     const CO_BODY        = 'body';
     const CO_FORM_PARAMS = 'form_params';
     const CO_HEADER      = 'header';
+    const CO_OAUTH2      = 'oauth2';
 
     /**
      * @var null|Response

@@ -28,4 +28,15 @@ trait RequestAuthTrait
             'Basic ' . base64_encode($username . ':' . $password)
         );
     }
+
+    /**
+     * @param string $accessToken
+     *
+     * @return $this
+     */
+    public function oauth2($accessToken)
+    {
+        return $this->remove(Request::CO_OAUTH2)
+            ->_add(Request::CO_OAUTH2, [$accessToken]);
+    }
 }

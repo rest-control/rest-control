@@ -216,6 +216,20 @@ class RequestTest extends TestCase
         $this->assertSame('user:secret', base64_decode($expl[1]));
     }
 
+    public function testOAuth2()
+    {
+        $request = new Request();
+        $request->oauth2('sampleaccesstoken');
+
+        $this->assertSame(1, $request->_getChainLength());
+
+        $obj = $request->_getChainObject(Request::CO_OAUTH2);
+        $this->assertInstanceOf(ChainObject::class, $obj);
+        $this->assertSame(Request::CO_OAUTH2, $obj->getObjectName());
+
+        $this->assertSame('sampleaccesstoken', $obj->getParam(0));
+    }
+
     protected function checkRequest(
         $expectedChainLength = 1,
         $method,
