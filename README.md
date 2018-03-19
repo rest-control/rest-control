@@ -1,4 +1,4 @@
-![RestControl](.github/rest-control.jpg)
+![RestControl](https://rest-control.github.io/assets/img/rest-control.png)
 
 About RestControl
 ---
