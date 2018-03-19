@@ -223,11 +223,13 @@ class RequestTest extends TestCase
 
         $this->assertSame(1, $request->_getChainLength());
 
-        $obj = $request->_getChainObject(Request::CO_OAUTH2);
+        $obj = $request->_getChainObject(Request::CO_HEADER);
         $this->assertInstanceOf(ChainObject::class, $obj);
-        $this->assertSame(Request::CO_OAUTH2, $obj->getObjectName());
+        $this->assertSame(Request::CO_HEADER, $obj->getObjectName());
 
-        $this->assertSame('sampleaccesstoken', $obj->getParam(0));
+        $this->assertSame(Request::HEADER_AUTH, $obj->getParam(0));
+
+        $this->assertSame('Bearer sampleaccesstoken', $obj->getParam(1));
     }
 
     protected function checkRequest(

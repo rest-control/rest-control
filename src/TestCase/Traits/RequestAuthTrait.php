@@ -31,12 +31,15 @@ trait RequestAuthTrait
 
     /**
      * @param string $accessToken
+     * @param string $accessTokenType
      *
      * @return $this
      */
-    public function oauth2($accessToken)
+    public function oauth2($accessToken, $accessTokenType = 'Bearer')
     {
-        return $this->remove(Request::CO_OAUTH2)
-            ->_add(Request::CO_OAUTH2, [$accessToken]);
+        return $this->header(
+                Request::HEADER_AUTH,
+                $accessTokenType . ' ' . $accessToken
+            );
     }
 }
