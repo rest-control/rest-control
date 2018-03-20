@@ -386,4 +386,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/typescript']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeFontTtf()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/ttf']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndVisio()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.visio']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeAudioXWav()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/x-wav']);
+    }
 }

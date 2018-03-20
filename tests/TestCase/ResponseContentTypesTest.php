@@ -245,6 +245,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/typescript',
                 'contentTypeApplicationTypescript',
             ],
+
+            [
+                'font/ttf',
+                'contentTypeFontTtf',
+            ],
+
+            [
+                'application/vnd.visio',
+                'contentTypeApplicationVndVisio',
+            ],
+
+            [
+                'audio/x-wav',
+                'contentTypeAudioXWav',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
