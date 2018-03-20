@@ -305,6 +305,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/xml',
                 'contentTypeApplicationXml',
             ],
+
+            [
+                'application/vnd.mozilla.xul+xml',
+                'contentTypeApplicationVndMozillaXulXml',
+            ],
+
+            [
+                'application/zip',
+                'contentTypeApplicationZip',
+            ],
+
+            [
+                'video/3gpp',
+                'contentTypeVideo3gpp',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {

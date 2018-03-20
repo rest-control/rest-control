@@ -483,4 +483,28 @@ trait ResponseContentTypeTrait
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xml']);
     }
 
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndMozillaXulXml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.mozilla.xul+xml']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationZip()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/zip']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideo3gpp()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/3gpp']);
+    }
+
 }
