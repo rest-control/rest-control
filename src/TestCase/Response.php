@@ -16,6 +16,8 @@ use RestControl\TestCase\ResponseFilters\CallFilter;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
@@ -23,9 +25,6 @@ use RestControl\Utils\ResponseItemsCollection;
 
 class Response extends AbstractChain
 {
-    const CO_JSON = 'json';
-    const CO_JSON_PATH = 'jsonPath';
-
     use ResponseHttpCodesTrait, ResponseContentTypeTrait;
 
     /**
@@ -70,7 +69,7 @@ class Response extends AbstractChain
      */
     public function json($checkContentType = true, $allowEmptyBody = false)
     {
-        return $this->_add(self::CO_JSON, func_get_args());
+        return $this->_add(JsonFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -81,7 +80,7 @@ class Response extends AbstractChain
      */
     public function jsonPath($path, $expression)
     {
-        return $this->_add(self::CO_JSON_PATH, func_get_args());
+        return $this->_add(JsonPathFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -108,7 +107,7 @@ class Response extends AbstractChain
     public function jsonPaths(array $conditions)
     {
         foreach($conditions as $condition) {
-            $this->_add(self::CO_JSON_PATH, $condition);
+            $this->_add(JsonPathFilter::FILTER_NAME, $condition);
         }
 
         return $this;
