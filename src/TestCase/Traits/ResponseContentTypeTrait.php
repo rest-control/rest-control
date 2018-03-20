@@ -73,4 +73,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-bzip']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXBzip2()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-bzip2']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXCsh()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-csh']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeTextCss()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/css']);
+    }
 }

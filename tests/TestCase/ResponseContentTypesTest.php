@@ -50,6 +50,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/x-bzip',
                 'contentTypeApplicationXBzip',
             ],
+
+            [
+                'application/x-bzip2',
+                'contentTypeApplicationXBzip2',
+            ],
+
+            [
+                'application/x-csh',
+                'contentTypeApplicationXCsh',
+            ],
+
+            [
+                'text/css',
+                'contentTypeTextCss',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
