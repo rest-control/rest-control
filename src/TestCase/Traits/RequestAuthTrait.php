@@ -28,4 +28,18 @@ trait RequestAuthTrait
             'Basic ' . base64_encode($username . ':' . $password)
         );
     }
+
+    /**
+     * @param string $accessToken
+     * @param string $accessTokenType
+     *
+     * @return $this
+     */
+    public function oauth2($accessToken, $accessTokenType = 'Bearer')
+    {
+        return $this->header(
+                Request::HEADER_AUTH,
+                $accessTokenType . ' ' . $accessToken
+            );
+    }
 }

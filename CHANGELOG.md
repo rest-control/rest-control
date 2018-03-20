@@ -1,3 +1,15 @@
+#### v0.5.0-alpha
+* Add jsonSerializable in request/response chain, statsCollector, tcDelegate, tcSuiteObject and tsObject
+* [\#5 [RequestHelper] OAuth 2](https://github.com/rest-control/rest-control/issues/15)
+* [\#20 JSON test result output](https://github.com/rest-control/rest-control/issues/20)
+* [\#21 HTML test results output](https://github.com/rest-control/rest-control/issues/21)
+* [\#26 ContentType response filter](https://github.com/rest-control/rest-control/issues/26)
+* [\#28 [ExpressionLanguage] BeforeDate filter](https://github.com/rest-control/rest-control/issues/28)
+* [\#29 [ExpressionLanguage] afterDate filter](https://github.com/rest-control/rest-control/issues/29)
+* Update RunTests command(add report & report-dir)
+* Move pipeline creating process
+* [\#30 [ResponseFilter] Custom filter](https://github.com/rest-control/rest-control/issues/30)
+
 #### v0.4.0-alpha
 * [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
 * "EachItems" expression language helper

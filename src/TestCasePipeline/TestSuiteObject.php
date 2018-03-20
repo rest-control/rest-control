@@ -12,8 +12,9 @@
 namespace RestControl\TestCasePipeline;
 
 use Psr\Log\InvalidArgumentException;
+use JsonSerializable;
 
-class TestSuiteObject
+class TestSuiteObject implements JsonSerializable
 {
     /**
      * @var array
@@ -88,5 +89,16 @@ class TestSuiteObject
     public function getSuite()
     {
         return $this->suite;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'suite_class' => get_class($this->suite),
+            'tests'       => $this->testObjects,
+        ];
     }
 }

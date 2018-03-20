@@ -12,8 +12,9 @@
 namespace RestControl\TestCase;
 
 use Psr\Log\InvalidArgumentException;
+use JsonSerializable;
 
-class ChainObject
+class ChainObject implements JsonSerializable
 {
     /**
      * @var array
@@ -70,5 +71,16 @@ class ChainObject
     public function getObjectName()
     {
         return $this->objectName;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'name'       => $this->objectName,
+            'parameters' => $this->params,
+        ];
     }
 }

@@ -12,9 +12,17 @@
 namespace RestControl\Tests\TestCase;
 
 use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\Request;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\ResponseFilters\CallFilter;
+use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
+use RestControl\TestCase\ResponseFilters\HasItemFilter;
+use RestControl\TestCase\ResponseFilters\HasItemsFilter;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -37,7 +45,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $obj = $response->_getChainObject(Response::CO_JSON);
+        $obj = $response->_getChainObject(JsonFilter::FILTER_NAME);
         $this->assertInstanceOf(ChainObject::class, $obj);
 
         $this->assertFalse($obj->getParam(0));
@@ -51,7 +59,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $obj = $response->_getChainObject(Response::CO_JSON_PATH);
+        $obj = $response->_getChainObject(JsonPathFilter::FILTER_NAME);
         $this->assertInstanceOf(ChainObject::class, $obj);
 
         $this->assertSame('sample.path', $obj->getParam(0));
@@ -69,7 +77,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(2, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_JSON_PATH);
+        $objs = $response->_getChainObjects(JsonPathFilter::FILTER_NAME);
         $this->assertCount(2, $objs);
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
         $this->assertInstanceOf(ChainObject::class, $objs[1]);
@@ -90,12 +98,27 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $objs = $response->_getChainObjects(HeaderFilter::FILTER_NAME);
         $this->assertCount(1, $objs);
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
 
         $this->assertSame('sample', $objs[0]->getParam(0));
         $this->assertSame('value', $objs[0]->getParam(1));
+    }
+
+    public function testContentType()
+    {
+        $expression = new Expression('containsString', ['json']);
+        $response = new Response();
+        $response->contentType($expression);
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(ContentTypeFilter::FILTER_NAME);
+        $this->assertCount(1, $objs);
+        $this->assertInstanceOf(ChainObject::class, $objs[0]);
+
+        $this->assertSame($expression, $objs[0]->getParam(0));
     }
 
     public function testHeaders()
@@ -108,7 +131,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(2, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $objs = $response->_getChainObjects(HeaderFilter::FILTER_NAME);
         $this->assertCount(2, $objs);
 
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
@@ -128,7 +151,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HAS_ITEM);
+        $objs = $response->_getChainObjects(HasItemFilter::FILTER_NAME);
         $this->assertCount(1, $objs);
 
         $this->assertInstanceOf(SampleResponseItem::class, $objs[0]->getParam(0));
@@ -145,7 +168,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HAS_ITEMS);
+        $objs = $response->_getChainObjects(HasItemsFilter::FILTER_NAME);
         $this->assertCount(1, $objs);
 
         $this->assertInstanceOf(ResponseItemsCollection::class, $objs[0]->getParam(0));
@@ -179,5 +202,20 @@ class ResponseTest extends TestCase
                 $response->_getChain()[0]
             );
         }
+    }
+
+    public function testCall()
+    {
+        $response   = new Response();
+        $call       = function($apiResponse){};
+
+        $response->call($call);
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $objs = $response->_getChainObjects(CallFilter::FILTER_NAME);
+        $this->assertCount(1, $objs);
+
+        $this->assertSame($call, $objs[0]->getParam(0));
     }
 }

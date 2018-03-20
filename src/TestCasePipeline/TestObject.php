@@ -16,11 +16,9 @@ use RestControl\TestCase\Request;
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
+use JsonSerializable;
 
-/**
- * Class TestObject
- */
-class TestObject
+class TestObject implements JsonSerializable
 {
     /**
      * @var null|TestCaseDelegate
@@ -185,5 +183,31 @@ class TestObject
     public function getExceptions()
     {
         return $this->exceptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $request  = null;
+        $response = null;
+
+        if($this->requestChain) {
+            $request  = $this->requestChain;
+            $response = $this->requestChain->expectedResponse();
+        }
+
+        return [
+            'response_time' => $this->requestTime,
+            'queue_index'   => $this->queueIndex,
+            'delegate'      => ($this->delegate) ? $this->delegate : null,
+            'exceptions'    => $this->exceptions,
+            'chain'         => [
+                'request'       => $request,
+                'response'      => $response,
+            ],
+            'statistics'    => $this->statsCollector,
+        ];
     }
 }

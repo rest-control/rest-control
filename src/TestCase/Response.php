@@ -12,19 +12,20 @@
 namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\ResponseFilters\CallFilter;
+use RestControl\TestCase\ResponseFilters\HasItemFilter;
+use RestControl\TestCase\ResponseFilters\HasItemsFilter;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
 
 class Response extends AbstractChain
 {
-    const CO_JSON = 'json';
-    const CO_JSON_PATH = 'jsonPath';
-    const CO_HEADER = 'header';
-    const CO_HAS_ITEM = 'hasItem';
-    const CO_HAS_ITEMS = 'hasItems';
-
-    use ResponseHttpCodesTrait;
+    use ResponseHttpCodesTrait, ResponseContentTypeTrait;
 
     /**
      * @var null|Request
@@ -68,7 +69,7 @@ class Response extends AbstractChain
      */
     public function json($checkContentType = true, $allowEmptyBody = false)
     {
-        return $this->_add(self::CO_JSON, func_get_args());
+        return $this->_add(JsonFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -79,7 +80,7 @@ class Response extends AbstractChain
      */
     public function jsonPath($path, $expression)
     {
-        return $this->_add(self::CO_JSON_PATH, func_get_args());
+        return $this->_add(JsonPathFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -106,7 +107,7 @@ class Response extends AbstractChain
     public function jsonPaths(array $conditions)
     {
         foreach($conditions as $condition) {
-            $this->_add(self::CO_JSON_PATH, $condition);
+            $this->_add(JsonPathFilter::FILTER_NAME, $condition);
         }
 
         return $this;
@@ -120,7 +121,7 @@ class Response extends AbstractChain
      */
     public function header($name, $expression)
     {
-        return $this->_add(self::CO_HEADER, func_get_args());
+        return $this->_add(HeaderFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -131,7 +132,7 @@ class Response extends AbstractChain
     public function headers(array $headersConditions)
     {
         foreach($headersConditions as $condition) {
-            $this->_add(self::CO_HEADER, $condition);
+            $this->_add(HeaderFilter::FILTER_NAME, $condition);
         }
 
         return $this;
@@ -146,7 +147,7 @@ class Response extends AbstractChain
      */
     public function hasItem(AbstractResponseItem $item, $jsonPath = null, $strictRequiredValuesMode = false)
     {
-        return $this->_add(self::CO_HAS_ITEM, func_get_args());
+        return $this->_add(HasItemFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -157,6 +158,16 @@ class Response extends AbstractChain
      */
     public function hasItems(ResponseItemsCollection $collection, $jsonPath = null)
     {
-        return $this->_add(self::CO_HAS_ITEMS, func_get_args());
+        return $this->_add(HasItemsFilter::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @param $callable
+     *
+     * @return $this
+     */
+    public function call($callable)
+    {
+        return $this->_add(CallFilter::FILTER_NAME, func_get_args());
     }
 }

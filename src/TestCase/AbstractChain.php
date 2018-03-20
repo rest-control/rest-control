@@ -12,8 +12,9 @@
 namespace RestControl\TestCase;
 
 use Psr\Log\InvalidArgumentException;
+use JsonSerializable;
 
-abstract class AbstractChain implements TestCaseEventsInterface
+abstract class AbstractChain implements TestCaseEventsInterface, JsonSerializable
 {
     /**
      * @var array
@@ -34,6 +35,18 @@ abstract class AbstractChain implements TestCaseEventsInterface
     public function _getChainLength()
     {
         return count($this->chain);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'length' => count($this->chain),
+            'chain'  => $this->chain,
+            'class'  => get_class($this),
+        ];
     }
 
     public function __beforeTests(){}

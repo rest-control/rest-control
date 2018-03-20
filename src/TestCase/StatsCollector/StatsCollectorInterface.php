@@ -13,9 +13,8 @@ namespace RestControl\TestCase\StatsCollector;
 
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 
-interface StatsCollectorInterface
+interface StatsCollectorInterface extends \JsonSerializable
 {
-
     /**
      * @param FilterInterface $filter
      * @param $errorCode

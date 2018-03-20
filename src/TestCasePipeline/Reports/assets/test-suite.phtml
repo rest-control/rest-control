@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+    <style type="text/css">
+        .uk-navbar-container:not(.uk-navbar-transparent) {
+            background: #3b4450;
+        }
+        .uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+            height: 60px;
+        }
+
+        .uk-navbar-item .uk-link:hover, a:hover{
+            color: #379fe1;
+        }
+        .uk-navbar-item .uk-link, a{
+            color: white;
+        }
+
+        .uk-link, a {
+            color: #379fe1;
+        }
+
+        .logo-left-span {
+            color:white;
+            font-weight:bold;
+        }
+
+        .logo-right-span {
+            font-weight:bold;
+            color:#379fe1;
+        }
+
+        .logo-small-info {
+            font-size: 12px;
+            color:#87919c;
+        }
+
+        .tests-table .ok .status-icon span {
+            color:green;
+        }
+
+        .tests-table .errors .status-icon span {
+            color:red;
+        }
+
+        .breadcrumb-container {
+            background: whitesmoke;
+            padding: 7px 10px;
+        }
+
+        .breadcrumb-container .uk-breadcrumb {
+            margin:0;
+        }
+
+        body{
+            padding-bottom:100px;
+        }
+
+        section.foot {
+            border-top: 1px solid #efefef;
+            position:fixed;
+            bottom:0;
+            width:100%;
+            padding:30px 0;
+            text-align:center;
+        }
+
+        section.foot a {
+            color:silver;
+        }
+
+        .suite-info {
+            background: #f5f5f5;
+            padding: 15px;
+        }
+
+        span.ok {
+            color: green;
+        }
+
+        span.error {
+            color:red;
+        }
+        .suite-test-info-content {
+            border-left: 5px solid #848282;
+        }
+
+        .click{
+            color: #379fe1 !important;
+        }
+    </style>
+</head>
+
+<body>
+<header class="site-header">
+    <nav class="uk-navbar-container uk-margin uk-navbar" uk-navbar="">
+        <div class="uk-navbar-center">
+            <div class="uk-navbar-left">
+
+                <a class="uk-navbar-item uk-logo" target="_blank" href="https://rest-control.github.io/index.html">
+                    <span class="logo-left-span">Rest</span>
+                    <span class="logo-right-span">Control</span>&nbsp;
+                    <span class="logo-small-info">:: REST testing framework</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="uk-container">
+    <div class="breadcrumb-container">
+        <ul class="uk-breadcrumb">
+            <li><span uk-icon="home"></span></li>
+            <?php
+                $suiteClassName = get_class($suite);
+
+                $path  = explode('\\', $suiteClassName);
+                $iPath = '';
+
+                foreach($path as $item) {
+
+                    if($iPath) {
+                       $iPath .= '\\';
+                    }
+
+                    $iPath .= $item;
+                    $namespaceFile = strtolower(str_replace('\\', '_', $iPath)) . '.html';
+
+                    if($iPath !== $suiteClassName) {
+                        $namespaceFile = 'namespace_' . $namespaceFile;
+                    }
+
+                    ?>
+                    <li><a href="<?php echo $namespaceFile; ?>"><?php echo $item; ?></a></li>
+                    <?php
+                }
+            ?>
+        </ul>
+    </div>
+    <div class="uk-margin-top">
+        <h2><span uk-icon="code"></span> <?php echo $suiteClassName; ?></h2>
+        <ul uk-accordion>
+            <?php
+            foreach($tests as $test){
+                /** @var \RestControl\TestCasePipeline\TestObject $test */
+                $delegate = $test->getDelegate();
+                $statsCollector = $test->getStatsCollector();
+                ?>
+                <li>
+                    <a class="uk-accordion-title" href="#">
+                        <?php if($test->hasErrors()) { ?>
+                            <span uk-icon="close" class="error"></span>
+                        <?php } else { ?>
+                            <span uk-icon="check" class="ok"></span>
+                        <?php } ?>
+                        <?php echo $delegate->getMethodName(); ?>
+                    </a>
+                    <div class="uk-accordion-content suite-test-info-content">
+                        <div class="suite-info">
+                            <div><b>title: </b><?php echo $delegate->getTitle(); ?></div>
+                            <div><b>description: </b><?php echo $delegate->getDescription(); ?></div>
+                            <div><b>tags: </b><?php echo implode(', ', $delegate->getTags()); ?></div>
+                            <div><hr/></div>
+                            <div><b>Queue index: </b><?php echo $test->getQueueIndex(); ?></div>
+                            <div><b>Response time: </b><?php echo $test->getRequestTime(); ?></div>
+                        </div>
+                        <div style="margin-top:30px;padding:0 10px;">
+                            <ul uk-accordion>
+                                <li>
+                                    <a class="uk-accordion-title click" href="#"><span uk-icon="chevron-right"></span> Statistics</a>
+                                    <div class="uk-accordion-content" style="padding-left:20px">
+                                        <div><b>Assertions: </b> <?php echo $statsCollector->getAssertionsCount(); ?></div>
+                                        <div><br/><b>Filter errors (<?php echo count($statsCollector->getFilterErrors()); ?>): </b></div>
+                                        <div><pre><?php echo print_r($statsCollector->getFilterErrors(), true); ?></pre></div>
+                                        <div><b>General errors (<?php echo count($statsCollector->getErrors()); ?>): </b></div>
+                                        <div><pre><?php echo print_r($statsCollector->getErrors(), true); ?></pre></div>
+                                        <div><b>Exceptions (<?php echo count($test->getExceptions()) ?>): </b></div>
+                                        <div>
+                                                <ul>
+                                                <?php
+                                                    foreach($test->getExceptions() as $exception) {
+                                                        /** @var \Exception $exception */
+                                                      ?>
+                                                        <li>
+                                                            <h4><?php echo $exception->getMessage(); ?></h4>
+                                                            <div><pre><?php echo $exception->getTraceAsString(); ?></pre></div>
+                                                        </li>
+                                                    <?php
+                                                    }
+
+                                                ?>
+                                                </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a class="uk-accordion-title click" href="#"><span uk-icon="chevron-right"></span> Request chain</a>
+                                    <div class="uk-accordion-content" style="padding-left:20px">
+                                        <?php
+                                            foreach($test->getRequestChain()->_getChain() as $item) {
+                                                /** @var \RestControl\TestCase\ChainObject $item */
+                                                ?>
+                                                 <div>
+                                                     <div>
+                                                         <b>Chain name: </b><?php echo $item->getObjectName() ?>
+                                                     </div>
+                                                     <div>
+                                                         <pre><?php echo print_r($item->getParams(), true); ?></pre>
+                                                     </div>
+                                                 </div>
+                                                <?php
+                                            }
+                                        ?>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a class="uk-accordion-title click" href="#"><span uk-icon="chevron-right"></span> Response chain</a>
+                                    <div class="uk-accordion-content" style="padding-left:20px">
+                                        <?php
+                                        foreach($test->getRequestChain()->expectedResponse()->_getChain() as $item) {
+                                            /** @var \RestControl\TestCase\ChainObject $item */
+                                            ?>
+                                            <div>
+                                                <div>
+                                                    <b>Chain name: </b><?php echo $item->getObjectName() ?>
+                                                </div>
+                                                <div>
+                                                    <pre><?php echo print_r($item->getParams(), true); ?></pre>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <?php
+            }
+
+            ?>
+        </ul>
+    </div>
+</div>
+<section class="foot">
+    <div class="uk-container">
+        <div>
+            <a href="#"  target="_blank" href="https://rest-control.github.io/index.html">RestControl :: REST testing framework </a>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+</body>
+</html>

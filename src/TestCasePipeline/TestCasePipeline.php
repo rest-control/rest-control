@@ -21,15 +21,17 @@ use RestControl\Loader\TestsBag;
 use RestControl\TestCase\ResponseFiltersBag;
 use RestControl\TestCasePipeline\Events\AfterTestCasePipelineEvent;
 use RestControl\TestCasePipeline\Events\BeforeTestCasePipelineEvent;
+use RestControl\TestCasePipeline\Reports\HTMLReport;
 use RestControl\TestCasePipeline\Stages\PrepareTestsSuiteObjectsStage;
+use RestControl\TestCasePipeline\Stages\ReportStage;
 use RestControl\TestCasePipeline\Stages\RunTestObjectsStage;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use RestControl\TestCasePipeline\Reports\FactoryInterface as ReportsFactoryInterface;
+use RestControl\TestCasePipeline\Reports\Factory as ReportsFactory;
+use RestControl\TestCasePipeline\Reports\JsonReport;
 
-/**
- * Class TestCasePipeline
- */
 class TestCasePipeline
 {
     /**
@@ -57,7 +59,26 @@ class TestCasePipeline
     ){
         $this->prepareContainer($classLoader, $configuration);
         $this->prepareTestsBag($classLoader, $configuration);
-        $this->preparePipeline();
+    }
+
+    /**
+     * @param string $report
+     * @param string $reportDir
+     *
+     * @return $this
+     */
+    public function addReport($report, $reportDir)
+    {
+        /** @var ReportsFactoryInterface $factory */
+        $factory = $this->container->get(ReportsFactoryInterface::class);
+        $report  = $factory->get($report);
+
+        $this->pipelineStages []= new ReportStage(
+            $report,
+            $reportDir
+        );
+
+        return $this;
     }
 
     /**
@@ -71,7 +92,7 @@ class TestCasePipeline
     public function process($tags = '')
     {
         /** @var Pipeline $pipeline */
-        $pipeline = $this->container->get(Pipeline::class);
+        $pipeline = $this->preparePipeline();
         /** @var TestsBag $testsBag */
         $testsBag = $this->container->get(TestsBag::class);
         /** @var TestPipelineConfiguration $configuration */
@@ -80,15 +101,15 @@ class TestCasePipeline
         $apiClient = $this->container->get($configuration->getApiClient());
 
         $this->container->get(EventDispatcherInterface::class)
-                        ->dispatch(
-                            BeforeTestCasePipelineEvent::NAME,
-                            new BeforeTestCasePipelineEvent(
-                                $pipeline,
-                                $testsBag,
-                                $configuration,
-                                $apiClient
-                            )
-                        );
+            ->dispatch(
+                BeforeTestCasePipelineEvent::NAME,
+                new BeforeTestCasePipelineEvent(
+                    $pipeline,
+                    $testsBag,
+                    $configuration,
+                    $apiClient
+                )
+            );
 
         $payload = new Payload(
             $apiClient,
@@ -99,16 +120,16 @@ class TestCasePipeline
         $processedPayload = $pipeline->process($payload);
 
         $this->container->get(EventDispatcherInterface::class)
-                        ->dispatch(
-                            AfterTestCasePipelineEvent::NAME,
-                            new AfterTestCasePipelineEvent(
-                                $pipeline,
-                                $testsBag,
-                                $configuration,
-                                $apiClient,
-                                $payload
-                            )
-                        );
+            ->dispatch(
+                AfterTestCasePipelineEvent::NAME,
+                new AfterTestCasePipelineEvent(
+                    $pipeline,
+                    $testsBag,
+                    $configuration,
+                    $apiClient,
+                    $payload
+                )
+            );
 
         return $processedPayload;
     }
@@ -128,10 +149,10 @@ class TestCasePipeline
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
-       $this->container->get(EventDispatcherInterface::class)
-                       ->addSubscriber($subscriber);
+        $this->container->get(EventDispatcherInterface::class)
+            ->addSubscriber($subscriber);
 
-       return $this;
+        return $this;
     }
 
     /**
@@ -158,17 +179,16 @@ class TestCasePipeline
         $stages = [];
 
         foreach($this->pipelineStages as $stage) {
+
+            if(is_object($stage)) {
+                $stages []= $stage;
+                continue;
+            }
+
             $stages []= $this->container->get($stage);
         }
 
-        $pipeline = new Pipeline($stages);
-
-        $this->container->share(
-            Pipeline::class,
-            function() use($pipeline){
-                return $pipeline;
-            }
-        );
+        return new Pipeline($stages);
     }
 
     /**
@@ -191,6 +211,15 @@ class TestCasePipeline
             TestsBag::class,
             $this->container->get(TestsBag::class)
         );
+
+        $this->container->share(ReportsFactoryInterface::class, function() {
+
+            $factory = new ReportsFactory();
+            $factory->addReport(new JsonReport());
+            $factory->addReport(new HTMLReport());
+
+            return $factory;
+        });
     }
 
     /**
