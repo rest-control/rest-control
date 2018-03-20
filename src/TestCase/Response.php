@@ -15,6 +15,7 @@ use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\CallFilter;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
@@ -24,7 +25,6 @@ class Response extends AbstractChain
 {
     const CO_JSON = 'json';
     const CO_JSON_PATH = 'jsonPath';
-    const CO_HEADER = 'header';
 
     use ResponseHttpCodesTrait, ResponseContentTypeTrait;
 
@@ -122,7 +122,7 @@ class Response extends AbstractChain
      */
     public function header($name, $expression)
     {
-        return $this->_add(self::CO_HEADER, func_get_args());
+        return $this->_add(HeaderFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -133,7 +133,7 @@ class Response extends AbstractChain
     public function headers(array $headersConditions)
     {
         foreach($headersConditions as $condition) {
-            $this->_add(self::CO_HEADER, $condition);
+            $this->_add(HeaderFilter::FILTER_NAME, $condition);
         }
 
         return $this;

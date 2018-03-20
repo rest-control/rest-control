@@ -20,6 +20,7 @@ use RestControl\TestCase\ResponseFilters\CallFilter;
 use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
+use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -95,7 +96,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $objs = $response->_getChainObjects(HeaderFilter::FILTER_NAME);
         $this->assertCount(1, $objs);
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
 
@@ -128,7 +129,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(2, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_HEADER);
+        $objs = $response->_getChainObjects(HeaderFilter::FILTER_NAME);
         $this->assertCount(2, $objs);
 
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
