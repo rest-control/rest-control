@@ -58,21 +58,21 @@ class PsrClassLoaderTest extends TestCase
         $delegates = $loader->load();
 
         $delegatesSchema = [
-            [
+            'RestControl\Tests\Loader\SamplePathWithTestCase\Rec\Rec\SampleTest' => [
                 'namespace'   => 'RestControl\Tests\Loader\SamplePathWithTestCase\Rec\Rec\SampleTest',
                 'method'      => 'mySuffixSampleTestRandom',
                 'title'       => '',
                 'description' => '',
                 'tags'        => [],
             ],
-            [
+            'RestControl\Tests\Loader\SamplePathWithTestCase\Rec\SampleTest' => [
                 'namespace'   => 'RestControl\Tests\Loader\SamplePathWithTestCase\Rec\SampleTest',
                 'method'      => 'mySuffixSampleTestSample',
                 'title'       => '',
                 'description' => '',
                 'tags'        => [],
             ],
-            [
+            'RestControl\Tests\Loader\SamplePathWithTestCase\SampleTest' => [
                 'namespace'   => 'RestControl\Tests\Loader\SamplePathWithTestCase\SampleTest',
                 'method'      => 'mySuffixSampleTest',
                 'title'       => 'Sample testCase',
@@ -87,9 +87,9 @@ class PsrClassLoaderTest extends TestCase
 
         foreach($delegates as $i => $delegate) {
             /** @var \RestControl\Loader\TestCaseDelegate $delegate */
-            $this->assertArrayHasKey($i, $delegatesSchema);
+            $this->assertArrayHasKey($delegate->getClassName(), $delegatesSchema);
             $this->assertSame(
-                $delegatesSchema[$i],
+                $delegatesSchema[$delegate->getClassName()],
                 [
                     'namespace'   => $delegate->getClassName(),
                     'method'      => $delegate->getMethodName(),
@@ -98,7 +98,6 @@ class PsrClassLoaderTest extends TestCase
                     'tags'        => $delegate->getTags(),
                 ]
             );
-
         }
     }
 }
