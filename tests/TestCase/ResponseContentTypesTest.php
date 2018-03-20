@@ -260,6 +260,22 @@ class ResponseContentTypesTest extends TestCase
                 'audio/x-wav',
                 'contentTypeAudioXWav',
             ],
+
+            [
+                'audio/webm',
+                'contentTypeAudioWebm',
+            ],
+
+            [
+                'video/webm',
+                'contentTypeVideoWebm',
+            ],
+
+            [
+                'image/webp',
+                'contentTypeImageWebp',
+            ],
+
         ];
 
         foreach($contentTypes as $contentTypeConf) {

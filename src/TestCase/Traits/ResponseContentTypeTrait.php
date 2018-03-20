@@ -410,4 +410,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/x-wav']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeAudioWebm()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/webm']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideoWebm()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/webm']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageWebp()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/webp']);
+    }
 }
