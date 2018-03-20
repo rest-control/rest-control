@@ -34,6 +34,10 @@ Here is a simple example of how to send a GET request and validate json response
  }
 ```
 
+Helpful HTML reports
+--
+![RestControl - HTML Report](https://rest-control.github.io/assets/img/rest-control-html-report-min.jpg)
+
 Features/Helpers
 ---
 - easily send HTTP requests, variety of http methods like post, get, put, delete, head, patch, purge, options, trace, connect
