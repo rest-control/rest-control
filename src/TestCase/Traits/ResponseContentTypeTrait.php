@@ -97,4 +97,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/css']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeTextCsv()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/csv']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationMsword()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/msword']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+    }
 }

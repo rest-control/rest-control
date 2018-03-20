@@ -65,6 +65,21 @@ class ResponseContentTypesTest extends TestCase
                 'text/css',
                 'contentTypeTextCss',
             ],
+
+            [
+                'text/csv',
+                'contentTypeTextCsv',
+            ],
+
+            [
+                'application/msword',
+                'contentTypeApplicationMsword',
+            ],
+
+            [
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'contentTypeApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
