@@ -13,6 +13,8 @@ namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\CallFilter;
+use RestControl\TestCase\ResponseFilters\HasItemFilter;
+use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
@@ -23,8 +25,6 @@ class Response extends AbstractChain
     const CO_JSON = 'json';
     const CO_JSON_PATH = 'jsonPath';
     const CO_HEADER = 'header';
-    const CO_HAS_ITEM = 'hasItem';
-    const CO_HAS_ITEMS = 'hasItems';
 
     use ResponseHttpCodesTrait, ResponseContentTypeTrait;
 
@@ -148,7 +148,7 @@ class Response extends AbstractChain
      */
     public function hasItem(AbstractResponseItem $item, $jsonPath = null, $strictRequiredValuesMode = false)
     {
-        return $this->_add(self::CO_HAS_ITEM, func_get_args());
+        return $this->_add(HasItemFilter::FILTER_NAME, func_get_args());
     }
 
     /**
@@ -159,7 +159,7 @@ class Response extends AbstractChain
      */
     public function hasItems(ResponseItemsCollection $collection, $jsonPath = null)
     {
-        return $this->_add(self::CO_HAS_ITEMS, func_get_args());
+        return $this->_add(HasItemsFilter::FILTER_NAME, func_get_args());
     }
 
     /**
