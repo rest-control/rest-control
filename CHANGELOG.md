@@ -8,6 +8,7 @@
 * [\#29 [ExpressionLanguage] afterDate filter](https://github.com/rest-control/rest-control/issues/29)
 * Update RunTests command(add report & report-dir)
 * Move pipeline creating process
+* [\#30 [ResponseFilter] Custom filter](https://github.com/rest-control/rest-control/issues/30)
 
 #### v0.4.0-alpha
 * [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
