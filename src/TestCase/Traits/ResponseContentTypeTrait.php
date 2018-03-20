@@ -49,4 +49,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/octet-stream']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideoXMsvideo()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/x-msvideo']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndAmazonEbook()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.amazon.ebook']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXBzip()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-bzip']);
+    }
 }

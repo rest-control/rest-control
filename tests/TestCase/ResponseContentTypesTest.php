@@ -35,6 +35,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/octet-stream',
                 'contentTypeApplicationOctetStream',
             ],
+
+            [
+                'video/x-msvideo',
+                'contentTypeVideoXMsvideo',
+            ],
+
+            [
+                'application/vnd.amazon.ebook',
+                'contentTypeApplicationVndAmazonEbook',
+            ],
+
+            [
+                'application/x-bzip',
+                'contentTypeApplicationXBzip',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
