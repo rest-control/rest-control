@@ -169,4 +169,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/x-icon']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeTextCalendar()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/calendar']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationJavaArchive()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/java-archive']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageJpeg()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/jpeg']);
+    }
 }

@@ -109,6 +109,21 @@ class ResponseContentTypesTest extends TestCase
                 'image/x-icon',
                 'contentTypeImageXIcon',
             ],
+
+            [
+                'text/calendar',
+                'contentTypeTextCalendar',
+            ],
+
+            [
+                'application/java-archive',
+                'contentTypeApplicationJavaArchive',
+            ],
+
+            [
+                'image/jpeg',
+                'contentTypeImageJpeg',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
