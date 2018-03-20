@@ -12,6 +12,7 @@
 namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
+use RestControl\TestCase\ResponseFilters\CallFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
@@ -159,5 +160,15 @@ class Response extends AbstractChain
     public function hasItems(ResponseItemsCollection $collection, $jsonPath = null)
     {
         return $this->_add(self::CO_HAS_ITEMS, func_get_args());
+    }
+
+    /**
+     * @param $callable
+     *
+     * @return $this
+     */
+    public function call($callable)
+    {
+        return $this->_add(CallFilter::FILTER_NAME, func_get_args());
     }
 }
