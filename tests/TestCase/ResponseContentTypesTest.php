@@ -1,0 +1,57 @@
+<?php
+
+/*
+ * This file is part of the Rest-Control package.
+ *
+ * (c) Kamil Szela <kamil.szela@cothe.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace RestControl\Tests\TestCase;
+
+use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\Response;
+use PHPUnit\Framework\TestCase;
+use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
+
+class ResponseContentTypesTest extends TestCase
+{
+    public function testContentTypes()
+    {
+        $contentTypes  = [
+            [
+                'audio/aac',
+                'contentTypeAudioAac',
+            ],
+
+            [
+                'application/x-abiword',
+                'contentTypeApplicationXAbiword',
+            ],
+
+            [
+                'application/octet-stream',
+                'contentTypeApplicationOctetStream',
+            ],
+        ];
+
+        foreach($contentTypes as $contentTypeConf) {
+
+            $response = new Response();
+            $response->{$contentTypeConf[1]}();
+
+            $this->assertSame(1, $response->_getChainLength());
+
+            $chainObjects = $response->_getChainObjects(ContentTypeFilter::FILTER_NAME);
+            $this->assertCount(1, $chainObjects);
+            $this->assertInstanceOf(ChainObject::class, $chainObjects[0]);
+
+            /** @var ChainObject $chainObject */
+            $chainObject = $chainObjects[0];
+
+            $this->assertSame($contentTypeConf[0], $chainObject->getParam(0));
+        }
+    }
+}
