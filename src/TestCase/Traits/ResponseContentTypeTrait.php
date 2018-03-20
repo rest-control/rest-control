@@ -290,4 +290,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/otf']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImagePng()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/png']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationPdf()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/pdf']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndMsPowerpoint()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-powerpoint']);
+    }
 }

@@ -185,6 +185,21 @@ class ResponseContentTypesTest extends TestCase
                 'font/otf',
                 'contentTypeFontOtf',
             ],
+
+            [
+                'image/png',
+                'contentTypeImagePng',
+            ],
+
+            [
+                'application/pdf',
+                'contentTypeApplicationPdf',
+            ],
+
+            [
+                'application/vnd.ms-powerpoint',
+                'contentTypeApplicationVndMsPowerpoint',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
