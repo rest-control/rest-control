@@ -458,4 +458,29 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xhtml+xml']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndMsExcel()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-excel']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xml']);
+    }
+
 }

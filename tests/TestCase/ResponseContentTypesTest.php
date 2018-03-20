@@ -290,6 +290,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/xhtml+xml',
                 'contentTypeApplicationXhtmlXml',
             ],
+
+            [
+                'application/vnd.ms-excel',
+                'contentTypeApplicationVndMsExcel',
+            ],
+
+            [
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'contentTypeApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet',
+            ],
+
+            [
+                'application/xml',
+                'contentTypeApplicationXml',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
