@@ -21,6 +21,8 @@ use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
+use RestControl\TestCase\ResponseFilters\JsonFilter;
+use RestControl\TestCase\ResponseFilters\JsonPathFilter;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -43,7 +45,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $obj = $response->_getChainObject(Response::CO_JSON);
+        $obj = $response->_getChainObject(JsonFilter::FILTER_NAME);
         $this->assertInstanceOf(ChainObject::class, $obj);
 
         $this->assertFalse($obj->getParam(0));
@@ -57,7 +59,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(1, $response->_getChainLength());
 
-        $obj = $response->_getChainObject(Response::CO_JSON_PATH);
+        $obj = $response->_getChainObject(JsonPathFilter::FILTER_NAME);
         $this->assertInstanceOf(ChainObject::class, $obj);
 
         $this->assertSame('sample.path', $obj->getParam(0));
@@ -75,7 +77,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(2, $response->_getChainLength());
 
-        $objs = $response->_getChainObjects(Response::CO_JSON_PATH);
+        $objs = $response->_getChainObjects(JsonPathFilter::FILTER_NAME);
         $this->assertCount(2, $objs);
         $this->assertInstanceOf(ChainObject::class, $objs[0]);
         $this->assertInstanceOf(ChainObject::class, $objs[1]);
