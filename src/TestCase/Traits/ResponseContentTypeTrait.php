@@ -242,4 +242,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.presentation']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOasisOpendocumentSpreadsheet()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.spreadsheet']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOasisOpendocumentText()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.text']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeAudioOgg()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/ogg']);
+    }
 }

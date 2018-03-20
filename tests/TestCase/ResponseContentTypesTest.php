@@ -155,6 +155,21 @@ class ResponseContentTypesTest extends TestCase
                 'contentTypeApplicationVndOasisOpendocumentPresentation',
             ],
 
+            [
+                'application/vnd.oasis.opendocument.spreadsheet',
+                'contentTypeApplicationVndOasisOpendocumentSpreadsheet',
+            ],
+
+            [
+                'application/vnd.oasis.opendocument.text',
+                'contentTypeApplicationVndOasisOpendocumentText',
+            ],
+
+            [
+                'audio/ogg',
+                'contentTypeAudioOgg',
+            ],
+
         ];
 
         foreach($contentTypes as $contentTypeConf) {
