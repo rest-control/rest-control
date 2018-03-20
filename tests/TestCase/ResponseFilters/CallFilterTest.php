@@ -11,6 +11,7 @@
 
 namespace RestControl\Tests\TestCase\ResponseFilters;
 
+use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\CallFilter;
 use PHPUnit\Framework\TestCase;
 
@@ -29,5 +30,22 @@ class CallFilterTest extends TestCase
         $this->assertTrue($filter->validateParams([
             function(){return true;}
         ]));
+    }
+
+    public function testCall()
+    {
+        $filter = new CallFilter();
+        $apiResponse = $this->getMockBuilder(ApiClientResponse::class)
+                            ->disableOriginalConstructor()
+                            ->getMock();
+        $controlVar = 1;
+
+        $filter->call($apiResponse, [function(ApiClientResponse $response) use($apiResponse, &$controlVar){
+
+            $this->assertSame($apiResponse, $response);
+            $controlVar = 100;
+        }]);
+
+        $this->assertSame(100, $controlVar);
     }
 }

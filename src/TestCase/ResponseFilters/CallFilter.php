@@ -33,6 +33,6 @@ class CallFilter extends AbstractFilter implements FilterInterface
      */
     public function call(ApiClientResponse $apiResponse, array $params = [])
     {
-        //todo
+        call_user_func_array($params[0], [$apiResponse]);
     }
 }
