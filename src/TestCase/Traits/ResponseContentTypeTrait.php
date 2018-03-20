@@ -434,4 +434,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/webp']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeFontWoff()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/woff']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeFontWoff2()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/woff2']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXhtmlXml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xhtml+xml']);
+    }
 }

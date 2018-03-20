@@ -276,6 +276,20 @@ class ResponseContentTypesTest extends TestCase
                 'contentTypeImageWebp',
             ],
 
+            [
+                'font/woff',
+                'contentTypeFontWoff',
+            ],
+
+            [
+                'font/woff2',
+                'contentTypeFontWoff2',
+            ],
+
+            [
+                'application/xhtml+xml',
+                'contentTypeApplicationXhtmlXml',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
