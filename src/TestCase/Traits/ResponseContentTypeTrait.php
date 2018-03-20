@@ -218,4 +218,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/midi']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideoMpeg()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/mpeg']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndAppleInstallerXml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.apple.installer+xml']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOasisOpendocumentPresentation()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.presentation']);
+    }
 }

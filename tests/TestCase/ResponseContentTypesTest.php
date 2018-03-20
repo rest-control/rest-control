@@ -139,6 +139,22 @@ class ResponseContentTypesTest extends TestCase
                 'audio/midi',
                 'contentTypeAudioMidi',
             ],
+
+            [
+                'video/mpeg',
+                'contentTypeVideoMpeg',
+            ],
+
+            [
+                'application/vnd.apple.installer+xml',
+                'contentTypeApplicationVndAppleInstallerXml',
+            ],
+
+            [
+                'application/vnd.oasis.opendocument.presentation',
+                'contentTypeApplicationVndOasisOpendocumentPresentation',
+            ],
+
         ];
 
         foreach($contentTypes as $contentTypeConf) {
