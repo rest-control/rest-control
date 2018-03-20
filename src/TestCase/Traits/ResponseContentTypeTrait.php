@@ -121,4 +121,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndMsFontobject()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-fontobject']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationEpubZip()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/epub+zip']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationEcmascript()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/ecmascript']);
+    }
 }

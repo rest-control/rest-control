@@ -80,6 +80,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'contentTypeApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument',
             ],
+
+            [
+                'application/vnd.ms-fontobject',
+                'contentTypeApplicationVndMsFontobject',
+            ],
+
+            [
+                'application/epub+zip',
+                'contentTypeApplicationEpubZip',
+            ],
+
+            [
+                'application/ecmascript',
+                'contentTypeApplicationEcmascript',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
