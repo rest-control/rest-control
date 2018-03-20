@@ -145,4 +145,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/ecmascript']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageGif()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/gif']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeTextHtml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/html']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageXIcon()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/x-icon']);
+    }
 }

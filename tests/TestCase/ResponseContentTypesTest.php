@@ -95,6 +95,20 @@ class ResponseContentTypesTest extends TestCase
                 'application/ecmascript',
                 'contentTypeApplicationEcmascript',
             ],
+            [
+                'image/gif',
+                'contentTypeImageGif',
+            ],
+
+            [
+                'text/html',
+                'contentTypeTextHtml',
+            ],
+
+            [
+                'image/x-icon',
+                'contentTypeImageXIcon',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
