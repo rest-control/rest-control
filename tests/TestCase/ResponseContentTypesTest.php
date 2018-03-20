@@ -124,6 +124,21 @@ class ResponseContentTypesTest extends TestCase
                 'image/jpeg',
                 'contentTypeImageJpeg',
             ],
+
+            [
+                'application/javascript',
+                'contentTypeApplicationJavascript',
+            ],
+
+            [
+                'application/json',
+                'contentTypeApplicationJson',
+            ],
+
+            [
+                'audio/midi',
+                'contentTypeAudioMidi',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {

@@ -193,4 +193,29 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/jpeg']);
     }
+
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationJavascript()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/javascript']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationJson()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/json']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeAudioMidi()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/midi']);
+    }
 }
