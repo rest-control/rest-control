@@ -40,7 +40,8 @@ Features/Helpers
 - forms
 - request headers
 - basic HTTP authentication
-- oAuth & oAuth2 authentication (in progress)
+- oAuth (in progress)
+- oAuth2 authentication
 - JSON response validation
 - JSON Path body validation
 - validation of JSON body items and collection of items
@@ -48,13 +49,14 @@ Features/Helpers
 - easy to use expression language
 - iterating body objects
 - values comparing (e.g. equalsTo, lessThan)
+- dates comparing
 - string validation (e.g. startsWith, endsWith)
 - custom validation via closure
 - annotations describing tests
 - measuring response time and tests statistics
 - XML validation (in progress)
 - test environments management
-- JSON, HTML outputs for reporting system (in progress)
+- JSON, HTML outputs for reporting system
 - handling HTTP cookies (in progress)
 - proxy, SSL support (in progress)
 - command for automatic generation of tests
