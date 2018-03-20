@@ -266,4 +266,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/ogg']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideoOgg()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/ogg']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationOgg()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/ogg']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeFontOtf()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/otf']);
+    }
 }

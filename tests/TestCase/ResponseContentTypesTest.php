@@ -170,6 +170,21 @@ class ResponseContentTypesTest extends TestCase
                 'contentTypeAudioOgg',
             ],
 
+
+            [
+                'video/ogg',
+                'contentTypeVideoOgg',
+            ],
+
+            [
+                'application/ogg',
+                'contentTypeApplicationOgg',
+            ],
+
+            [
+                'font/otf',
+                'contentTypeFontOtf',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
