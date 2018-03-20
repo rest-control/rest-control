@@ -314,4 +314,52 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-powerpoint']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.presentationml.presentation']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXRarCompressed()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-rar-compressed']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationRtf()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/rtf']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXSh()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-sh']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageSvgXml()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/svg+xml']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXShockwaveFlash()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-shockwave-flash']);
+    }
 }

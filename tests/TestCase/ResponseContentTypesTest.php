@@ -200,6 +200,36 @@ class ResponseContentTypesTest extends TestCase
                 'application/vnd.ms-powerpoint',
                 'contentTypeApplicationVndMsPowerpoint',
             ],
+
+            [
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'contentTypeApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation',
+            ],
+
+            [
+                'application/x-rar-compressed',
+                'contentTypeApplicationXRarCompressed',
+            ],
+
+            [
+                'application/rtf',
+                'contentTypeApplicationRtf',
+            ],
+
+            [
+                'application/x-sh',
+                'contentTypeApplicationXSh',
+            ],
+
+            [
+                'image/svg+xml',
+                'contentTypeImageSvgXml',
+            ],
+
+            [
+                'application/x-shockwave-flash',
+                'contentTypeApplicationXShockwaveFlash',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
