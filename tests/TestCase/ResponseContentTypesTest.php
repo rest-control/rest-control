@@ -320,6 +320,26 @@ class ResponseContentTypesTest extends TestCase
                 'video/3gpp',
                 'contentTypeVideo3gpp',
             ],
+
+            [
+                'audio/3gpp',
+                'contentTypeAudio3gpp',
+            ],
+
+            [
+                'video/3gpp2',
+                'contentTypeVideo3gpp2',
+            ],
+
+            [
+                'audio/3gpp2',
+                'contentTypeAudio3gpp2',
+            ],
+
+            [
+                'application/x-7z-compressed',
+                'contentTypeApplicationX7zCompressed',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {

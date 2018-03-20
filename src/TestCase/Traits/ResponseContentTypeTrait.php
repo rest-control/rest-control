@@ -507,4 +507,35 @@ trait ResponseContentTypeTrait
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/3gpp']);
     }
 
+    /**
+     * @return $this
+     */
+    public function contentTypeAudio3gpp()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/3gpp']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeVideo3gpp2()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/3gpp2']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeAudio3gpp2()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/3gpp2']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationX7zCompressed()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-7z-compressed']);
+    }
 }
