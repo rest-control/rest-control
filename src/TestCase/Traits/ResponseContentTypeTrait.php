@@ -362,4 +362,28 @@ trait ResponseContentTypeTrait
     {
         return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-shockwave-flash']);
     }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationXTar()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-tar']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeImageTiff()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/tiff']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function contentTypeApplicationTypescript()
+    {
+        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/typescript']);
+    }
 }

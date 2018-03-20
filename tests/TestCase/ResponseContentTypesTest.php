@@ -230,6 +230,21 @@ class ResponseContentTypesTest extends TestCase
                 'application/x-shockwave-flash',
                 'contentTypeApplicationXShockwaveFlash',
             ],
+
+            [
+                'application/x-tar',
+                'contentTypeApplicationXTar',
+            ],
+
+            [
+                'image/tiff',
+                'contentTypeImageTiff',
+            ],
+
+            [
+                'application/typescript',
+                'contentTypeApplicationTypescript',
+            ],
         ];
 
         foreach($contentTypes as $contentTypeConf) {
