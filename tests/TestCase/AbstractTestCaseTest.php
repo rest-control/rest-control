@@ -84,5 +84,9 @@ class AbstractTestCaseTest extends TestCase
         $beforeDate = $obj->beforeDate('2018-10-10 10:00:00');
         $this->assertInstanceOf(Expression::class, $beforeDate);
         $this->assertSame('2018-10-10 10:00:00', $beforeDate->getParam(0));
+
+        $afterDate = $obj->afterDate('2018-10-10 10:10:10');
+        $this->assertInstanceOf(Expression::class, $afterDate);
+        $this->assertSame('2018-10-10 10:10:10', $afterDate->getParam(0));
     }
 }
