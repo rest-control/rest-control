@@ -34,6 +34,9 @@ class Validators
         LessThan::class,
         EachItems::class,
         MoreThan::class,
+        Regex::class,
+        AfterDate::class,
+        BeforeDate::class,
     ];
 
     /**
