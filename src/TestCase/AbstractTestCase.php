@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCase;
 
+use RestControl\TestCase\ExpressionLanguage\BeforeDate;
 use RestControl\TestCase\ExpressionLanguage\ContainsString;
 use RestControl\TestCase\ExpressionLanguage\EachItems;
 use RestControl\TestCase\ExpressionLanguage\EndsWith;
@@ -134,5 +135,15 @@ abstract class AbstractTestCase
     public function each($expression)
     {
         return new Expression(EachItems::FILTER_NAME, [$expression]);
+    }
+
+    /**
+     * @param string $dateTime
+     *
+     * @return Expression
+     */
+    public function beforeDate($dateTime)
+    {
+        return new Expression(BeforeDate::FILTER_NAME, [$dateTime]);
     }
 }
