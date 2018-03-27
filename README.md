@@ -86,7 +86,7 @@ user@machineid:/app# php vendor/bin/rest-control run
 Contributing
 ---
 
-Thank you if you considering contributing to RestControl! The contribution guide will be available soon. Start watching this project to get regular updates.
+Thank you if you considering contributing to RestControl! The contribution guide is available in CONTRIBUTING.md file. Start watching this project to get regular updates.
 
 Project roadmap
 ---
