@@ -20,6 +20,7 @@ use RestControl\TestCase\ExpressionLanguage\EqualsTo;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\MoreThan;
+use RestControl\TestCase\ExpressionLanguage\Regex;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
 
@@ -156,5 +157,15 @@ abstract class AbstractTestCase
     public function afterDate($dateTime)
     {
         return new Expression(AfterDate::FILTER_NAME, [$dateTime]);
+    }
+
+    /**
+     * @param string $regexString
+     *
+     * @return Expression
+     */
+    public function regex($regexString)
+    {
+        return new Expression(Regex::FILTER_NAME, [$regexString]);
     }
 }

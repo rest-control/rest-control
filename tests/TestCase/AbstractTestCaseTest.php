@@ -88,5 +88,9 @@ class AbstractTestCaseTest extends TestCase
         $afterDate = $obj->afterDate('2018-10-10 10:10:10');
         $this->assertInstanceOf(Expression::class, $afterDate);
         $this->assertSame('2018-10-10 10:10:10', $afterDate->getParam(0));
+
+        $regex = $obj->regex('/[a-z]{1,}/');
+        $this->assertInstanceOf(Expression::class, $regex);
+        $this->assertSame('/[a-z]{1,}/', $regex->getParam(0));
     }
 }
