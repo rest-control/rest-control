@@ -16,7 +16,7 @@
 #### v0.4.0-alpha
 * [\#3 [ExpressionLanguage] lessThan helper](https://github.com/rest-control/rest-control/issues/3)
 * "EachItems" expression language helper
-* [\#4 [ExpressionLanguage] moreThan helper](https://github.com/rest-control/rest-control/issues/4)
+* [\#4 [ExpressionLanguage] greaterThan helper](https://github.com/rest-control/rest-control/issues/4)
 * Add global helpers functions
 * Add before and after tests suite events
 * [\#18 Before and after testCases group](https://github.com/rest-control/rest-control/issues/18)
