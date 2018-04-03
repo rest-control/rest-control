@@ -13,6 +13,7 @@ namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\AfterDate;
 use RestControl\TestCase\ExpressionLanguage\BeforeDate;
+use RestControl\TestCase\ExpressionLanguage\Between;
 use RestControl\TestCase\ExpressionLanguage\ContainsString;
 use RestControl\TestCase\ExpressionLanguage\EachItems;
 use RestControl\TestCase\ExpressionLanguage\EndsWith;
@@ -167,5 +168,16 @@ abstract class AbstractTestCase
     public function regex($regexString)
     {
         return new Expression(Regex::FILTER_NAME, [$regexString]);
+    }
+
+    /**
+     * @param mixed $minValue
+     * @param mixed $maxValue
+     *
+     * @return Expression
+     */
+    public function between($minValue = null, $maxValue = null)
+    {
+        return new Expression(Between::FILTER_NAME, [$minValue, $maxValue]);
     }
 }
