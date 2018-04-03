@@ -33,7 +33,7 @@ class Validators
         EndsWith::class,
         LessThan::class,
         EachItems::class,
-        MoreThan::class,
+        GreaterThan::class,
         Regex::class,
         AfterDate::class,
         BeforeDate::class,
