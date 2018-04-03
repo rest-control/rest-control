@@ -9,6 +9,8 @@ use RestControl\TestCase\ExpressionLanguage\EndsWith;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\GreaterThan;
 use RestControl\TestCase\ExpressionLanguage\EachItems;
+use RestControl\TestCase\ExpressionLanguage\Regex;
+use RestControl\TestCase\ExpressionLanguage\Between;
 
 if(!function_exists('send')) {
     function send() { return new Request(); }
@@ -56,8 +58,14 @@ if(!function_exists('eachItems')) {
     }
 }
 
+if(!function_exists('regex')) {
+    function regex($regexString){
+        return new Expression(Regex::FILTER_NAME, [$regexString]);
+    }
+}
+
 if(!function_exists('between')) {
     function between($minValue = null, $maxValue = null){
-        return new Expression(EachItems::FILTER_NAME, [$minValue, $maxValue]);
+        return new Expression(Between::FILTER_NAME, [$minValue, $maxValue]);
     }
 }
