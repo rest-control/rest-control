@@ -26,6 +26,6 @@ class GlobalHelperTest extends TestCase
         $this->assertInstanceOf(Expression::class, endsWith('asdf'));
         $this->assertInstanceOf(Expression::class, lessThan(123));
         $this->assertInstanceOf(Expression::class, greaterThan(123));
-        $this->assertInstanceOf(Expression::class, eachItems(equalsTo(10)));
+        $this->assertInstanceOf(Expression::class, between(equalsTo(10)));
     }
 }

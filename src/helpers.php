@@ -55,3 +55,9 @@ if(!function_exists('eachItems')) {
         return new Expression(EachItems::FILTER_NAME, [$expression]);
     }
 }
+
+if(!function_exists('between')) {
+    function between($minValue = null, $maxValue = null){
+        return new Expression(EachItems::FILTER_NAME, [$minValue, $maxValue]);
+    }
+}
