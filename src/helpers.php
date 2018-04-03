@@ -7,7 +7,7 @@ use RestControl\TestCase\ExpressionLanguage\ContainsString;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
 use RestControl\TestCase\ExpressionLanguage\EndsWith;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
-use RestControl\TestCase\ExpressionLanguage\MoreThan;
+use RestControl\TestCase\ExpressionLanguage\GreaterThan;
 use RestControl\TestCase\ExpressionLanguage\EachItems;
 
 if(!function_exists('send')) {
@@ -15,8 +15,8 @@ if(!function_exists('send')) {
 }
 
 if(!function_exists('equalsTo')) {
-    function equalsTo($value, $exactlyTheSame = false){
-        return new Expression(EqualsTo::FILTER_NAME, [$value, $exactlyTheSame]);
+    function equalsTo($value, $identical = false){
+        return new Expression(EqualsTo::FILTER_NAME, [$value, $identical]);
     }
 }
 
@@ -44,9 +44,9 @@ if(!function_exists('lessThan')) {
     }
 }
 
-if(!function_exists('moreThan')) {
-    function moreThan($moreThan, $orEqual = false){
-        return new Expression(MoreThan::FILTER_NAME, [$moreThan, $orEqual]);
+if(!function_exists('greaterThan')) {
+    function greaterThan($greaterThan, $orEqual = false){
+        return new Expression(GreaterThan::FILTER_NAME, [$greaterThan, $orEqual]);
     }
 }
 
