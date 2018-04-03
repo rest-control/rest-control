@@ -19,7 +19,7 @@ use RestControl\TestCase\ExpressionLanguage\EndsWith;
 use RestControl\TestCase\ExpressionLanguage\EqualsTo;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
-use RestControl\TestCase\ExpressionLanguage\MoreThan;
+use RestControl\TestCase\ExpressionLanguage\GreaterThan;
 use RestControl\TestCase\ExpressionLanguage\Regex;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
@@ -68,13 +68,13 @@ abstract class AbstractTestCase
 
     /**
      * @param mixed $value
-     * @param bool  $exactlyTheSame
+     * @param bool  $identical
      *
      * @return Expression
      */
-    public function equalsTo($value, $exactlyTheSame = false)
+    public function equalsTo($value, $identical = false)
     {
-        return new Expression(EqualsTo::FILTER_NAME, [$value, $exactlyTheSame]);
+        return new Expression(EqualsTo::FILTER_NAME, [$value, $identical]);
     }
 
     /**
@@ -119,14 +119,14 @@ abstract class AbstractTestCase
     }
 
     /**
-     * @param mixed $moreThan
+     * @param mixed $greaterThan
      * @param bool  $orEqual
      *
      * @return Expression
      */
-    public function moreThan($moreThan, $orEqual = false)
+    public function greaterThan($greaterThan, $orEqual = false)
     {
-        return new Expression(MoreThan::FILTER_NAME, [$moreThan, $orEqual]);
+        return new Expression(GreaterThan::FILTER_NAME, [$greaterThan, $orEqual]);
     }
 
     /**
