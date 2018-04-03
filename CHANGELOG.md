@@ -1,5 +1,6 @@
 #### v0.6.0-alpha
 * [\#32 [ExpressionLanguage] regex helper](https://github.com/rest-control/rest-control/issues/32)
+* Change moreThan helper name into greaterThan
 
 #### v0.5.0-alpha
 * Add jsonSerializable in request/response chain, statsCollector, tcDelegate, tcSuiteObject and tsObject
