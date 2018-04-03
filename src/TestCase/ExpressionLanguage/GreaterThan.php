@@ -11,9 +11,9 @@
 
 namespace RestControl\TestCase\ExpressionLanguage;
 
-class MoreThan extends LessThan
+class GreaterThan extends LessThan
 {
-    const FILTER_NAME = 'moreThan';
+    const FILTER_NAME = 'greaterThan';
 
     /**
      * @return string
@@ -31,13 +31,13 @@ class MoreThan extends LessThan
      */
     protected function checkScalarValue(Expression $expression, $value)
     {
-        $moreThan = $expression->getParam(0);
+        $greaterThan = $expression->getParam(0);
         $orEqual  = (bool) $expression->getParam(1, false);
 
         if(!$orEqual) {
-            return $value > $moreThan;
+            return $value > $greaterThan;
         }
 
-        return $value >= $moreThan;
+        return $value >= $greaterThan;
     }
 }
