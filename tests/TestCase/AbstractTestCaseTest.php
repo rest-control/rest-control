@@ -76,10 +76,10 @@ class AbstractTestCaseTest extends TestCase
         $this->assertSame($lessThan, $each2->getParam(0)[0]);
         $this->assertSame($endsWith, $each2->getParam(0)[1]);
 
-        $moreThan = $obj->moreThan(123, true);
-        $this->assertInstanceOf(Expression::class, $moreThan);
-        $this->assertSame(123, $moreThan->getParam(0));
-        $this->assertTrue( $moreThan->getParam(1));
+        $greaterThan = $obj->greaterThan(123, true);
+        $this->assertInstanceOf(Expression::class, $greaterThan);
+        $this->assertSame(123, $greaterThan->getParam(0));
+        $this->assertTrue( $greaterThan->getParam(1));
 
         $beforeDate = $obj->beforeDate('2018-10-10 10:00:00');
         $this->assertInstanceOf(Expression::class, $beforeDate);

@@ -14,15 +14,15 @@ namespace RestControl\Tests\TestCase\ExpressionLanguage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\InvalidArgumentException;
 use RestControl\TestCase\ExpressionLanguage\Expression;
-use RestControl\TestCase\ExpressionLanguage\MoreThan;
+use RestControl\TestCase\ExpressionLanguage\GreaterThan;
 
-class MoreThanTest extends TestCase
+class GreaterThanTest extends TestCase
 {
     public function testChecker()
     {
-        $checker = new MoreThan();
+        $checker = new GreaterThan();
 
-        $this->assertSame('moreThan', $checker->getName());
+        $this->assertSame('greaterThan', $checker->getName());
 
         $this->assertTrue($checker->check(
             $this->getExpression(5),
@@ -64,13 +64,13 @@ class MoreThanTest extends TestCase
     }
 
     /**
-     * @param mixed $moreThan
+     * @param mixed $greaterThan
      * @param bool  $orEqual
      *
      * @return Expression
      */
-    protected function getExpression($moreThan, $orEqual = false)
+    protected function getExpression($greaterThan, $orEqual = false)
     {
-        return new Expression('moreThan', [$moreThan, $orEqual]);
+        return new Expression('greaterThan', [$greaterThan, $orEqual]);
     }
 }
