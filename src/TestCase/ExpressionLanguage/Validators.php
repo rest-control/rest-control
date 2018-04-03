@@ -37,6 +37,7 @@ class Validators
         Regex::class,
         AfterDate::class,
         BeforeDate::class,
+        Between::class,
     ];
 
     /**
