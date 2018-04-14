@@ -108,7 +108,8 @@ class HttpGuzzleClient implements ApiClientInterface
         return new ApiClientResponse(
             $response->getStatusCode(),
             $response->getHeaders(),
-            $response->getBody()->getContents()
+            $response->getBody()->getContents(),
+            $response->getBody()->getSize()
         );
     }
 }
