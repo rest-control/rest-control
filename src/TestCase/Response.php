@@ -18,6 +18,7 @@ use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\ResponseFilters\SizeFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Utils\AbstractResponseItem;
@@ -169,5 +170,17 @@ class Response extends AbstractChain
     public function call($callable)
     {
         return $this->_add(CallFilter::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * Check size of response body(in bytes).
+     *
+     * @param int|Expression $size
+     *
+     * @return $this
+     */
+    public function size($size)
+    {
+        return $this->_add(SizeFilter::FILTER_NAME, func_get_args());
     }
 }
