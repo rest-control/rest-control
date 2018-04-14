@@ -11,6 +11,7 @@
 
 namespace RestControl\TestCase\Traits;
 
+use RestControl\TestCase\ExpressionLanguage\ContainsString;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
 
@@ -31,7 +32,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudioAac()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/aac']);
+        return $this->contentTypeContains('audio/aac');
     }
 
     /**
@@ -39,7 +40,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXAbiword()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-abiword']);
+        return $this->contentTypeContains('application/x-abiword');
     }
 
     /**
@@ -47,7 +48,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationOctetStream()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/octet-stream']);
+        return $this->contentTypeContains('application/octet-stream');
     }
 
     /**
@@ -55,7 +56,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideoXMsvideo()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/x-msvideo']);
+        return $this->contentTypeContains('video/x-msvideo');
     }
 
     /**
@@ -63,7 +64,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndAmazonEbook()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.amazon.ebook']);
+        return $this->contentTypeContains('application/vnd.amazon.ebook');
     }
 
     /**
@@ -71,7 +72,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXBzip()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-bzip']);
+        return $this->contentTypeContains('application/x-bzip');
     }
 
     /**
@@ -79,7 +80,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXBzip2()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-bzip2']);
+        return $this->contentTypeContains('application/x-bzip2');
     }
 
     /**
@@ -87,7 +88,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXCsh()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-csh']);
+        return $this->contentTypeContains('application/x-csh');
     }
 
     /**
@@ -95,7 +96,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeTextCss()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/css']);
+        return $this->contentTypeContains('text/css');
     }
 
     /**
@@ -103,7 +104,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeTextCsv()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/csv']);
+        return $this->contentTypeContains('text/csv');
     }
 
     /**
@@ -111,7 +112,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationMsword()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/msword']);
+        return $this->contentTypeContains('application/msword');
     }
 
     /**
@@ -119,7 +120,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+        return $this->contentTypeContains('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     }
 
     /**
@@ -127,7 +128,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndMsFontobject()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-fontobject']);
+        return $this->contentTypeContains('application/vnd.ms-fontobject');
     }
 
     /**
@@ -135,7 +136,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationEpubZip()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/epub+zip']);
+        return $this->contentTypeContains('application/epub+zip');
     }
 
     /**
@@ -143,7 +144,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationEcmascript()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/ecmascript']);
+        return $this->contentTypeContains('application/ecmascript');
     }
 
     /**
@@ -151,7 +152,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageGif()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/gif']);
+        return $this->contentTypeContains('image/gif');
     }
 
     /**
@@ -159,7 +160,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeTextHtml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/html']);
+        return $this->contentTypeContains('text/html');
     }
 
     /**
@@ -167,7 +168,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageXIcon()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/x-icon']);
+        return $this->contentTypeContains('image/x-icon');
     }
 
     /**
@@ -175,7 +176,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeTextCalendar()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['text/calendar']);
+        return $this->contentTypeContains('text/calendar');
     }
 
     /**
@@ -183,7 +184,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationJavaArchive()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/java-archive']);
+        return $this->contentTypeContains('application/java-archive');
     }
 
     /**
@@ -191,7 +192,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageJpeg()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/jpeg']);
+        return $this->contentTypeContains('image/jpeg');
     }
 
 
@@ -200,7 +201,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationJavascript()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/javascript']);
+        return $this->contentTypeContains('application/javascript');
     }
 
     /**
@@ -208,7 +209,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationJson()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/json']);
+        return $this->contentTypeContains('application/json');
     }
 
     /**
@@ -216,7 +217,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudioMidi()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/midi']);
+        return $this->contentTypeContains('audio/midi');
     }
 
     /**
@@ -224,7 +225,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideoMpeg()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/mpeg']);
+        return $this->contentTypeContains('video/mpeg');
     }
 
     /**
@@ -232,7 +233,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndAppleInstallerXml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.apple.installer+xml']);
+        return $this->contentTypeContains('application/vnd.apple.installer+xml');
     }
 
     /**
@@ -240,7 +241,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOasisOpendocumentPresentation()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.presentation']);
+        return $this->contentTypeContains('application/vnd.oasis.opendocument.presentation');
     }
 
     /**
@@ -248,7 +249,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOasisOpendocumentSpreadsheet()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.spreadsheet']);
+        return $this->contentTypeContains('application/vnd.oasis.opendocument.spreadsheet');
     }
 
     /**
@@ -256,7 +257,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOasisOpendocumentText()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.oasis.opendocument.text']);
+        return $this->contentTypeContains('application/vnd.oasis.opendocument.text');
     }
 
     /**
@@ -264,7 +265,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudioOgg()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/ogg']);
+        return $this->contentTypeContains('audio/ogg');
     }
 
     /**
@@ -272,7 +273,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideoOgg()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/ogg']);
+        return $this->contentTypeContains('video/ogg');
     }
 
     /**
@@ -280,7 +281,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationOgg()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/ogg']);
+        return $this->contentTypeContains('application/ogg');
     }
 
     /**
@@ -288,7 +289,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeFontOtf()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/otf']);
+        return $this->contentTypeContains('font/otf');
     }
 
     /**
@@ -296,7 +297,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImagePng()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/png']);
+        return $this->contentTypeContains('image/png');
     }
 
     /**
@@ -304,7 +305,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationPdf()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/pdf']);
+        return $this->contentTypeContains('application/pdf');
     }
 
     /**
@@ -312,7 +313,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndMsPowerpoint()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-powerpoint']);
+        return $this->contentTypeContains('application/vnd.ms-powerpoint');
     }
 
     /**
@@ -320,7 +321,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.presentationml.presentation']);
+        return $this->contentTypeContains('application/vnd.openxmlformats-officedocument.presentationml.presentation');
     }
 
     /**
@@ -328,7 +329,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXRarCompressed()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-rar-compressed']);
+        return $this->contentTypeContains('application/x-rar-compressed');
     }
 
     /**
@@ -336,7 +337,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationRtf()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/rtf']);
+        return $this->contentTypeContains('application/rtf');
     }
 
     /**
@@ -344,7 +345,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXSh()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-sh']);
+        return $this->contentTypeContains('application/x-sh');
     }
 
     /**
@@ -352,7 +353,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageSvgXml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/svg+xml']);
+        return $this->contentTypeContains('image/svg+xml');
     }
 
     /**
@@ -360,7 +361,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXShockwaveFlash()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-shockwave-flash']);
+        return $this->contentTypeContains('application/x-shockwave-flash');
     }
 
     /**
@@ -368,7 +369,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXTar()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-tar']);
+        return $this->contentTypeContains('application/x-tar');
     }
 
     /**
@@ -376,7 +377,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageTiff()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/tiff']);
+        return $this->contentTypeContains('image/tiff');
     }
 
     /**
@@ -384,7 +385,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationTypescript()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/typescript']);
+        return $this->contentTypeContains('application/typescript');
     }
 
     /**
@@ -392,7 +393,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeFontTtf()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/ttf']);
+        return $this->contentTypeContains('font/ttf');
     }
 
     /**
@@ -400,7 +401,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndVisio()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.visio']);
+        return $this->contentTypeContains('application/vnd.visio');
     }
 
     /**
@@ -408,7 +409,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudioXWav()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/x-wav']);
+        return $this->contentTypeContains('audio/x-wav');
     }
 
     /**
@@ -416,7 +417,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudioWebm()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/webm']);
+        return $this->contentTypeContains('audio/webm');
     }
 
     /**
@@ -424,7 +425,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideoWebm()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/webm']);
+        return $this->contentTypeContains('video/webm');
     }
 
     /**
@@ -432,7 +433,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeImageWebp()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['image/webp']);
+        return $this->contentTypeContains('image/webp');
     }
 
     /**
@@ -440,7 +441,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeFontWoff()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/woff']);
+        return $this->contentTypeContains('font/woff');
     }
 
     /**
@@ -448,7 +449,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeFontWoff2()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['font/woff2']);
+        return $this->contentTypeContains('font/woff2');
     }
 
     /**
@@ -456,7 +457,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXhtmlXml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xhtml+xml']);
+        return $this->contentTypeContains('application/xhtml+xml');
     }
 
     /**
@@ -464,7 +465,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndMsExcel()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.ms-excel']);
+        return $this->contentTypeContains('application/vnd.ms-excel');
     }
 
     /**
@@ -472,7 +473,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        return $this->contentTypeContains('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
 
     /**
@@ -480,7 +481,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationXml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/xml']);
+        return $this->contentTypeContains('application/xml');
     }
 
     /**
@@ -488,7 +489,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationVndMozillaXulXml()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/vnd.mozilla.xul+xml']);
+        return $this->contentTypeContains('application/vnd.mozilla.xul+xml');
     }
 
     /**
@@ -496,7 +497,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationZip()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/zip']);
+        return $this->contentTypeContains('application/zip');
     }
 
     /**
@@ -504,7 +505,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideo3gpp()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/3gpp']);
+        return $this->contentTypeContains('video/3gpp');
     }
 
     /**
@@ -512,7 +513,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudio3gpp()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/3gpp']);
+        return $this->contentTypeContains('audio/3gpp');
     }
 
     /**
@@ -520,7 +521,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeVideo3gpp2()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['video/3gpp2']);
+        return $this->contentTypeContains('video/3gpp2');
     }
 
     /**
@@ -528,7 +529,7 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeAudio3gpp2()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['audio/3gpp2']);
+        return $this->contentTypeContains('audio/3gpp2');
     }
 
     /**
@@ -536,6 +537,19 @@ trait ResponseContentTypeTrait
      */
     public function contentTypeApplicationX7zCompressed()
     {
-        return $this->_add(ContentTypeFilter::FILTER_NAME, ['application/x-7z-compressed']);
+        return $this->contentTypeContains('application/x-7z-compressed');
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return $this
+     */
+    protected function contentTypeContains($string)
+    {
+        return $this->contentType(new Expression(
+            ContainsString::FILTER_NAME,
+            [$string]
+        ));
     }
 }

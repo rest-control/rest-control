@@ -12,6 +12,8 @@
 namespace RestControl\Tests\TestCase;
 
 use RestControl\TestCase\ChainObject;
+use RestControl\TestCase\ExpressionLanguage\ContainsString;
+use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\Response;
 use PHPUnit\Framework\TestCase;
 use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
@@ -355,8 +357,12 @@ class ResponseContentTypesTest extends TestCase
 
             /** @var ChainObject $chainObject */
             $chainObject = $chainObjects[0];
+            /** @var Expression $expression */
+            $expression  = $chainObject->getParam(0);
 
-            $this->assertSame($contentTypeConf[0], $chainObject->getParam(0));
+            $this->assertInstanceOf(Expression::class, $expression);
+            $this->assertSame(ContainsString::FILTER_NAME, $expression->getName());
+            $this->assertSame($contentTypeConf[0], $expression->getParam(0));
         }
     }
 }
