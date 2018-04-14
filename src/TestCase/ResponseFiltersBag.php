@@ -71,6 +71,7 @@ use RestControl\TestCase\ResponseFilters\HttpCodes\HttpUseProxy;
 use RestControl\TestCase\ResponseFilters\HttpCodes\HttpVariantAlsoNegotiates;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\ResponseFilters\SizeFilter;
 use RestControl\TestCase\StatsCollector\StatsCollector;
 use RestControl\TestCase\StatsCollector\StatsCollectorInterface;
 
@@ -147,6 +148,7 @@ class ResponseFiltersBag
             new HttpNotExtended(),
             new HttpNetworkAuthenticationRequired(),
             new ContentTypeFilter(),
+            new SizeFilter(),
         ]);
 
         $this->addFilters($filters);
