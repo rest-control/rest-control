@@ -162,7 +162,7 @@ class MockApiClientTest extends TestCase
 
     public function testMockedResponsesRoute()
     {
-        $apiResponse = new ApiClientResponse(200, [], '');
+        $apiResponse = new ApiClientResponse(200, [], '', 0);
 
         $mockResponse = $this->getMockBuilder(MockApiResponseInterface::class)
             ->setMethods(['getUrl', 'getApiClientResponse'])

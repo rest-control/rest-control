@@ -33,7 +33,7 @@ class HttpCodeTest extends TestCase
     public function testValidStatusCode()
     {
         $filter = new HttpCode();
-        $apiResponse = new ApiClientResponse(200, [], '');
+        $apiResponse = new ApiClientResponse(200, [], '', 0);
 
         $filter->call($apiResponse, [200]);
 
@@ -45,7 +45,7 @@ class HttpCodeTest extends TestCase
     public function testInvalidStatusCode()
     {
         $filter = new HttpCode();
-        $apiResponse = new ApiClientResponse(404, [], '');
+        $apiResponse = new ApiClientResponse(404, [], '', 0);
 
         $filter->call($apiResponse, [200]);
 

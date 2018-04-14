@@ -28,14 +28,21 @@ class ApiClientResponse
      */
     protected $body;
 
+    /**
+     * @var int
+     */
+    protected $bodySize;
+
     public function __construct(
         $statusCode,
         array $headers = [],
-        $body
+        $body,
+        $bodySize
     ){
         $this->statusCode = $statusCode;
-        $this->headers = $headers;
-        $this->body = $body;
+        $this->headers    = $headers;
+        $this->body       = $body;
+        $this->bodySize   = $bodySize;
     }
 
     public function getStatusCode()
@@ -51,6 +58,11 @@ class ApiClientResponse
     public function getBody()
     {
         return $this->body;
+    }
+
+    public function getBodySize()
+    {
+        return $this->bodySize;
     }
 
     public function getHeader($headerName, $default = null)

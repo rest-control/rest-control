@@ -60,7 +60,8 @@ class JsonFilterTest extends TestCase
                     'application/json;charset=utf-8',
                 ],
             ],
-            ''
+            '',
+            0
         );
 
         $filter->call($apiClientResponse, [true, true]);
@@ -82,7 +83,8 @@ class JsonFilterTest extends TestCase
                     'application/wrongjson;charset=utf-8',
                 ],
             ],
-            ''
+            '',
+            0
         );
 
         $filter->call($apiClientResponse);
@@ -117,7 +119,8 @@ class JsonFilterTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            ''
+            '',
+            0
         );
 
         $filter->call($apiClientResponse, [false]);
@@ -143,7 +146,8 @@ class JsonFilterTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            ''
+            '',
+            0
         );
 
         $filter->call($apiClientResponse, [false, true]);

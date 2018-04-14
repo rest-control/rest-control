@@ -45,7 +45,8 @@ class HasItemsTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '[{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"},{"id":"sample"}]'
+            '[{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"},{"id":"sample"}]',
+            123
         );
 
         $filter->call($apiClientResponse, [$collection]);
@@ -84,7 +85,8 @@ class HasItemsTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '[{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"},{"id":"0948e203-be32-4de9-ab49-242b0e3394a9"}]'
+            '[{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"},{"id":"0948e203-be32-4de9-ab49-242b0e3394a9"}]',
+            123
         );
 
         $filter->call($apiClientResponse, [$collection]);

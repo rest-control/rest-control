@@ -41,7 +41,8 @@ class JsonPathFilterTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            'invalid body format'
+            'invalid body format',
+            123
         );
 
         try{
@@ -71,7 +72,8 @@ class JsonPathFilterTest extends TestCase
             [],
             '{"test":{
                 "sample": 1234
-            }}'
+            }}',
+            123
         );
 
         $expression = new Expression('equalsTo', [986785]);
@@ -103,7 +105,8 @@ class JsonPathFilterTest extends TestCase
             [],
             '{"test":{
                 "sample": 1234
-            }}'
+            }}',
+            123
         );
 
         $expression = new Expression('equalsTo', [986785]);
@@ -140,7 +143,8 @@ class JsonPathFilterTest extends TestCase
                     123,
                     5468768
                 ]
-            }}'
+            }}',
+            123
         );
 
         $expression = new Expression('equalsTo', [123]);

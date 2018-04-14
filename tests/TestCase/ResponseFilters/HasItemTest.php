@@ -72,7 +72,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '12312331'
+            '12312331',
+            0
         );
 
         try{
@@ -101,7 +102,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -120,7 +122,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"sampleUser":{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}}'
+            '{"sampleUser":{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item, 'sampleUser']);
@@ -139,7 +142,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id": "invalidUuid"}'
+            '{"id": "invalidUuid"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -170,7 +174,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"name": "shouldBeArrayHere"}'
+            '{"name": "shouldBeArrayHere"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -204,7 +209,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -237,7 +243,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -259,7 +266,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}'
+            '{"id":"46fcc8c3-53d6-447c-9a7a-58d035e6b18d"}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);
@@ -290,7 +298,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"name":[{"firstName":"sample","lastName":"name"}, {"firstName":"anotherSample","lastName":"name"}]}'
+            '{"name":[{"firstName":"sample","lastName":"name"}, {"firstName":"anotherSample","lastName":"name"}]}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item, 'sampleUser']);
@@ -307,7 +316,8 @@ class HasItemTest extends TestCase
         $apiClientResponse = new ApiClientResponse(
             200,
             [],
-            '{"sampleRepeatedValue": ["46fcc8c3-53d6-447c-9a7a-58d035e6b18d", "asdd"]}'
+            '{"sampleRepeatedValue": ["46fcc8c3-53d6-447c-9a7a-58d035e6b18d", "asdd"]}',
+            0
         );
 
         $filter->call($apiClientResponse, [$item]);

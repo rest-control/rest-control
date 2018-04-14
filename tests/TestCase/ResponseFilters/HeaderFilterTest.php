@@ -45,7 +45,8 @@ class HeaderFilterTest extends TestCase
                     'application/json; charset=utf-8',
                 ],
             ],
-            ''
+            '',
+            0
         );
 
         $expression = new Expression('containsString', ['html']);
