@@ -110,6 +110,14 @@ trait ResponseContentTypeTrait
     /**
      * @return $this
      */
+    public function contentTypeTextJavascript()
+    {
+        return $this->contentTypeContains('text/javascript');
+    }
+
+    /**
+     * @return $this
+     */
     public function contentTypeApplicationMsword()
     {
         return $this->contentTypeContains('application/msword');
