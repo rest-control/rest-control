@@ -3,6 +3,7 @@
 * Change moreThan helper name into greaterThan
 * [\#35 [ExpressionLanguage] between helper](https://github.com/rest-control/rest-control/issues/35)
 * [\#34 [ResponseFilter] file helper](https://github.com/rest-control/rest-control/issues/34)
+* contentTypeTextJavascript helper in response filters
 
 #### v0.5.0-alpha
 * Add jsonSerializable in request/response chain, statsCollector, tcDelegate, tcSuiteObject and tsObject
