@@ -11,6 +11,7 @@ use RestControl\TestCase\ExpressionLanguage\GreaterThan;
 use RestControl\TestCase\ExpressionLanguage\EachItems;
 use RestControl\TestCase\ExpressionLanguage\Regex;
 use RestControl\TestCase\ExpressionLanguage\Between;
+use RestControl\TestCase\ExpressionLanguage\OneOf;
 
 if(!function_exists('send')) {
     function send() { return new Request(); }
@@ -67,5 +68,11 @@ if(!function_exists('regex')) {
 if(!function_exists('between')) {
     function between($minValue = null, $maxValue = null){
         return new Expression(Between::FILTER_NAME, [$minValue, $maxValue]);
+    }
+}
+
+if(!function_exists('oneOf')) {
+    function oneOf(...$expressions){
+        return new Expression(OneOf::FILTER_NAME, $expressions);
     }
 }
