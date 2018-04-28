@@ -21,6 +21,7 @@ use RestControl\TestCase\ExpressionLanguage\EqualsTo;
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ExpressionLanguage\LessThan;
 use RestControl\TestCase\ExpressionLanguage\GreaterThan;
+use RestControl\TestCase\ExpressionLanguage\OneOf;
 use RestControl\TestCase\ExpressionLanguage\Regex;
 use RestControl\TestCase\ExpressionLanguage\StartsWith;
 use RestControl\TestCasePipeline\TestPipelineConfiguration;
@@ -179,5 +180,15 @@ abstract class AbstractTestCase
     public function between($minValue = null, $maxValue = null)
     {
         return new Expression(Between::FILTER_NAME, [$minValue, $maxValue]);
+    }
+
+    /**
+     * @param array ...$expressions
+     *
+     * @return Expression
+     */
+    public function oneOf(...$expressions)
+    {
+        return new Expression(OneOf::FILTER_NAME, $expressions);
     }
 }
