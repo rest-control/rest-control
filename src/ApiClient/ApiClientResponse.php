@@ -36,7 +36,7 @@ class ApiClientResponse
     /**
      * Response time in milliseconds.
      *
-     * @var int
+     * @var float|int
      */
     protected $responseTime = 0;
 

@@ -24,7 +24,8 @@ class HttpGuzzleClient implements ApiClientInterface
      */
     public function send(ApiClientRequest $schema)
     {
-        $client = new Client();
+        $client       = new Client();
+        $startRequest = microtime(true);
 
         try{
 
@@ -38,7 +39,9 @@ class HttpGuzzleClient implements ApiClientInterface
             $response = $e->getResponse();
         }
 
-        return $this->parseResponse($response);
+        $elapsedRequestTime = microtime(true) - $startRequest;
+
+        return $this->parseResponse($response, $elapsedRequestTime);
     }
 
     /**
@@ -100,16 +103,18 @@ class HttpGuzzleClient implements ApiClientInterface
 
     /**
      * @param Response $response
+     * @param float    $responseTime
      *
      * @return ApiClientResponse
      */
-    protected function parseResponse(Response $response)
+    protected function parseResponse(Response $response, $responseTime)
     {
         return new ApiClientResponse(
             $response->getStatusCode(),
             $response->getHeaders(),
             $response->getBody()->getContents(),
-            $response->getBody()->getSize()
+            $response->getBody()->getSize(),
+            $responseTime
         );
     }
 }
