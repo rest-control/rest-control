@@ -23,6 +23,7 @@ use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\ResponseFilters\ResponseTimeFilter;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
 use RestControl\Tests\TestCase\ResponseFilters\SampleResponseItem;
 use RestControl\Utils\ResponseItemsCollection;
@@ -217,5 +218,23 @@ class ResponseTest extends TestCase
         $this->assertCount(1, $objs);
 
         $this->assertSame($call, $objs[0]->getParam(0));
+    }
+
+    public function testResponseTime()
+    {
+        $response   = new Response();
+        $expression = new Expression('equalsTo', [123]);
+
+        $this->assertSame(
+            $response,
+            $response->responseTime($expression)
+        );
+
+        $this->assertSame(1, $response->_getChainLength());
+
+        $obj = $response->_getChainObject(ResponseTimeFilter::FILTER_NAME);
+        $this->assertInstanceOf(ChainObject::class, $obj);
+
+        $this->assertSame($expression, $obj->getParam(0));
     }
 }

@@ -18,6 +18,7 @@ use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
 use RestControl\TestCase\ResponseFilters\JsonFilter;
 use RestControl\TestCase\ResponseFilters\JsonPathFilter;
+use RestControl\TestCase\ResponseFilters\ResponseTimeFilter;
 use RestControl\TestCase\ResponseFilters\SizeFilter;
 use RestControl\TestCase\Traits\ResponseContentTypeTrait;
 use RestControl\TestCase\Traits\ResponseHttpCodesTrait;
@@ -182,5 +183,15 @@ class Response extends AbstractChain
     public function size($size)
     {
         return $this->_add(SizeFilter::FILTER_NAME, func_get_args());
+    }
+
+    /**
+     * @param Expression $expression
+     *
+     * @return $this
+     */
+    public function responseTime(Expression $expression)
+    {
+        return $this->_add(ResponseTimeFilter::FILTER_NAME, [$expression]);
     }
 }
