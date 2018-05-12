@@ -33,16 +33,25 @@ class ApiClientResponse
      */
     protected $bodySize;
 
+    /**
+     * Response time in milliseconds.
+     *
+     * @var int
+     */
+    protected $responseTime = 0;
+
     public function __construct(
         $statusCode,
         array $headers = [],
         $body,
-        $bodySize
+        $bodySize,
+        $responseTime = 0
     ){
-        $this->statusCode = $statusCode;
-        $this->headers    = $headers;
-        $this->body       = $body;
-        $this->bodySize   = $bodySize;
+        $this->statusCode   = $statusCode;
+        $this->headers      = $headers;
+        $this->body         = $body;
+        $this->bodySize     = $bodySize;
+        $this->responseTime = $responseTime;
     }
 
     public function getStatusCode()
@@ -63,6 +72,11 @@ class ApiClientResponse
     public function getBodySize()
     {
         return $this->bodySize;
+    }
+
+    public function getResponseTime()
+    {
+        return $this->responseTime;
     }
 
     public function getHeader($headerName, $default = null)

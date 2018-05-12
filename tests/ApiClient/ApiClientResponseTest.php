@@ -30,7 +30,8 @@ class ApiClientResponseTest extends TestCase
                 ],
             ],
             '{"status":"ok"}',
-            123
+            123,
+            234
         );
 
 
@@ -68,6 +69,11 @@ class ApiClientResponseTest extends TestCase
         $this->assertSame(
             123,
             $response->getBodySize()
+        );
+
+        $this->assertSame(
+            234,
+            $response->getResponseTime()
         );
     }
 }
