@@ -38,7 +38,7 @@ class HttpGuzzleClient implements ApiClientInterface
             $response = $e->getResponse();
         }
 
-        return $this->paresResponse($response);
+        return $this->parseResponse($response);
     }
 
     /**
@@ -103,7 +103,7 @@ class HttpGuzzleClient implements ApiClientInterface
      *
      * @return ApiClientResponse
      */
-    protected function paresResponse(Response $response)
+    protected function parseResponse(Response $response)
     {
         return new ApiClientResponse(
             $response->getStatusCode(),
