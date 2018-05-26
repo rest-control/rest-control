@@ -46,6 +46,11 @@ class ApiClientRequest
     protected $headers = [];
 
     /**
+     * @var array
+     */
+    protected $cookies = [];
+
+    /**
      * @param string $method
      */
     public function setMethod($method)
@@ -142,5 +147,25 @@ class ApiClientRequest
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @param array $cookies
+     *
+     * @return $this
+     */
+    public function setCookies(array $cookies)
+    {
+        $this->cookies = $cookies;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 }
