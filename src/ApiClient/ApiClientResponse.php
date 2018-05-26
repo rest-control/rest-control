@@ -40,18 +40,25 @@ class ApiClientResponse
      */
     protected $responseTime = 0;
 
+    /**
+     * @var array
+     */
+    protected $cookies = [];
+
     public function __construct(
         $statusCode,
         array $headers = [],
         $body,
         $bodySize,
-        $responseTime = 0
+        $responseTime = 0,
+        $cookies = []
     ){
         $this->statusCode   = $statusCode;
         $this->headers      = $headers;
         $this->body         = $body;
         $this->bodySize     = $bodySize;
         $this->responseTime = $responseTime;
+        $this->cookies      = $cookies;
     }
 
     public function getStatusCode()
@@ -96,4 +103,11 @@ class ApiClientResponse
         return (array) (isset($this->headers['Content-Type']) ? $this->headers['Content-Type'] : '');
     }
 
+    /**
+     * @return array
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
+    }
 }
