@@ -15,6 +15,7 @@ use RestControl\ApiClient\ApiClientResponse;
 use RestControl\TestCase\ResponseFilters\ContentTypeFilter;
 use RestControl\TestCase\ResponseFilters\FilterInterface;
 use Psr\Log\InvalidArgumentException;
+use RestControl\TestCase\ResponseFilters\HasCookie;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
@@ -149,6 +150,7 @@ class ResponseFiltersBag
             new HttpNetworkAuthenticationRequired(),
             new ContentTypeFilter(),
             new SizeFilter(),
+            new HasCookie(),
         ]);
 
         $this->addFilters($filters);
