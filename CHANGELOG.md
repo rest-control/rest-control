@@ -6,6 +6,7 @@
 * contentTypeTextJavascript helper in response filters
 * [\#33 [ExpressionLanguage] oneOf helper](https://github.com/rest-control/rest-control/issues/33)
 * [\#25 [ResponseFilter] Measuring response time](https://github.com/rest-control/rest-control/issues/25)
+* [\#37 [ResponseFilter] hasCookie helper](https://github.com/rest-control/rest-control/issues/37)
 
 #### v0.5.0-alpha
 * Add jsonSerializable in request/response chain, statsCollector, tcDelegate, tcSuiteObject and tsObject
