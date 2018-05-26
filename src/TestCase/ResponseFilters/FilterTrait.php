@@ -32,4 +32,26 @@ trait FilterTrait
 
         return false;
     }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function isSimpleValueOrExpression($value)
+    {
+        if(is_array($value)) {
+            return false;
+        }
+
+        if(!is_object($value)) {
+            return true;
+        }
+
+        if($value instanceof Expression || is_callable($value)) {
+            return true;
+        }
+
+        return false;
+    }
 }
