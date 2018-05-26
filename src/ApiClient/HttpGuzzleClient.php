@@ -14,6 +14,7 @@ namespace RestControl\ApiClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Cookie\CookieJar;
 
 class HttpGuzzleClient implements ApiClientInterface
 {
@@ -25,6 +26,7 @@ class HttpGuzzleClient implements ApiClientInterface
     public function send(ApiClientRequest $schema)
     {
         $client       = new Client();
+        $cookieJar    = new CookieJar();
         $startRequest = microtime(true);
 
         try{
@@ -32,7 +34,7 @@ class HttpGuzzleClient implements ApiClientInterface
             $response = $client->request(
                 strtoupper($schema->getMethod()),
                 $this->getUrl($schema),
-                $this->buildOptions($schema)
+                $this->buildOptions($schema, $cookieJar)
             );
 
         } catch ( ClientException $e) {
@@ -41,20 +43,22 @@ class HttpGuzzleClient implements ApiClientInterface
 
         $elapsedRequestTime = microtime(true) - $startRequest;
 
-        return $this->parseResponse($response, $elapsedRequestTime);
+        return $this->parseResponse($response, $cookieJar, $elapsedRequestTime);
     }
 
     /**
      * @param ApiClientRequest $schema
+     * @param CookieJar        $cookieJar
      *
      * @return array
      */
-    protected function buildOptions(ApiClientRequest $schema)
+    protected function buildOptions(ApiClientRequest $schema, CookieJar $cookieJar)
     {
         $options = [
             'query'       => $this->getQueryParams($schema),
             'form_params' => $schema->getFormParams(),
             'headers'     => $schema->getHeaders(),
+            'cookies'     => $cookieJar,
         ];
 
         return $options;
@@ -102,19 +106,21 @@ class HttpGuzzleClient implements ApiClientInterface
     }
 
     /**
-     * @param Response $response
-     * @param float    $responseTime
+     * @param Response  $response
+     * @param CookieJar $cookieJar
+     * @param float     $responseTime
      *
      * @return ApiClientResponse
      */
-    protected function parseResponse(Response $response, $responseTime)
+    protected function parseResponse(Response $response, CookieJar $cookieJar, $responseTime)
     {
         return new ApiClientResponse(
             $response->getStatusCode(),
             $response->getHeaders(),
             $response->getBody()->getContents(),
             $response->getBody()->getSize(),
-            $responseTime
+            $responseTime,
+            $cookieJar->toArray()
         );
     }
 }
