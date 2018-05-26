@@ -13,6 +13,7 @@ namespace RestControl\TestCase;
 
 use RestControl\TestCase\ExpressionLanguage\Expression;
 use RestControl\TestCase\ResponseFilters\CallFilter;
+use RestControl\TestCase\ResponseFilters\HasCookie;
 use RestControl\TestCase\ResponseFilters\HasItemFilter;
 use RestControl\TestCase\ResponseFilters\HasItemsFilter;
 use RestControl\TestCase\ResponseFilters\HeaderFilter;
@@ -193,5 +194,32 @@ class Response extends AbstractChain
     public function responseTime(Expression $expression)
     {
         return $this->_add(ResponseTimeFilter::FILTER_NAME, [$expression]);
+    }
+
+    /**
+     * @param string|Expression $name
+     * @param mixed             $value
+     * @param mixed             $domain
+     * @param mixed             $path
+     * @param mixed             $maxAge
+     * @param mixed             $expires
+     * @param mixed             $secure
+     * @param mixed             $discard
+     * @param mixed             $httpOnly
+     *
+     * @return $this
+     */
+    public function hasCookie(
+        $name,
+        $value = null,
+        $domain = null,
+        $path = null,
+        $maxAge = null,
+        $expires = null,
+        $secure = null,
+        $discard = null,
+        $httpOnly = null
+    ){
+        return $this->_add(HasCookie::FILTER_NAME, func_get_args());
     }
 }
