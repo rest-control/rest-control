@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  cli:
+    build: ./
+    volumes:
+      - ./../:/app
+    working_dir: /app
+    tty: true
+    stdin_open: true
