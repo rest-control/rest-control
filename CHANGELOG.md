@@ -1,3 +1,6 @@
+#### v0.7.0-alpha
+* Add docker configuration
+
 #### v0.6.0-alpha
 * [\#32 [ExpressionLanguage] regex helper](https://github.com/rest-control/rest-control/issues/32)
 * Change moreThan helper name into greaterThan
